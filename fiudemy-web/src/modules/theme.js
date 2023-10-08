@@ -12,6 +12,7 @@ const rawTheme = createTheme({
       light: '#fff5f8',
       main: '#ff3366',
       dark: '#e62958',
+      footer: '#d9bfcc'
     },
     warning: {
       main: '#ffc071',
