@@ -4,6 +4,7 @@ import ProductValues from './modules/views/ProductValues';
 import AppAppBar from './modules/views/AppAppBar';
 import ProductDescription from './modules/views/ProductDescription';
 import withRoot from './modules/withRoot';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 function App() {
   return (
@@ -11,7 +12,12 @@ function App() {
       <header className="App-header">
         <React.Fragment>
           <AppAppBar />
-          <ProductDescription />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/home" element={<ProductDescription/>}>
+              </Route>
+            </Routes>
+          </BrowserRouter>
           <ProductValues />
           <AppFooter />
         </React.Fragment>
