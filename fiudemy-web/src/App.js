@@ -5,6 +5,7 @@ import AppAppBar from './modules/views/AppAppBar';
 import ProductDescription from './modules/views/ProductDescription';
 import withRoot from './modules/withRoot';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import StudentHome from './modules/views/StudentHome';
 
 function App() {
   return (
@@ -16,9 +17,12 @@ function App() {
             <Routes>
               <Route path="/home" element={<ProductDescription/>}>
               </Route>
+              <Route path="/student-home" element={<StudentHome/>}>
+              </Route>
             </Routes>
           </BrowserRouter>
-          <ProductValues />
+          {/* <ProductValues /> */} 
+          {/* comente ese productvalues pq no entiendo q hace ahi */}
           <AppFooter />
         </React.Fragment>
       </header>
