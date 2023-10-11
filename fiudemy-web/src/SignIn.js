@@ -21,7 +21,7 @@ function SignIn() {
         <div style={{background: '#fff', width: '%100', display: 'flex', justifyContent: 'center'}}>
             <div style={{marginTop: '10px', width: '500px', fontFamily: 'sans-serif', marginBottom: '10px'}}>
                 <div style={{borderLeft: 'none', float: 'none', padding: '0% 10%', width: '100%'}}>
-                    <label>Username</label>
+                    <label>Usuario</label>
                     <TextField
                         type="text"
                         variant="standard"
@@ -32,7 +32,7 @@ function SignIn() {
                         onChange={handleUsernameChange}
                         fullWidth
                     />
-                    <label>Password</label>
+                    <label>Contraseña</label>
                     <TextField
                         type="password"
                         variant="standard"

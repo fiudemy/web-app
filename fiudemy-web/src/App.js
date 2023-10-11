@@ -6,6 +6,7 @@ import ProductDescription from './modules/views/ProductDescription';
 import withRoot from './modules/withRoot';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
           <AppAppBar />
           <BrowserRouter>
             <Routes>
-              <Route path="/sign-up" element={<SignIn/>}/>
+              <Route path="/sign-in" element={<SignIn/>}/>
+              <Route path="/sign-up" element={<SignUp/>}/>
               <Route path="*" element={<ProductDescription/>}/>
             </Routes>
           </BrowserRouter>
