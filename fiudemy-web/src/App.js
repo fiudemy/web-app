@@ -5,6 +5,7 @@ import AppAppBar from './modules/views/AppAppBar';
 import ProductDescription from './modules/views/ProductDescription';
 import withRoot from './modules/withRoot';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import SignIn from "./SignIn";
 
 function App() {
   return (
@@ -14,11 +15,10 @@ function App() {
           <AppAppBar />
           <BrowserRouter>
             <Routes>
-              <Route path="/home" element={<ProductDescription/>}>
-              </Route>
+              <Route path="/sign-up" element={<SignIn/>}/>
+              <Route path="*" element={<ProductDescription/>}/>
             </Routes>
           </BrowserRouter>
-          <ProductValues />
           <AppFooter />
         </React.Fragment>
       </header>
