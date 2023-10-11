@@ -1,9 +1,11 @@
 import {useState} from "react";
 import {TextField} from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 
 function SignIn() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
@@ -15,6 +17,7 @@ function SignIn() {
 
     const handleSubmit = () => {
         console.log("login in")
+        navigate('/student-home');
     };
 
     return (
