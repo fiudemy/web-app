@@ -1,119 +1,78 @@
-/*import * as React from 'react';
-import { Field, Form, FormSpy } from 'react-final-form';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Typography from './modules/components/Typography';
-import AppAppBar from './modules/views/AppAppBar';
-
-
-import AppFooter from './modules/views/AppFooter';
-import AppForm from './modules/views/AppForm';
-import { email, required } from './modules/form/validation';
-import RFTextField from './modules/form/RFTextField';
-import FormButton from './modules/form/FormButton';
-import FormFeedback from './modules/form/FormFeedback';
-import withRoot from './modules/withRoot';
+import {useState} from "react";
+import {TextField} from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 
 function SignIn() {
-  const [sent, setSent] = React.useState(false);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-  const validate = (values) => {
-    const errors = required(['email', 'password'], values);
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value);
+    };
 
-    if (!errors.email) {
-      const emailError = email(values.email);
-      if (emailError) {
-        errors.email = emailError;
-      }
-    }
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+    };
 
-    return errors;
-  };
+    const handleSubmit = () => {
+        console.log("login in")
+        navigate('/student-home');
+    };
 
-  const handleSubmit = () => {
-    setSent(true);
-  };
-
-  return (
-    <React.Fragment>
-      <AppAppBar />
-      <AppForm>
-        <React.Fragment>
-          <Typography variant="h3" gutterBottom marked="center" align="center">
-            Sign In
-          </Typography>
-          <Typography variant="body2" align="center">
-            {'Not a member yet? '}
-            <Link
-              href="/premium-themes/onepirate/sign-up/"
-              align="center"
-              underline="always"
-            >
-              Sign Up here
-            </Link>
-          </Typography>
-        </React.Fragment>
-        <Form
-          onSubmit={handleSubmit}
-          subscription={{ submitting: true }}
-          validate={validate}
-        >
-          {({ handleSubmit: handleSubmit2, submitting }) => (
-            <Box component="form" onSubmit={handleSubmit2} noValidate sx={{ mt: 6 }}>
-              <Field
-                autoComplete="email"
-                autoFocus
-                component={RFTextField}
-                disabled={submitting || sent}
-                fullWidth
-                label="Email"
-                margin="normal"
-                name="email"
-                required
-                size="large"
-              />
-              <Field
-                fullWidth
-                size="large"
-                component={RFTextField}
-                disabled={submitting || sent}
-                required
-                name="password"
-                autoComplete="current-password"
-                label="Password"
-                type="password"
-                margin="normal"
-              />
-              <FormSpy subscription={{ submitError: true }}>
-                {({ submitError }) =>
-                  submitError ? (
-                    <FormFeedback error sx={{ mt: 2 }}>
-                      {submitError}
-                    </FormFeedback>
-                  ) : null
-                }
-              </FormSpy>
-              <FormButton
-                sx={{ mt: 3, mb: 2 }}
-                disabled={submitting || sent}
-                size="large"
-                color="secondary"
-                fullWidth
-              >
-                {submitting || sent ? 'In progress…' : 'Sign In'}
-              </FormButton>
-            </Box>
-          )}
-        </Form>
-        <Typography align="center">
-          <Link underline="always" href="/premium-themes/onepirate/forgot-password/">
-            Forgot password?
-          </Link>
-        </Typography>
-      </AppForm>
-      <AppFooter />
-    </React.Fragment>
-  );
+    return (
+        <div style={{background: '#fff', width: '%100', display: 'flex', justifyContent: 'center'}}>
+            <div style={{marginTop: '10px', width: '500px', fontFamily: 'sans-serif', marginBottom: '10px'}}>
+                <div style={{borderLeft: 'none', float: 'none', padding: '0% 10%', width: '100%'}}>
+                    <label>Usuario</label>
+                    <TextField
+                        type="text"
+                        variant="standard"
+                        inputProps={{
+                            style: { color: '#555555', fontWeight: 300, fontSize: '120%' },
+                        }}
+                        value={username}
+                        onChange={handleUsernameChange}
+                        fullWidth
+                    />
+                    <label>Contraseña</label>
+                    <TextField
+                        type="password"
+                        variant="standard"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        fullWidth
+                    />
+                    <button
+                        style={{display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            padding: '0 20px',
+                            width: '100%',
+                            height: '50px',
+                            backgroundColor: '#fd628a',
+                            borderRadius: '25px',
+                            transition: 'all 0.4s',
+                            border: '0px',
+                            marginTop: '20px',
+                            cursor: 'pointer',}}
+                        onClick={handleSubmit}
+                        title='LOGIN'
+                    >
+                        <div style={{
+                            fontFamily: 'sans-serif',
+                            fontWeight: '900',
+                            fontSize: '16px',
+                            color: '#fff',
+                            lineHeight: '1.2',
+                            textTransform: 'uppercase'}}>
+                            Iniciar sesión
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
 }
 
-export default withRoot(SignIn);*/
+export default SignIn;
