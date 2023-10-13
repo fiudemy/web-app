@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React, { useState } from 'react'; // Importa React y useState correctamente
+import React, { useState } from 'react';
 import SignIn from '../../SignIn';
 import SignUp from '../../SignUp';
 import Typography from '../components/Typography';
@@ -40,7 +40,7 @@ export default function ProfessorInit() {
               variant="h2"
               marked="center"
             >
-              Enseña con nosotros
+              Enseñá con nosotros
             </Typography>
             <Typography
               color="inherit"
@@ -58,8 +58,8 @@ export default function ProfessorInit() {
                 backgroundColor: '#fff',
                 padding: '20px',
                 borderRadius: '10px',
-                display: 'flex', // Utilizar display flex para centrar elementos internos
-                flexDirection: 'column', // Alineamiento vertical
+                display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
             }}
             >
@@ -72,13 +72,13 @@ export default function ProfessorInit() {
                 padding: '0 20px',
                 width: '75%',
                 height: '50px',
-                backgroundColor: '#fff', // Fondo blanco
+                backgroundColor: '#fff',
                 borderRadius: '25px',
                 transition: 'all 0.4s',
-                border: '2px solid #fd628a', // Contorno rosa
+                border: '2px solid #fd628a',
                 marginTop: '20px',
                 cursor: 'pointer',
-                color: '#000', // Texto negro
+                color: '#000',
                 }}
                 onClick={toggleSignIn}
                 title='TOGGLE'
@@ -92,7 +92,7 @@ export default function ProfessorInit() {
                     textTransform: 'uppercase',
                 }}
                 >
-                {showSignIn ? 'Registrarse' : 'Iniciar Sesion'}
+                {showSignIn ? 'Registrarse' : 'Iniciar Sesión'}
                 </div>
             </button>
             </Box>
