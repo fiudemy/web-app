@@ -1,5 +1,5 @@
-import {useState} from "react";
-import {TextField} from "@mui/material";
+import { TextField } from "@mui/material";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 function SignIn() {
@@ -24,7 +24,7 @@ function SignIn() {
         <div style={{background: '#fff', width: '%100', display: 'flex', justifyContent: 'center'}}>
             <div style={{marginTop: '10px', width: '500px', fontFamily: 'sans-serif', marginBottom: '10px'}}>
                 <div style={{borderLeft: 'none', float: 'none', padding: '0% 10%', width: '100%'}}>
-                    <label>Usuario</label>
+                    <label style={{ color: '#000' }}>Usuario</label>
                     <TextField
                         type="text"
                         variant="standard"
@@ -35,7 +35,7 @@ function SignIn() {
                         onChange={handleUsernameChange}
                         fullWidth
                     />
-                    <label>Contraseña</label>
+                    <label style={{ color: '#000' }}>Contraseña</label>
                     <TextField
                         type="password"
                         variant="standard"
