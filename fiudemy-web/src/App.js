@@ -1,12 +1,13 @@
 import * as React from 'react';
-import AppFooter from './modules/views/AppFooter';
-import AppAppBar from './modules/views/AppAppBar';
-import ProductDescription from './modules/views/ProductDescription';
-import withRoot from './modules/withRoot';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import StudentHome from './modules/views/StudentHome';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import AppAppBar from './modules/views/AppAppBar';
+import AppFooter from './modules/views/AppFooter';
+import ProductDescription from './modules/views/ProductDescription';
+import ProfessorInit from './modules/views/ProfessorInit';
+import StudentHome from './modules/views/StudentHome';
+import withRoot from './modules/withRoot';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               <Route path="/sign-in" element={<SignIn/>}/>
               <Route path="/sign-up" element={<SignUp/>}/>
               <Route path="/student-home" element={<StudentHome/>}/>
+              <Route path="/professor" element={<ProfessorInit/>}/>
               <Route path="*" element={<ProductDescription/>}/>
             </Routes>
           </BrowserRouter>

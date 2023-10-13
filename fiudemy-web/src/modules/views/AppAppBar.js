@@ -1,6 +1,7 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button'; // Importamos el componente Button
 import Link from '@mui/material/Link';
+import * as React from 'react';
 import AppBar from '../components/AppBar';
 import Toolbar from '../components/Toolbar';
 
@@ -15,7 +16,11 @@ function AppAppBar() {
     <div>
       <AppBar position="fixed">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Box sx={{ flex: 1 }} />
+          <Box sx={{flex:1, display : 'flex', alignItems : 'center'}}>
+            <Button variant="outlined" color="secondary" sx={{ fontSize: 16 }}>
+              {'Enseña en Fiudemy'}
+            </Button>
+          </Box>
           <Link
             variant="h6"
             underline="none"
@@ -41,7 +46,7 @@ function AppAppBar() {
               href="/sign-up/"
               sx={{ ...rightLink, color: 'secondary.main' }}
             >
-              {'Registrate'}
+              {'Regístrate'}
             </Link>
           </Box>
         </Toolbar>
