@@ -63,8 +63,11 @@ export default function ProfessorInit() {
                 alignItems: 'center',
             }}
             >
-            {showSignIn ? <SignIn /> : <SignUp />}
-            <button
+            {showSignIn ? <SignIn route="/professor-home"/> : <SignUp route="/professor-home" />}
+            <label style={{ color: '#000', opacity : 0.6 , cursor : 'pointer' , textDecoration : 'underline'}} onClick={toggleSignIn} > 
+              {showSignIn ? '¿Todavía no tenés una cuenta?' : '¿Ya tenés una cuenta?' }
+               </label>
+            {/* <button
                 style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -94,7 +97,7 @@ export default function ProfessorInit() {
                 >
                 {showSignIn ? 'Registrarse' : 'Iniciar Sesión'}
                 </div>
-            </button>
+            </button> */}
             </Box>
         </Box>
       </ProductHeroLayout>

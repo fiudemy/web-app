@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
-function SignIn() {
+function SignIn({ route }) { // Añadimos una prop llamada 'route'
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -17,13 +17,13 @@ function SignIn() {
 
     const handleSubmit = () => {
         console.log("login in")
-        navigate('/student-home');
+        navigate(route); // Usamos la prop 'route' en lugar de '/student-home'
     };
 
     return (
-        <div style={{background: '#fff', width: '%100', display: 'flex', justifyContent: 'center'}}>
-            <div style={{marginTop: '10px', width: '500px', fontFamily: 'sans-serif', marginBottom: '10px'}}>
-                <div style={{borderLeft: 'none', float: 'none', padding: '0% 10%', width: '100%'}}>
+        <div style={{ background: '#fff', width: '%100', display: 'flex', justifyContent: 'center' }}>
+            <div style={{ marginTop: '10px', width: '500px', fontFamily: 'sans-serif', marginBottom: '10px' }}>
+                <div style={{ borderLeft: 'none', float: 'none', padding: '0% 10%', width: '100%' }}>
                     <label style={{ color: '#000' }}>Usuario</label>
                     <TextField
                         type="text"
@@ -44,7 +44,8 @@ function SignIn() {
                         fullWidth
                     />
                     <button
-                        style={{display: 'flex',
+                        style={{
+                            display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
                             padding: '0 20px',
@@ -55,7 +56,8 @@ function SignIn() {
                             transition: 'all 0.4s',
                             border: '0px',
                             marginTop: '20px',
-                            cursor: 'pointer',}}
+                            cursor: 'pointer',
+                        }}
                         onClick={handleSubmit}
                         title='LOGIN'
                     >
@@ -65,7 +67,8 @@ function SignIn() {
                             fontSize: '16px',
                             color: '#fff',
                             lineHeight: '1.2',
-                            textTransform: 'uppercase'}}>
+                            textTransform: 'uppercase'
+                        }}>
                             Iniciar sesión
                         </div>
                     </button>
