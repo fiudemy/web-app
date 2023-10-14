@@ -1,7 +1,10 @@
-import { Box, Button, TextField } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
-import Typography from '../components/Typography';
+import CourseModal from '../components/ModalCourse';
 import { CoursesGrid } from '../components/courses/CoursesGrid';
 
 export default function TeacherHome() {
@@ -17,12 +20,21 @@ export default function TeacherHome() {
   ]);
 
   const [newCourse, setNewCourse] = useState({ name: '', description: '' });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddCourse = () => {
     if (newCourse.name && newCourse.description) {
       setCursos([...cursos, newCourse]);
       setNewCourse({ name: '', description: '' });
     }
+  };
+  
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -39,27 +51,30 @@ export default function TeacherHome() {
           Añadir nuevo curso
         </Typography>
         <Paper sx={{ p: 2, maxWidth: 350 }}>
-          <TextField
-            label="Nombre del curso"
-            value={newCourse.name}
-            onChange={(e) => setNewCourse({ ...newCourse, name: e.target.value })}
-            fullWidth
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Descripción del curso"
-            value={newCourse.description}
-            onChange={(e) => setNewCourse({ ...newCourse, description: e.target.value })}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ mb: 2 }}
-          />
-          <Button variant="contained" color="primary" onClick={handleAddCourse}>
-            Añadir curso
-          </Button>
+        <Button
+            variant="contained"
+            color="primary"
+            onClick={openModal}
+            style={{
+                borderRadius: '50%',
+                width: '50px',
+                height: '50px',
+                minWidth: 0,
+                padding: 0,
+            }}
+            >
+                <AddIcon />
+            </Button>
         </Paper>
       </Box>
+
+      <CourseModal
+        open={isModalOpen}
+        onClose={closeModal}
+        onAddCourse={handleAddCourse}
+        newCourse={newCourse}
+        setNewCourse={setNewCourse}
+      />
     </>
   );
 }
