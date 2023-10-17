@@ -6,7 +6,7 @@ import { Box } from '@mui/material';
 import { FormControl, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 
-
+//estos cursos habria q fetchearlos de la base de cursos
 const cursos = [
   {
     name : 'Matematicas',
