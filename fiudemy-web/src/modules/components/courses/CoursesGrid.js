@@ -5,7 +5,7 @@ import Typography from '../Typography';
 
 const CourseHomeBox = ({course}) => {
   return (
-    <Paper sx={{ p: 2,  maxWidth: 250 }}>
+    <Paper sx={{ p: 2,  maxWidth: 250,  boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)'}}>
       <Typography variant="h6"> {course.name} </Typography>
       <Typography>{course.description}</Typography>
     </Paper>
