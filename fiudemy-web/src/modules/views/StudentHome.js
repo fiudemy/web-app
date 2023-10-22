@@ -23,6 +23,23 @@ const cursos = [
     name: 'Fisica',
     description : 'Aprende fisica de una forma facil y divertida',
   },
+  {
+    name : 'Matematicas',
+    description : 'Aprende matematicas de una forma facil y divertida',
+
+  },
+  {
+    name: 'Fisica',
+    description : 'Aprende fisica de una forma facil y divertida',
+  },
+  {
+    name: 'Fisica',
+    description : 'Aprende fisica de una forma facil y divertida',
+  },
+  {
+    name: 'Fisica',
+    description : 'Aprende fisica de una forma facil y divertida',
+  },
 ]
 
 export const CourseHomeBox = ({course}) => {
@@ -46,7 +63,7 @@ export default function StudentHome() {
 
       <Box sx={{ marginBottom: '300px' }}>
       <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
-        Más cursos disponibles
+        Descubre cursos destacados
       </Typography>
       <CoursesGrid courses={cursos} />
       </Box>
