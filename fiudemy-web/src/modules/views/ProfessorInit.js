@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import React, { useState } from 'react';
-import SignIn from '../../SignIn';
+import SignIn from './SignIn/SignInScreen';
 import SignUp from '../../SignUp';
 import Typography from '../components/Typography';
 import ProductHeroLayout from './ProductDescriptionLayout';

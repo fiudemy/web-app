@@ -3,6 +3,8 @@ import Button from '../components/Button';
 import Typography from '../components/Typography';
 import ProductHeroLayout from './ProductDescriptionLayout';
 import ProductValues from "./ProductValues";
+import AppFooter from './AppFooter';
+import AppAppBar from './AppAppBar';
 
 const backgroundImage =
   'https://img.freepik.com/premium-photo/abstract-background-images-wallpaper-ai-generated_643360-43133.jpg';
@@ -10,6 +12,7 @@ const backgroundImage =
 export default function ProductHero() {
   return (
       <>
+        <AppAppBar />
         <ProductHeroLayout
             sxBackground={{
               backgroundImage: `url(${backgroundImage})`,
@@ -46,6 +49,7 @@ export default function ProductHero() {
           </Button>
         </ProductHeroLayout>
         <ProductValues />
+        <AppFooter />
       </>
   );
 }

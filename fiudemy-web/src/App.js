@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
-import AppAppBar from './modules/views/AppAppBar';
-import AppFooter from './modules/views/AppFooter';
+import SignIn from "./modules/views/SignIn/SignInScreen";
+import SignUp from "./modules/views/SignUp/SignUpScreen";
 import ProductDescription from './modules/views/ProductDescription';
 import ProfessorHome from './modules/views/ProfessorHome';
 import ProfessorInit from './modules/views/ProfessorInit';
@@ -16,7 +14,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <React.Fragment>
-          <AppAppBar />
           <BrowserRouter>
             <Routes>
               <Route path="/sign-in" element={<SignIn route="/student-home" />}/>
@@ -28,7 +25,6 @@ function App() {
               <Route path="*" element={<ProductDescription/>}/>
             </Routes>
           </BrowserRouter>
-          <AppFooter />
         </React.Fragment>
       </header>
     </div>
