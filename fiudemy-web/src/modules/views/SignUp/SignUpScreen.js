@@ -13,18 +13,23 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import AppAppBar from '../AppAppBar';
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [isProfessor, setIsProfessor] = React.useState(false); // Estado del checkbox
+  const [isProfessor, setIsProfessor] = useState(false);
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    setName(data.get('firstName'));
+    setLastName(data.get('lastName'));
+    setEmail(data.get('email'));
+    setPassword(data.get('password'));
     if (isProfessor) {
       navigate("/professor-home");
     } else {

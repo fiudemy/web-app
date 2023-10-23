@@ -4,7 +4,6 @@ import SignIn from "./modules/views/SignIn/SignInScreen";
 import SignUp from "./modules/views/SignUp/SignUpScreen";
 import ProductDescription from './modules/views/ProductDescription';
 import ProfessorHome from './modules/views/ProfessorHome';
-import ProfessorInit from './modules/views/ProfessorInit';
 import StudentHome from './modules/views/StudentHome';
 import MarketPlace from './modules/views/MarketPlace';
 import withRoot from './modules/withRoot';
@@ -19,9 +18,8 @@ function App() {
               <Route path="/sign-in" element={<SignIn route="/student-home" />}/>
               <Route path="/sign-up" element={<SignUp/>}/>
               <Route path="/student-home" element={<StudentHome/>}/>
-              <Route path="/marketplace" element={<MarketPlace/>}/>
-              <Route path="/professor" element={<ProfessorInit/>}/>
               <Route path="/professor-home" element={<ProfessorHome/>}/>
+              <Route path="/marketplace" element={<MarketPlace/>}/>
               <Route path="*" element={<ProductDescription/>}/>
             </Routes>
           </BrowserRouter>

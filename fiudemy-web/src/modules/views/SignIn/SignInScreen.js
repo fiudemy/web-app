@@ -11,17 +11,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import AppAppBar from '../AppAppBar';
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function SignIn({route}) {
   const navigate = useNavigate();
-  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    setEmail(data.get('email'));
+    setPassword(data.get('password'));
     navigate(route);
   };
 
