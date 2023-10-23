@@ -3,7 +3,6 @@ import Button from '../components/Button';
 import Typography from '../components/Typography';
 import ProductHeroLayout from './ProductDescriptionLayout';
 import ProductValues from "./ProductValues";
-import AppFooter from './AppFooter';
 import AppAppBar from './AppAppBar';
 
 const backgroundImage =
@@ -49,7 +48,6 @@ export default function ProductHero() {
           </Button>
         </ProductHeroLayout>
         <ProductValues />
-        <AppFooter />
       </>
   );
 }
