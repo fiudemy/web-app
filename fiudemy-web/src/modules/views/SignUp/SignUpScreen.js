@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import AppAppBar from '../AppAppBar';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {createUser} from "../../../services/axios_utils";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -23,13 +24,19 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    setName(data.get('firstName'));
-    setLastName(data.get('lastName'));
-    setEmail(data.get('email'));
-    setPassword(data.get('password'));
+    const role = isProfessor ? 'professor' : 'student';
+    const reqData = {
+      firstName: event.currentTarget['firstName'].value,
+      lastName: event.currentTarget['lastName'].value,
+      email: event.currentTarget['email'].value,
+      password: event.currentTarget['password'].value,
+      role,
+    };
+    console.log(reqData);
+    await createUser(reqData);
     if (isProfessor) {
       navigate("/professor-home");
     } else {
