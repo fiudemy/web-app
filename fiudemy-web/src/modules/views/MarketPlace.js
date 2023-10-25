@@ -6,10 +6,11 @@ import { FormControl, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import AppAppBar from './AppAppBar';
+import { useNavigate } from 'react-router-dom';
 
 
 const categories = [
-  'Matematicas', 'Fisica', 'Quimica', 'Biologia', 'Programacion'
+  'Maths', 'Physics', 'Chemistry', 'Biology', 'Programming'
 ]
 
 export const CourseMarketBox = ({course}) => {
@@ -26,7 +27,7 @@ export const CourseMarketBox = ({course}) => {
   return (
     <>
       <ButtonBase onClick={handleOpen}>
-        <Paper sx={{ p: 2,  maxWidth: 250,  boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)', cursor: 'pointer', textAlign: 'left'}}>
+        <Paper sx={{ p: 2, mb: 4, mr: 1,  width: 250, height: 150,  boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)', cursor: 'pointer', textAlign: 'left'}}>
           <Typography variant="h6"> {course.title} </Typography>
           <Typography>{course.description}</Typography>
         </Paper>
@@ -41,7 +42,30 @@ export const CourseMarketBox = ({course}) => {
   );
 }
 
+
+
 const MarketPopupBody = ({course}) => {
+  const navigate = useNavigate();
+
+  const handlePay = (course) => {
+  
+    const paymentData = {
+      user_id: '65233646667fb42d32918fc7', // replace with actual user ID
+      course_id: course.id,
+    };
+    fetch('https://fiudemy.onrender.com/payments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(paymentData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        navigate('/student-home')
+      })
+      .catch(error => console.error(error));
+  };
   return (
     <>
    <DialogTitle>{course.name}</DialogTitle>
@@ -58,7 +82,7 @@ const MarketPopupBody = ({course}) => {
         <Typography>{course.description}</Typography>
         <Typography variant="h6" sx={{ mt:6 }}>Duración</Typography>
         <Typography>{course.duration + " horas"}</Typography>
-        <Button variant="contained" color="success" sx={{ mt: 6, width: '40%', color: '#fff' }}>
+        <Button variant="contained" color="success" sx={{ mt: 6, width: '40%', color: '#fff' }} onClick={() => handlePay(course)}>
           Pagar
         </Button>
       </DialogContent>
@@ -69,7 +93,6 @@ const MarketPopupBody = ({course}) => {
 
 const MarketCoursesGrid = ({courses}) => {
   return (
-
       <Grid container spacing={2} sx={{ mt: 2, ml: 3, mb: 6 }}> 
         {courses.map((course, index) => (
           <Grid item key={index} >
@@ -77,7 +100,6 @@ const MarketCoursesGrid = ({courses}) => {
           </Grid>
         ))}
       </Grid>
-    
   );
 }
 

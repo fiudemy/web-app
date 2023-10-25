@@ -14,7 +14,6 @@ const CourseHomeBox = ({course}) => {
 
 export const CoursesGrid = ({courses}) => {
   return (
-
       <Grid container spacing={2} sx={{ mt: 2, ml: 3, mb: 6 }}> 
         {courses.map((course, index) => (
           <Grid item key={index} >

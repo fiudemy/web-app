@@ -11,31 +11,17 @@ import AppAppBar from './AppAppBar';
 export default function StudentHome() {
   const [courses, setCourses] = useState([]);
   const [hotCourses, setHotCourses] = useState([]);
-  // useEffect(() => {
-  //   fetch('https://fiudemy.onrender.com/courses')
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       setCourses(data.results);
-  //     })
-  //     .catch(error => console.error(error));
-  // }, []);
-  // const userId = localStorage.getItem('userId');
   const userId = '65233646667fb42d32918fc7';
+  console.log('courses', courses);
   useEffect(() => {
-    fetch(`https://fiudemy.onrender.com/payments?user_id=${userId}`)
+    fetch(`https://fiudemy.onrender.com/courses?user_id=${userId}`)
       .then(response => response.json())
       .then(data => {
-        const courseIds = data.results.map(payment => payment.course_id);
-        console.log(courseIds);
-        fetch(`https://fiudemy.onrender.com/courses?ids=${courseIds.join(',')}`)
-          .then(response => response.json())
-          .then(data => {
-            setCourses(data.results);
-          })
-          .catch(error => console.error(error));
+        setCourses(data.results);
       })
       .catch(error => console.error(error));
   }, [userId]);
+ 
   useEffect(() => {
     fetch( 'https://fiudemy.onrender.com/courses?sort_by=purchase_count&ascending=false&limit=10')
       .then(response => response.json())
