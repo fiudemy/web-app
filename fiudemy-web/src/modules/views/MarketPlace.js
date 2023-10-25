@@ -4,69 +4,13 @@ import Paper from '@mui/material/Paper';
 import { Box, Button, ButtonBase, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { FormControl, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import AppAppBar from './AppAppBar';
+import { useNavigate } from 'react-router-dom';
 
-//estos cursos habria q fetchearlos de la base de cursos
-const cursos = [
-  {
-    name : 'Matematicas',
-    description : 'Aprende matematicas de una forma facil y divertida',
-    category : 'Matematicas',
-    duration : 720
-
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-
-  },
-  {
-    name : 'Matematicas',
-    description : 'Aprende matematicas de una forma facil y divertida',
-    category : 'Matematicas',
-    duration : 720
-
-
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-
-  },
-]
 
 const categories = [
-  'Matematicas', 'Fisica', 'Quimica', 'Biologia', 'Programacion'
+  'Maths', 'Physics', 'Chemistry', 'Biology', 'Programming'
 ]
 
 export const CourseMarketBox = ({course}) => {
@@ -83,8 +27,8 @@ export const CourseMarketBox = ({course}) => {
   return (
     <>
       <ButtonBase onClick={handleOpen}>
-        <Paper sx={{ p: 2,  maxWidth: 250,  boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)', cursor: 'pointer', textAlign: 'left'}}>
-          <Typography variant="h6"> {course.name} </Typography>
+        <Paper sx={{ p: 2, mb: 4, mr: 1,  width: 250, height: 150,  boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)', cursor: 'pointer', textAlign: 'left'}}>
+          <Typography variant="h6"> {course.title} </Typography>
           <Typography>{course.description}</Typography>
         </Paper>
       </ButtonBase>
@@ -98,7 +42,30 @@ export const CourseMarketBox = ({course}) => {
   );
 }
 
+
+
 const MarketPopupBody = ({course}) => {
+  const navigate = useNavigate();
+
+  const handlePay = (course) => {
+  
+    const paymentData = {
+      user_id: '65233646667fb42d32918fc7', // replace with actual user ID
+      course_id: course.id,
+    };
+    fetch('https://fiudemy.onrender.com/payments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(paymentData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        navigate('/student-home')
+      })
+      .catch(error => console.error(error));
+  };
   return (
     <>
    <DialogTitle>{course.name}</DialogTitle>
@@ -115,7 +82,7 @@ const MarketPopupBody = ({course}) => {
         <Typography>{course.description}</Typography>
         <Typography variant="h6" sx={{ mt:6 }}>Duración</Typography>
         <Typography>{course.duration + " horas"}</Typography>
-        <Button variant="contained" color="success" sx={{ mt: 6, width: '40%', color: '#fff' }}>
+        <Button variant="contained" color="success" sx={{ mt: 6, width: '40%', color: '#fff' }} onClick={() => handlePay(course)}>
           Pagar
         </Button>
       </DialogContent>
@@ -126,7 +93,6 @@ const MarketPopupBody = ({course}) => {
 
 const MarketCoursesGrid = ({courses}) => {
   return (
-
       <Grid container spacing={2} sx={{ mt: 2, ml: 3, mb: 6 }}> 
         {courses.map((course, index) => (
           <Grid item key={index} >
@@ -134,21 +100,28 @@ const MarketCoursesGrid = ({courses}) => {
           </Grid>
         ))}
       </Grid>
-    
   );
 }
 
 export default function MarketPlace() {
   const [selectedCategory, setSelectedCategory] = useState(''); // Set the default value to an empty string
-
+  const [courses, setCourses] = useState([]);
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
   };
-
-  const filteredCourses = selectedCategory ? cursos.filter(course => course.category === selectedCategory) : cursos;
+  useEffect(() => {
+    fetch('https://fiudemy.onrender.com/courses')
+      .then(response => response.json())
+      .then(data => {
+        setCourses(data.results);
+      })
+      .catch(error => console.error(error));
+  }, []);
+  const filteredCourses = selectedCategory ? courses.filter(course => course.category === selectedCategory) : courses;
 
   return (
    <>
+      <AppAppBar showsSignInOptions={false} />
       <Box sx={{ marginBottom: '900px', marginTop: '30px' }}>
       <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
         Marketplace
