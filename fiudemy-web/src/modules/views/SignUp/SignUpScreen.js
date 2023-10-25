@@ -32,11 +32,7 @@ export default function SignUp() {
     };
     console.log(reqData);
     await createUser(reqData);
-    if (isProfessor) {
-      navigate("/professor-home");
-    } else {
-      navigate("/student-home");
-    }
+    navigate("/sign-in");
   };
 
   return (
