@@ -5,8 +5,9 @@ import { Box, Button, ButtonBase, CardMedia, Dialog, DialogActions, DialogConten
 import { FormControl, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import AppAppBar from './AppAppBar';
 import { useNavigate } from 'react-router-dom';
+import { AppAppBar } from './AppAppBar';
+import { StudentButtons } from './LinkButtons/StudentButtons';
 
 
 const categories = [
@@ -121,7 +122,7 @@ export default function MarketPlace() {
 
   return (
    <>
-      <AppAppBar showsSignInOptions={false} />
+      <AppAppBar linkButtons={StudentButtons} />
       <Box sx={{ marginBottom: '900px', marginTop: '30px' }}>
       <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
         Marketplace

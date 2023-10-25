@@ -11,9 +11,10 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import AppAppBar from '../AppAppBar';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { AppAppBar } from '../AppAppBar';
+import { LoginButtons } from '../LinkButtons/LoginButtons';
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function SignUp() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <AppAppBar />
+      <AppAppBar linkButtons={<LoginButtons />} />
       <Box
         sx={{
           marginTop: 8,

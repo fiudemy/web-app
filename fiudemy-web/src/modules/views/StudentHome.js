@@ -4,7 +4,7 @@ import { CoursesGrid } from '../components/courses/CoursesGrid';
 import { Box } from '@mui/material';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import AppAppBar from './AppAppBar';
+import { AppAppBar } from './AppAppBar';
 
 
 

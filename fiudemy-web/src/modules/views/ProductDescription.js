@@ -3,15 +3,16 @@ import Button from '../components/Button';
 import Typography from '../components/Typography';
 import ProductHeroLayout from './ProductDescriptionLayout';
 import ProductValues from "./ProductValues";
-import AppAppBar from './AppAppBar';
+import { LoginButtons } from './LinkButtons/LoginButtons';
+import { AppAppBar } from './AppAppBar';
 
 const backgroundImage =
   'https://img.freepik.com/premium-photo/abstract-background-images-wallpaper-ai-generated_643360-43133.jpg';
 
-export default function ProductHero() {
+export const ProductDescription = () => {
   return (
       <>
-        <AppAppBar />
+        <AppAppBar linkButtons={LoginButtons} />
         <ProductHeroLayout
             sxBackground={{
               backgroundImage: `url(${backgroundImage})`,

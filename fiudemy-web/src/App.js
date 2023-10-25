@@ -2,11 +2,11 @@ import * as React from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignIn from "./modules/views/SignIn/SignInScreen";
 import SignUp from "./modules/views/SignUp/SignUpScreen";
-import ProductDescription from './modules/views/ProductDescription';
 import ProfessorHome from './modules/views/ProfessorHome';
 import StudentHome from './modules/views/StudentHome';
 import MarketPlace from './modules/views/MarketPlace';
 import withRoot from './modules/withRoot';
+import { ProductDescription } from './modules/views/ProductDescription';
 
 function App() {
   return (
