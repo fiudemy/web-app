@@ -35,7 +35,14 @@ export default function SignUp() {
       password: event.currentTarget['password'].value,
       role,
     };
-    console.log(reqData);
+
+    if (isProfessor) {
+      localStorage.setItem('teacherData', JSON.stringify(reqData));
+    }
+
+    console.log(reqData);  if (isProfessor) {
+    localStorage.setItem('teacherData', JSON.stringify(reqData));
+  }
     await createUser(reqData);
     if (isProfessor) {
       navigate("/professor-home");

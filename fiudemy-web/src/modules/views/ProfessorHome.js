@@ -3,29 +3,54 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
+import { React, useEffect, useState } from 'react';
+import { createCourse, getCourses } from '../../services/axios_utils';
 import CourseModal from '../components/ModalCourse';
 import { CoursesGrid } from '../components/courses/CoursesGrid';
 
 export default function TeacherHome() {
-  const [cursos, setCursos] = useState([
-    {
-      name: 'Matemáticas',
-      description: 'Aprende matemáticas de una forma fácil y divertida',
-    },
-    {
-      name: 'Física',
-      description: 'Aprende física de una forma fácil y divertida',
-    },
-  ]);
-
+  const [cursos, setCursos] = useState([]);
   const [newCourse, setNewCourse] = useState({ name: '', description: '' });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [teacherData, setTeacherData] = useState();
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await getCourses();
+        if (Array.isArray(response.results)) {
+          const courses = response.results;
+          const teacherDataString = localStorage.getItem('teacherData');
+          if (teacherDataString) {
+            const teacherData = JSON.parse(teacherDataString);
+    
+            const filteredCourses = courses
+              .filter(course => course.teacher === teacherData.email)
+              .map(filteredCourse => ({
+                name: filteredCourse.title,
+                description: filteredCourse.description,
+              }));
+    
+            setCursos(filteredCourses);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const handleAddCourse = () => {
+    const datateacher = JSON.parse(localStorage.getItem('teacherData'))
     if (newCourse.name && newCourse.description) {
-      setCursos([...cursos, newCourse]);
-      setNewCourse({ name: '', description: '' });
+      createCourse({
+        title: newCourse.name,
+        description: newCourse.description,
+        teacher: datateacher.email,
+        category: 'other',
+      });
     }
   };
   
