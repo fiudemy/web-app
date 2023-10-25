@@ -11,7 +11,7 @@ const rightLink = {
   ml: 3,
 };
 
-function AppAppBar() {
+function AppAppBar({ showsSignInOptions = true }) {
   return (
     <div>
       <AppBar position="fixed">
@@ -27,6 +27,7 @@ function AppAppBar() {
           >
             {'FIUDEMY'}
           </Link>
+          {showsSignInOptions && (
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
             <Link
               color="inherit"
@@ -46,6 +47,7 @@ function AppAppBar() {
               {'Regístrate'}
             </Link>
           </Box>
+          )}
         </Toolbar>
       </AppBar>
       <Toolbar />

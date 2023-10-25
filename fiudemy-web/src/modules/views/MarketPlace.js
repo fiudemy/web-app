@@ -4,66 +4,9 @@ import Paper from '@mui/material/Paper';
 import { Box, Button, ButtonBase, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { FormControl, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import AppAppBar from './AppAppBar';
 
-//estos cursos habria q fetchearlos de la base de cursos
-const cursos = [
-  {
-    name : 'Matematicas',
-    description : 'Aprende matematicas de una forma facil y divertida',
-    category : 'Matematicas',
-    duration : 720
-
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-
-  },
-  {
-    name : 'Matematicas',
-    description : 'Aprende matematicas de una forma facil y divertida',
-    category : 'Matematicas',
-    duration : 720
-
-
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-
-  },
-  {
-    name: 'Fisica',
-    description : 'Aprende fisica de una forma facil y divertida',
-    category : 'Fisica',
-    duration : 720
-
-  },
-]
 
 const categories = [
   'Matematicas', 'Fisica', 'Quimica', 'Biologia', 'Programacion'
@@ -84,7 +27,7 @@ export const CourseMarketBox = ({course}) => {
     <>
       <ButtonBase onClick={handleOpen}>
         <Paper sx={{ p: 2,  maxWidth: 250,  boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)', cursor: 'pointer', textAlign: 'left'}}>
-          <Typography variant="h6"> {course.name} </Typography>
+          <Typography variant="h6"> {course.title} </Typography>
           <Typography>{course.description}</Typography>
         </Paper>
       </ButtonBase>
@@ -140,15 +83,23 @@ const MarketCoursesGrid = ({courses}) => {
 
 export default function MarketPlace() {
   const [selectedCategory, setSelectedCategory] = useState(''); // Set the default value to an empty string
-
+  const [courses, setCourses] = useState([]);
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
   };
-
-  const filteredCourses = selectedCategory ? cursos.filter(course => course.category === selectedCategory) : cursos;
+  useEffect(() => {
+    fetch('https://fiudemy.onrender.com/courses')
+      .then(response => response.json())
+      .then(data => {
+        setCourses(data.results);
+      })
+      .catch(error => console.error(error));
+  }, []);
+  const filteredCourses = selectedCategory ? courses.filter(course => course.category === selectedCategory) : courses;
 
   return (
    <>
+      <AppAppBar showsSignInOptions={false} />
       <Box sx={{ marginBottom: '900px', marginTop: '30px' }}>
       <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
         Marketplace
