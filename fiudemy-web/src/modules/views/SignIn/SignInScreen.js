@@ -19,9 +19,11 @@ export default function SignIn() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const userData = await logIn(event.currentTarget['email'].value);
+    const email = event.currentTarget['email'].value;
+    const userData = await logIn(email);
     const userId = userData[0];
     const userRole = userData[1];
+    localStorage.setItem("email", email);
     localStorage.setItem("userId", userId);
     localStorage.setItem("userRole", userRole);
     if (userRole === "student") {
