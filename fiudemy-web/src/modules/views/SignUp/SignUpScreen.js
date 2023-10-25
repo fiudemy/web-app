@@ -19,15 +19,10 @@ import {createUser} from "../../../services/axios_utils";
 export default function SignUp() {
   const navigate = useNavigate();
   const [isProfessor, setIsProfessor] = useState(false);
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const role = isProfessor ? 'professor' : 'student';
+    const role = isProfessor ? 'teacher' : 'student';
     const reqData = {
       firstName: event.currentTarget['firstName'].value,
       lastName: event.currentTarget['lastName'].value,

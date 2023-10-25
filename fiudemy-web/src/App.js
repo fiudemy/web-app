@@ -15,7 +15,7 @@ function App() {
         <React.Fragment>
           <BrowserRouter>
             <Routes>
-              <Route path="/sign-in" element={<SignIn route="/student-home" />}/>
+              <Route path="/sign-in" element={<SignIn/>}/>
               <Route path="/sign-up" element={<SignUp/>}/>
               <Route path="/student-home" element={<StudentHome/>}/>
               <Route path="/professor-home" element={<ProfessorHome/>}/>

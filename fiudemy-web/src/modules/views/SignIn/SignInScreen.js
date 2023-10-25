@@ -12,18 +12,23 @@ import Container from '@mui/material/Container';
 import AppAppBar from '../AppAppBar';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {createUser, logIn} from "../../../services/axios_utils";
 
-export default function SignIn({route}) {
+export default function SignIn() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    setEmail(data.get('email'));
-    setPassword(data.get('password'));
-    navigate(route);
+    const userData = await logIn(event.currentTarget['email'].value);
+    const userId = userData[0];
+    const userRole = userData[1];
+    localStorage.setItem("userId", userId);
+    localStorage.setItem("userRole", userRole);
+    if (userRole === "student") {
+        navigate("/student-home");
+    } else {
+        navigate("/professor-home");
+    }
   };
 
   return (
