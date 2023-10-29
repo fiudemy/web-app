@@ -1,40 +1,38 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import AppAppBar from '../AppAppBar';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {createUser} from "../../../services/axios_utils";
 
 export default function SignUp() {
   const navigate = useNavigate();
   const [isProfessor, setIsProfessor] = useState(false);
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    setName(data.get('firstName'));
-    setLastName(data.get('lastName'));
-    setEmail(data.get('email'));
-    setPassword(data.get('password'));
-    if (isProfessor) {
-      navigate("/professor-home");
-    } else {
-      navigate("/student-home");
-    }
+    const role = isProfessor ? 'teacher' : 'student';
+    const reqData = {
+      firstName: event.currentTarget['firstName'].value,
+      lastName: event.currentTarget['lastName'].value,
+      email: event.currentTarget['email'].value,
+      password: event.currentTarget['password'].value,
+      role,
+    };
+    console.log(reqData);
+    await createUser(reqData);
+    navigate("/sign-in");
   };
 
   return (
