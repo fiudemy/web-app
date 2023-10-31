@@ -25,10 +25,10 @@ export default function TeacherHome() {
             const filteredCourses = courses
               .filter(course => course.teacher === teacherEmail)
               .map(filteredCourse => ({
-                name: filteredCourse.title,
+                title: filteredCourse.title,
                 description: filteredCourse.description,
               }));
-    
+            console.log(filteredCourses)
             setCursos(filteredCourses);
           }
         }
