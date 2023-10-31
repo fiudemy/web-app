@@ -3,11 +3,14 @@ import Paper from '@mui/material/Paper';
 import * as React from 'react';
 import Typography from '../Typography';
 
-const CourseHomeBox = ({course}) => {
+const CourseHomeBox = ({course, isStudent}) => {
   return (
     <Paper sx={{ p: 2, mb: 4, mr: 1,  width: 250, height: 150,  boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)'}}>
       <Typography variant="h6"> {course.title} </Typography>
       <Typography>{course.description}</Typography>
+      {isStudent === false /*&& course.active === true*/ && (
+        <Typography style={{ marginTop: 'auto' }} sx={{ color: 'rgba(0, 0, 0, 0.5)' }}>El curso no está activo</Typography>
+      )}
     </Paper>
   );
 }
@@ -22,7 +25,7 @@ const NoCoursesAvailable = ()=> {
 }
 
 
-export const CoursesGrid = ({courses}) => {
+export const CoursesGrid = ({courses,isStudent}) => {
   return (
       <Grid container spacing={2} sx={{ mt: 2, ml: 3, mb: 6 }}> 
         {
@@ -31,7 +34,7 @@ export const CoursesGrid = ({courses}) => {
           ) :
         courses.map((course, index) => (
           <Grid item key={index} >
-            <CourseHomeBox course={course} />
+            <CourseHomeBox course={course} isStudent= {isStudent} />
           </Grid>
         ))}
       </Grid>

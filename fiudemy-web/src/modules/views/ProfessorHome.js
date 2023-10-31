@@ -72,7 +72,7 @@ export default function TeacherHome() {
         <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
           Mis cursos
         </Typography>
-        <CoursesGrid courses={cursos} />
+        <CoursesGrid courses={cursos} isStudent={false}  />
       </Box>
 
       <Box sx={{ marginBottom: '30px', ml: 3 }}>
