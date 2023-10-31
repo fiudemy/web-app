@@ -59,7 +59,7 @@ function CourseModal({ open, onClose, onAddCourse, newCourse, setNewCourse }) {
           />
           <TextField
             label="Horas"
-            value={newCourse.price}
+            value={newCourse.hours}
             onChange={(e) => setNewCourse({ ...newCourse, hours: e.target.value })}
             fullWidth
             rows={1}
