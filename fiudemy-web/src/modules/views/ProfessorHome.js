@@ -10,7 +10,7 @@ import { CoursesGrid } from '../components/courses/CoursesGrid';
 
 export default function TeacherHome() {
   const [cursos, setCursos] = useState([]);
-  const [newCourse, setNewCourse] = useState({ name: '', description: '' });
+  const [newCourse, setNewCourse] = useState({ name: '', description: '' , category : 'otros', price : 0, hours : 0});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [teacherData, setTeacherData] = useState();
 
@@ -20,6 +20,7 @@ export default function TeacherHome() {
         const response = await getCourses();
         if (Array.isArray(response.results)) {
           const courses = response.results;
+          console.log(courses)
           const teacherEmail = localStorage.getItem("email");
           if (teacherEmail) {
             const filteredCourses = courses
@@ -27,6 +28,7 @@ export default function TeacherHome() {
               .map(filteredCourse => ({
                 title: filteredCourse.title,
                 description: filteredCourse.description,
+                category : filteredCourse.category
               }));
             console.log(filteredCourses)
             setCursos(filteredCourses);
@@ -43,14 +45,15 @@ export default function TeacherHome() {
   const handleAddCourse = () => {
     //const datateacher = JSON.parse(localStorage.getItem('teacherData'))
     const teacherEmail = localStorage.getItem("email");
+    console.log(newCourse);
     if (newCourse.name && newCourse.description) {
       createCourse({
         title: newCourse.name,
         description: newCourse.description,
         teacher: teacherEmail,
-        category: 'other',
-        price: 0,
-        hours: 0,
+        category: newCourse.category,
+        price: newCourse.price,
+        hours: newCourse.hours,
       });
     }
   };
