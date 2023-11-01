@@ -7,6 +7,8 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import {InputLabel, MenuItem, Select} from "@mui/material";
 import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
+import NewModuleModal from "./NewModuleModal";
 
 function EditCourse() {
     const location = useLocation();
@@ -19,10 +21,10 @@ function EditCourse() {
         hours : originalCourseData.hours,
         active: originalCourseData.active,
     });
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newModule, setNewModule] = useState({ name: ''});
     console.log(originalCourseData);
-    // Manejar cambios en los atributos del curso
 
-    // Manejar cambios en el estado activo del curso
     const handleActivoChange = () => {
         setEditedCourse({
             ...editedCourse,
@@ -30,16 +32,25 @@ function EditCourse() {
         });
     };
 
-    // Manejar guardar cambios
     const handleGuardarCambios = () => {
-        // En esta función, puedes enviar los datos del curso al servidor o hacer cualquier otra acción necesaria.
-        // Por ahora, simplemente mostraremos los datos en la consola.
+        setIsModalOpen(true);
         console.log(editedCourse);
     };
 
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleAgregarModulo = () => {
+        console.log("ag")
+    }
+
     return (
         <div>
-            <Paper sx={{ position: 'absolute', width: 400, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+            <Paper sx={{ position: 'absolute', width: 900, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                 <Box sx={{ p: 2 }}>
                     <Typography variant="h6" marked={'left'} sx={{ mb: 2 }}>
                         Editar curso
@@ -93,14 +104,35 @@ function EditCourse() {
                         rows={4}
                         sx={{ mb: 2 }}
                     />
-                    <label>Activo:
-                        <input
-                            type="checkbox"
-                            name="activo"
-                            checked={editedCourse.active}
-                            onChange={handleActivoChange}
-                        />
-                    </label>
+                        <label>Activo:
+                            <input
+                                type="checkbox"
+                                name="activo"
+                                checked={editedCourse.active}
+                                onChange={handleActivoChange}
+                            />
+                        </label>
+                        <Box sx={{ marginBottom: '30px', ml: 3 }}>
+                            <Typography variant="h6" marked={'left'}>
+                                Añadir nuevo módulo
+                            </Typography>
+                            <Paper sx={{ p: 2, maxWidth: 350 }}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={openModal}
+                                    style={{
+                                        borderRadius: '50%',
+                                        width: '50px',
+                                        height: '50px',
+                                        minWidth: 0,
+                                        padding: 0,
+                                    }}
+                                >
+                                    <AddIcon />
+                                </Button>
+                            </Paper>
+                        </Box>
                     <div>
                         <Button variant="contained" color="primary" onClick={() => { handleGuardarCambios(); }}>
                             Guardar Cambios
@@ -108,7 +140,13 @@ function EditCourse() {
                     </div>
                 </Box>
             </Paper>
-
+            <NewModuleModal
+                open={isModalOpen}
+                onClose={closeModal}
+                onAddModule={handleAgregarModulo}
+                newModule={newModule}
+                setNewModule={setNewModule}
+            />
         </div>
     );
 }
