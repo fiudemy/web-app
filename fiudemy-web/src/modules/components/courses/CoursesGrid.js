@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 const CourseHomeBox = ({course, isStudent}) => {
   const navigate = useNavigate();
   const redirectToEditCourse = () => {
-      navigate("/courses");
+      navigate(`/courses/${course.id}`, { state: { course }});
   }
   return (
     <Paper sx={{ p: 2, mb: 4, mr: 1,  width: 250, height: 150,  boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)'}}>

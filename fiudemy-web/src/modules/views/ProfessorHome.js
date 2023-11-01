@@ -26,9 +26,12 @@ export default function TeacherHome() {
             const filteredCourses = courses
               .filter(course => course.teacher === teacherEmail)
               .map(filteredCourse => ({
+                id: filteredCourse.id,
                 title: filteredCourse.title,
                 description: filteredCourse.description,
-                category : filteredCourse.category
+                category : filteredCourse.category,
+                price: filteredCourse.price,
+                hours: filteredCourse.hours,
               }));
             console.log(filteredCourses)
             setCursos(filteredCourses);
@@ -54,6 +57,7 @@ export default function TeacherHome() {
         category: newCourse.category,
         price: newCourse.price,
         hours: newCourse.hours,
+        active: newCourse.active // Todo: recibir del back
       });
     }
   };

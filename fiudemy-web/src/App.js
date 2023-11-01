@@ -7,6 +7,7 @@ import ProfessorHome from './modules/views/ProfessorHome';
 import StudentHome from './modules/views/StudentHome';
 import MarketPlace from './modules/views/MarketPlace';
 import withRoot from './modules/withRoot';
+import EditCourse from "./modules/components/courses/EditCourse";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               <Route path="/sign-up" element={<SignUp/>}/>
               <Route path="/student-home" element={<StudentHome/>}/>
               <Route path="/professor-home" element={<ProfessorHome/>}/>
+              <Route path="/courses/:courseId" element={<EditCourse/>}/>
               <Route path="/marketplace" element={<MarketPlace/>}/>
               <Route path="*" element={<ProductDescription/>}/>
             </Routes>
