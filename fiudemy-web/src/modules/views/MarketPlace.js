@@ -177,7 +177,7 @@ export default function MarketPlace() {
 
   return (
    <>
-      <AppAppBar showsSignInOptions={false} />
+        <AppAppBar showsSignInOptions={false} isStudent={true} />
       <Box sx={{ marginBottom: '900px', marginTop: '30px' }}>
       <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
         Marketplace

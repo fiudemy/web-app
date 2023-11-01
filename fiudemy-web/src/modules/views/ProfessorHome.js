@@ -7,6 +7,7 @@ import { React, useEffect, useState } from 'react';
 import { createCourse, getCourses } from '../../services/axios_utils';
 import CourseModal from '../components/ModalCourse';
 import { CoursesGrid } from '../components/courses/CoursesGrid';
+import AppAppBar from './AppAppBar';
 
 export default function TeacherHome() {
   const [cursos, setCursos] = useState([]);
@@ -65,6 +66,8 @@ export default function TeacherHome() {
 
   return (
     <>
+      <AppAppBar showsSignInOptions={false} isProfessor={true}/>
+
       <Box sx={{ marginBottom: '200px', marginTop: '30px' }}>
         <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
           Mis cursos

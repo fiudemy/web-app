@@ -16,7 +16,7 @@ const rightLink = {
   ml: 3,
 };
 
-function AppAppBar({ showsSignInOptions = true }) {
+function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor = false }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleIconClick = (event) => {
@@ -32,8 +32,10 @@ function AppAppBar({ showsSignInOptions = true }) {
       <AppBar position="fixed">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
         {!showsSignInOptions && (
-          <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-end', alignItems: "center" }}>
+          <>
+          <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-start', alignItems: "center" }}>
           <Link
+            href="/"
             variant="h6"
             underline="none"
             color="inherit"
@@ -42,6 +44,54 @@ function AppAppBar({ showsSignInOptions = true }) {
           >
             {'FIUDEMY'}
           </Link>
+          {
+            isStudent && (
+              <Box>
+              <Link
+                color="inherit"
+                variant="h6"
+                underline="none"
+                href="/student-home/"
+                sx={rightLink}
+              >
+                {'Mis cursos'}
+              </Link>
+              <Link
+              color="inherit"
+              variant="h6"
+              underline="none"
+              href="/marketplace/"
+              sx={rightLink}
+            >
+              {'Marketplace'}
+            </Link>
+            </Box>
+            
+            )
+
+          }
+          {
+            isProfessor && (
+              <Box>
+              <Link
+                color="inherit"
+                variant="h6"
+                underline="none"
+                href="/professor-home/"
+                sx={rightLink}
+              >
+                {'Mis cursos'}
+              </Link>
+           
+            </Box>
+            
+            )
+
+          }
+          </Box>
+          
+          <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-end', alignItems: "center" }}>
+
           <IconButton
             color="inherit"
             onClick={handleIconClick}
@@ -85,7 +135,10 @@ function AppAppBar({ showsSignInOptions = true }) {
           </List>
           </Popover>
           </Box>
+          </>
         )}
+
+
           {showsSignInOptions && (
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: "center" }}>
             <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
