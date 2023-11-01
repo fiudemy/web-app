@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useLocation} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -9,9 +9,11 @@ import {InputLabel, MenuItem, Select} from "@mui/material";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import NewModuleModal from "./NewModuleModal";
+import {createCourse, editCourse} from "../../../services/axios_utils";
 
 function EditCourse() {
     const location = useLocation();
+    const { courseId } = useParams();
     const originalCourseData = location.state.course;
     const [editedCourse, setEditedCourse] = useState({
         name: originalCourseData.title,
@@ -33,7 +35,6 @@ function EditCourse() {
     };
 
     const handleGuardarCambios = () => {
-        setIsModalOpen(true);
         console.log(editedCourse);
     };
 
@@ -44,13 +45,24 @@ function EditCourse() {
         setIsModalOpen(false);
     };
 
-    const handleAgregarModulo = () => {
-        console.log("ag")
+    const handleAgregarModulo = async () => {
+        console.log(courseId);
+        const teacherEmail = localStorage.getItem("email");
+        console.log(editedCourse);
+        await editCourse({
+            title: editedCourse.name,
+            description: editedCourse.description,
+            teacher: teacherEmail,
+            category: editedCourse.category,
+            price: editedCourse.price,
+            hours: editedCourse.hours,
+            active: editedCourse.active
+        }, courseId);
     }
 
     return (
         <div>
-            <Paper sx={{ position: 'absolute', width: 900, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+            <Paper sx={{ position: 'absolute', width: 900, top: '70%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                 <Box sx={{ p: 2 }}>
                     <Typography variant="h6" marked={'left'} sx={{ mb: 2 }}>
                         Editar curso

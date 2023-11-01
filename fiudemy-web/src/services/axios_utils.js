@@ -49,6 +49,22 @@ export const createCourse = async (formData) => {
     }
   };
 
+export const editCourse = async (formData, idCourse) => {
+    try {
+        console.log(formData)
+        const res = await axios.put(`https://fiudemy.onrender.com/courses/` +  idCourse, formData, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (res.status === 200) {
+            console.log("Curso editado con éxito!");
+        }
+    } catch (error) {
+        console.error("Error al crear el curso:", error);
+    }
+};
+
 export const getCourses = async () => {
     try {
       const res = await axios.get(`https://fiudemy.onrender.com/courses`);
