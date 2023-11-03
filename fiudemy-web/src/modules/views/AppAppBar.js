@@ -1,14 +1,15 @@
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import List from '@mui/material/List';
-import Popover from '@mui/material/Popover';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // Icono de usuario
 import * as React from 'react';
 import AppBar from '../components/AppBar';
 import Toolbar from '../components/Toolbar';
-import LogoutIcon from '@mui/icons-material/Logout';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Logout from '@mui/icons-material/Logout';
+import {useNavigate} from "react-router-dom";
 
 const rightLink = {
   fontSize: 16,
@@ -18,6 +19,7 @@ const rightLink = {
 
 function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor = false }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleIconClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,15 +29,20 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
     setAnchorEl(null);
   };
 
+  const handleLogOut = () => {
+    setAnchorEl(null);
+    navigate("/");
+  };
+
+  const open = Boolean(anchorEl);
+
   return (
     <div>
       <AppBar position="fixed">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
         {!showsSignInOptions && (
           <>
-          <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-start', alignItems: "center" }}>
           <Link
-            href="/"
             variant="h6"
             underline="none"
             color="inherit"
@@ -44,6 +51,7 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
           >
             {'FIUDEMY'}
           </Link>
+          <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-start', alignItems: "center" }}>
           {
             isStudent && (
               <Box>
@@ -91,58 +99,64 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
           </Box>
           
           <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-end', alignItems: "center" }}>
-
-          <IconButton
-            color="inherit"
-            onClick={handleIconClick}
-            aria-describedby={anchorEl ? 'user-menu' : undefined}
-          >
-          <AccountCircleIcon />
-          </IconButton>
-          <Popover
-            id="user-menu"
-            open={Boolean(anchorEl)}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-          <List>
-          <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-end', alignItems: "center" }}>
-            <Link
-              color="inherit"
-              variant="h6"
-              underline="none"
-              href="/sign-in/"
-              sx={{
-                ...rightLink,
-                display: 'flex',
-                alignItems: 'flex-start',
-                color: 'black',
-                ml: 1,
-              }}
-            >
-              <Typography sx={{ ml: 1 , fontFamily: 'Arial, sans-serif' }}>
-                {'Cerrar Sesión'}
-              </Typography>
-            </Link>
+          <React.Fragment>
+            <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                <IconButton
+                    color="inherit"
+                    onClick={handleIconClick}
+                    aria-describedby={anchorEl ? 'user-menu' : undefined}
+                >
+                <AccountCircleIcon />
+                </IconButton>
             </Box>
-          </List>
-          </Popover>
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              onClick={handleClose}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: 'visible',
+                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                  mt: 1.5,
+                  '& .MuiAvatar-root': {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  '&:before': {
+                    content: '""',
+                    display: 'block',
+                    position: 'absolute',
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: 'background.paper',
+                    transform: 'translateY(-50%) rotate(45deg)',
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+              <MenuItem onClick={handleLogOut}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Cerrar sesión
+              </MenuItem>
+            </Menu>
+          </React.Fragment>
           </Box>
           </>
         )}
-
-
           {showsSignInOptions && (
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: "center" }}>
-            <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
             <Link
               variant="h6"
               underline="none"
@@ -153,6 +167,7 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
             >
             {'FIUDEMY'}
             </Link>
+            <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
             </Box>
             <Link
               color="inherit"

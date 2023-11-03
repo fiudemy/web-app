@@ -33,14 +33,13 @@ export default function StudentHome() {
   return (
        <>
         <AppAppBar showsSignInOptions={false} isStudent={true} />
-      <Box sx={{ marginBottom: '200px', marginTop: '30px' }}>
+      <Box sx={{ marginBottom: '5px', marginTop: '30px' }}>
       <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
         Mis cursos
       </Typography>
       <CoursesGrid courses={courses} />
       </Box>
-
-      <Box sx={{ marginBottom: '300px' }}>
+      <Box sx={{ marginBottom: '100px' }}>
       <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
         Descubre cursos destacados
       </Typography>

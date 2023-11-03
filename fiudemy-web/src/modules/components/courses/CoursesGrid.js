@@ -11,14 +11,38 @@ const CourseHomeBox = ({course, isStudent}) => {
       navigate(`/courses/${course.id}`, { state: { course }});
   }
   return (
-    <Paper sx={{ p: 2, mb: 4, mr: 1,  width: 250, height: 150,  boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)'}}>
-      <Typography variant="h6"> {course.title} </Typography>
-      <Typography>{course.description}</Typography>
-      {isStudent === false /*&& course.active === true*/ && (
-        <Typography style={{ marginTop: 'auto' }} sx={{ color: 'rgba(0, 0, 0, 0.5)' }}>El curso no está activo</Typography>
+    <div style={{ display: 'grid', justifyContent: 'center', alignItems: 'flex-start' }}>
+    <Paper
+      sx={{
+        p: 2,
+        mb: 1,
+        mr: 1,
+        width: 300,
+        height: 200,
+        boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
+        display: 'flex',
+        flexDirection: 'column', // Alinear los elementos verticalmente
+      }}
+    >
+      <div>
+        <Typography variant="h6">{course.title}</Typography>
+        <Typography>{course.description}</Typography>
+      </div>
+      {isStudent === false && (
+        <Typography sx={{ color: 'rgba(0, 0, 0, 0.5)' }}>
+          El curso no está activo
+        </Typography>
       )}
-        <Button onClick={redirectToEditCourse}>Editar curso</Button>
+      <Button
+        onClick={redirectToEditCourse}
+        sx={{
+          alignSelf: 'flex-end', // Alinear el botón en la parte inferior derecha
+        }}
+      >
+        Editar curso
+      </Button>
     </Paper>
+    </div>
   );
 }
 
