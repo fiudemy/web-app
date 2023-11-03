@@ -18,7 +18,7 @@ const CourseHomeBox = ({course, isStudent}) => {
         mb: 1,
         mr: 1,
         width: 300,
-        height: 200,
+        height: 400,
         boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
         position: 'relative',
       }}
@@ -26,6 +26,11 @@ const CourseHomeBox = ({course, isStudent}) => {
       <div>
         <Typography variant="h6">{course.title}</Typography>
         <Typography >{course.description}</Typography>
+        <img
+        src="https://img.freepik.com/vector-premium/taza-cafe-libro-computadora-libro-pantalla-sobre-fondo-blanco-colorido-isometrico_18591-62673.jpg"
+        alt="Imagen del curso"
+        style={{ width: '90%', height: 'auto', position: 'absolute', bottom: '1px', right: '8px', left: '14px', marginBottom: '40px'  }}
+      />
       </div>
       {isStudent === false && (
         <Typography sx={{ color: 'rgba(0, 0, 0, 0.5)' }}>
@@ -36,7 +41,7 @@ const CourseHomeBox = ({course, isStudent}) => {
         onClick={redirectToEditCourse}
         sx={{
           position: 'absolute',
-          bottom: '8px',
+          bottom: '3px',
           right: '8px',
           color: '#FF0664',
         }}
@@ -52,7 +57,7 @@ const NoCoursesAvailable = ()=> {
   return(
     <Paper sx={{ p: 2, mb: 4, mr: 1,  width: 250, height: 150,  boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)'}}>
       <Typography variant="h6" sx={{ color: 'rgba(0, 0, 0, 0.5)' }}> No tienes cursos disponibles </Typography>
-      <Typography sx={{ color: 'rgba(0, 0, 0, 0.5)' }}> agrega nuevos cursos para continuar</Typography>
+      <Typography sx={{ color: 'rgba(0, 0, 0, 0.5)' }}> Agrega nuevos cursos para continuar</Typography>
   </Paper>
   )
 }

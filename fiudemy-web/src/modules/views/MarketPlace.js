@@ -8,10 +8,11 @@ import { useEffect } from 'react';
 import AppAppBar from './AppAppBar';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement } from '@stripe/react-stripe-js';
+import InputLabel from '@mui/material/InputLabel';
 import { useNavigate } from 'react-router-dom';
 
 const categories = [
-  'Maths', 'Physics', 'Chemistry', 'Biology', 'Programming'
+  'Matemática', 'Física', 'Química', 'Biología', 'Programación'
 ]
 
 export const CourseMarketBox = ({course}) => {
@@ -26,31 +27,49 @@ export const CourseMarketBox = ({course}) => {
   };
 
 return (
-  <>
-    <ButtonBase onClick={handleOpen}>
-      <Paper
+    <>
+    <div style={{ display: 'grid', justifyContent: 'center', alignItems: 'flex-start' }}>
+    <Paper
+      sx={{
+        p: 2,
+        mb: 1,
+        mr: 1,
+        width: 300,
+        height: 400,
+        boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
+        position: 'relative',
+      }}
+    >
+      <div>
+        <Typography variant="h6">{course.title}</Typography>
+        <Typography >{course.description}</Typography>
+        <img
+        src="https://img.freepik.com/vector-premium/taza-cafe-libro-computadora-libro-pantalla-sobre-fondo-blanco-colorido-isometrico_18591-62673.jpg"
+        alt="Imagen del curso"
+        style={{ width: '90%', height: 'auto', position: 'absolute', bottom: '1px', right: '8px', left: '14px', marginBottom: '40px'  }}
+      />
+      </div>
+      <Button
+        onClick={handleOpen}
         sx={{
-          p: 2,
-          mb: 4,
-          mr: 1,
-          width: 250,
-          height: 150,
-          boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
-          cursor: 'pointer',
-          textAlign: 'left',
+          position: 'absolute',
+          bottom: '3px',
+          right: '8px',
+          color: '#008000',
         }}
       >
-        <Typography variant="h6"> {course.title} </Typography>
-        <Typography>{course.description}</Typography>
-      </Paper>
-    </ButtonBase>
+        Comprar curso
+      </Button>
+    </Paper>
+    </div>
+
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth={true}>
         <MarketPopupBody course={course} handleClose={handleClose} />
         <DialogActions>
           <Button onClick={handleClose}>Cerrar</Button>
         </DialogActions>
     </Dialog>
-  </>
+    </>
 );
 };
 
@@ -178,15 +197,18 @@ export default function MarketPlace() {
   return (
    <>
         <AppAppBar showsSignInOptions={false} isStudent={true} />
-      <Box sx={{ marginBottom: '900px', marginTop: '30px' }}>
+      <Box sx={{ marginBottom: '100px', marginTop: '30px' }}>
       <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
         Marketplace
       </Typography>
-      <FormControl sx={{minWidth: 120, marginBottom: '20px', marginTop: '30px', marginLeft: '30px'}}>
+      <Box sx={{ minWidth: 100}}>
+      <FormControl sx={{minWidth: '95%', marginBottom: '20px', marginTop: '30px', marginLeft: '30px'}}>
+      <InputLabel id="category-select-label">Categorias</InputLabel>
           <Select
             labelId="category-select-label"
             id="category-select"
             value={selectedCategory}
+            label="Categorias"
             onChange={handleCategoryChange}
           >
             <MenuItem value="">Todos</MenuItem>
@@ -195,6 +217,7 @@ export default function MarketPlace() {
             ))}
           </Select>
         </FormControl>
+        </Box>
       <MarketCoursesGrid courses={filteredCourses} />
       </Box>
     </>
