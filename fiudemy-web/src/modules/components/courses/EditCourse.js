@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import NewModuleModal from "./NewModuleModal";
 import {createCourse, editCourse} from "../../../services/axios_utils";
+import AppAppBar from '../../views/AppAppBar';
 
 function EditCourse() {
     const location = useLocation();
@@ -62,6 +63,7 @@ function EditCourse() {
 
     return (
         <div>
+            <AppAppBar showsSignInOptions={false}/>
             <Paper sx={{ position: 'absolute', width: 900, top: '70%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                 <Box sx={{ p: 2 }}>
                     <Typography variant="h6" marked={'left'} sx={{ mb: 2 }}>

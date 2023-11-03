@@ -64,6 +64,7 @@ function AppAppBar({ showsSignInOptions = true }) {
             }}
           >
           <List>
+          <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-end', alignItems: "center" }}>
             <Link
               color="inherit"
               variant="h6"
@@ -77,11 +78,11 @@ function AppAppBar({ showsSignInOptions = true }) {
                 ml: 1,
               }}
             >
-              <LogoutIcon />
-              <Typography variant="body1" sx={{ ml: 1 }}>
+              <Typography sx={{ ml: 1 , fontFamily: 'Arial, sans-serif' }}>
                 {'Cerrar Sesión'}
               </Typography>
             </Link>
+            </Box>
           </List>
           </Popover>
           </Box>
