@@ -20,13 +20,12 @@ const CourseHomeBox = ({course, isStudent}) => {
         width: 300,
         height: 200,
         boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
-        display: 'flex',
-        flexDirection: 'column', // Alinear los elementos verticalmente
+        position: 'relative',
       }}
     >
       <div>
         <Typography variant="h6">{course.title}</Typography>
-        <Typography>{course.description}</Typography>
+        <Typography >{course.description}</Typography>
       </div>
       {isStudent === false && (
         <Typography sx={{ color: 'rgba(0, 0, 0, 0.5)' }}>
@@ -36,7 +35,10 @@ const CourseHomeBox = ({course, isStudent}) => {
       <Button
         onClick={redirectToEditCourse}
         sx={{
-          alignSelf: 'flex-end', // Alinear el botón en la parte inferior derecha
+          position: 'absolute',
+          bottom: '8px',
+          right: '8px',
+          color: '#FF0664',
         }}
       >
         Editar curso
