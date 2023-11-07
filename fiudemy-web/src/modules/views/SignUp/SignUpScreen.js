@@ -32,7 +32,7 @@ export default function SignUp() {
     };
     console.log(reqData);
     await createUser(reqData);
-    navigate("/sign-in");
+    navigate("/sign-in", { state: { isAlertOpen: true } });
   };
 
   return (

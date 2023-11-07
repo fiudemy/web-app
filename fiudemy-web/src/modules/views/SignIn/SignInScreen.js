@@ -11,11 +11,21 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import AppAppBar from '../AppAppBar';
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import {createUser, logIn} from "../../../services/axios_utils";
+import {logIn} from "../../../services/axios_utils";
+import Alert from '@mui/material/Alert';
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function SignIn() {
+  const location = useLocation();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.state && location.state.isAlertOpen) {
+      setIsAlertOpen(true);
+    }
+  }, [location.state]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,6 +55,16 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
+          {isAlertOpen && ( 
+            <Alert 
+              variant="outlined" 
+              severity="success" 
+              anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
+              open={isAlertOpen} 
+              onClose={() => setIsAlertOpen(false)}>
+                Tu cuenta fue creada con éxito!
+            </Alert>
+          )}
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
