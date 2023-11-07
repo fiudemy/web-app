@@ -5,13 +5,16 @@ import { Box } from '@mui/material';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import AppAppBar from './AppAppBar';
-
-
+import { useLocation } from "react-router-dom";
+import Alert from '@mui/material/Alert';
 
 export default function StudentHome() {
   const [courses, setCourses] = useState([]);
   const [hotCourses, setHotCourses] = useState([]);
   const userId = '65233646667fb42d32918fc7';
+  const location = useLocation();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+
   useEffect(() => {
     fetch(`https://fiudemy.onrender.com/courses?user_id=${userId}`)
       .then(response => response.json())
@@ -30,10 +33,27 @@ export default function StudentHome() {
       })
       .catch(error => console.error(error));
   }, [courses]);
+
+  useEffect(() => {
+    if (location.state && location.state.isAlertOpen) {
+      setIsAlertOpen(true);
+    }
+  }, [location.state]);
+
   return (
        <>
         <AppAppBar showsSignInOptions={false} isStudent={true} />
       <Box sx={{ marginBottom: '5px', marginTop: '30px' }}>
+      {isAlertOpen && ( 
+        <Alert 
+          variant="filled" 
+          severity="success" 
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
+          open={isAlertOpen} 
+          onClose={() => setIsAlertOpen(false)}>
+          Compra exitosa! Disfrute del nuevo curso.
+        </Alert>
+      )}
       <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
         Mis cursos
       </Typography>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Typography from '../components/Typography';
 import Paper from '@mui/material/Paper';
-import { Box, Button, ButtonBase, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import { Box, Button, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { FormControl, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -145,7 +145,7 @@ const PaymentForm = (stripe) => {
     })
       .then(response => response.json())
       .then(data => {
-        navigate('/student-home')
+        navigate("/student-home", { state: { isAlertOpen: true } });
       })
       .catch(error => console.error(error));
   };
