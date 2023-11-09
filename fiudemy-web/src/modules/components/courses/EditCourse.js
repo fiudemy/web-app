@@ -12,6 +12,7 @@ import NewModuleModal from "./NewModuleModal";
 import {editCourse} from "../../../services/axios_utils";
 import AppAppBar from '../../views/AppAppBar';
 import { FormControl } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
 
 function EditCourse() {
     const location = useLocation();
@@ -122,13 +123,16 @@ function EditCourse() {
                         rows={4}
                         sx={{ mb: 2 }}
                     />
-                        <label>ACTIVO:
-                            <input
-                                type="checkbox"
-                                name="activo"
-                                checked={editedCourse.active}
-                                onChange={handleActivoChange}
-                            />
+                        <label>
+                        <Typography component="span" sx={{ fontWeight: 'bold', fontSize: '18px', color: 'green' }}>
+                            ACTIVO:
+                        </Typography>
+                        <Checkbox
+                            name="activo"
+                            checked={editedCourse.active}
+                            onChange={handleActivoChange}
+                            sx={{ width: '25px', height: '25px', color: 'green', '&.Mui-checked': {color: 'green'}}} 
+                        />
                         </label>
                         <Box sx={{ marginTop: '10px',marginBottom: '30px' }}>
                             <Typography variant="h6" marked={'left'}>
