@@ -14,25 +14,44 @@ import Typography from '@mui/material/Typography';
 import AppAppBar from '../AppAppBar';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import {createUser} from "../../../services/axios_utils";
+import { createUser } from "../../../services/axios_utils";
 
 export default function SignUp() {
   const navigate = useNavigate();
   const [isProfessor, setIsProfessor] = useState(false);
+  const [formError, setFormError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
+    const firstName = event.currentTarget['firstName'].value;
+    const lastName = event.currentTarget['lastName'].value;
+    const email = event.currentTarget['email'].value;
+    const password = event.currentTarget['password'].value;
+
+    if (!firstName || !lastName || !email || !password) {
+      setFormError("Todos los campos son obligatorios.");
+      return;
+    }
+
     const role = isProfessor ? 'teacher' : 'student';
     const reqData = {
-      firstName: event.currentTarget['firstName'].value,
-      lastName: event.currentTarget['lastName'].value,
-      email: event.currentTarget['email'].value,
-      password: event.currentTarget['password'].value,
+      firstName,
+      lastName,
+      email,
+      password,
       role,
     };
-    console.log(reqData);
-    await createUser(reqData);
-    navigate("/sign-in", { state: { isAlertOpen: true } });
+
+    try {
+      await createUser(reqData);
+      navigate("/sign-in", { state: { isAlertOpen: true } });
+      console.log("Registro exitoso");
+    } catch (error) {
+      // Handle error if registration fails
+      console.error(error);
+      // You can set another state variable to display a different error message
+    }
   };
 
   return (
@@ -54,6 +73,11 @@ export default function SignUp() {
           Registrarse
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          {formError && (
+            <Typography variant="body2" color="error" marginBottom={2}>
+              {formError}
+            </Typography>
+          )}
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField

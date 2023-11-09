@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import AppAppBar from './AppAppBar';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements, PaymentElement } from '@stripe/react-stripe-js';
+import { Elements, PaymentElement, useElements, CardElement } from '@stripe/react-stripe-js';
 import InputLabel from '@mui/material/InputLabel';
 import { useNavigate } from 'react-router-dom';
 
@@ -122,9 +122,11 @@ const MarketPopupBody = ({course}) => {
 
 const PaymentForm = (stripe) => {
   const navigate = useNavigate();
+  const elements = useElements();
+  const [formError, setFormError] = useState(null);
   const formContainerStyles = {
     width: '540px', // Ancho del 100% del contenedor padre
-    height: '300px', // Altura personalizada, puedes ajustarla según tus necesidades
+    height: '340px', // Altura personalizada, puedes ajustarla según tus necesidades
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
@@ -136,6 +138,13 @@ const PaymentForm = (stripe) => {
       user_id: '65233646667fb42d32918fc7', // replace with actual user ID
       course_id: course.id,
     };
+    
+    /*const paymentElement = elements.getElement('payment');
+    if (paymentElement && !paymentElement._complete) {
+      setFormError('Compra rechazada. Todos los campos son obligatorios.');
+      return;
+    }*/
+
     fetch('https://fiudemy.onrender.com/payments', {
       method: 'POST',
       headers: {
@@ -159,6 +168,7 @@ const PaymentForm = (stripe) => {
         vuelva a ser activado. 
         ¡Que disfrute su compra!
     </Typography>
+    {formError && <Typography variant="body2" color="error" >{formError}</Typography>}
     <Button variant="contained" color="success" sx={{ mt: 1, color: '#fff' }} onClick={handlePay}>
       Pagar
     </Button>

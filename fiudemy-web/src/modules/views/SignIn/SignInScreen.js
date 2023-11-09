@@ -19,6 +19,7 @@ import { useLocation } from "react-router-dom";
 export default function SignIn() {
   const location = useLocation();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [formError, setFormError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,17 +31,29 @@ export default function SignIn() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const email = event.currentTarget['email'].value;
+    const password = event.currentTarget['password'].value;
     const userData = await logIn(email);
     const userId = userData[0];
     const userRole = userData[1];
     localStorage.setItem("email", email);
     localStorage.setItem("userId", userId);
     localStorage.setItem("userRole", userRole);
-    if (userRole === "student") {
-        navigate("/student-home");
-    } else {
-        navigate("/professor-home");
+
+    if (!email || !password) {
+      setFormError("Todos los campos son obligatorios.");
+      return;
     }
+
+    try {
+      if (userRole === "student") {
+        navigate("/student-home");
+      } else {
+          navigate("/professor-home");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
   };
 
   return (
@@ -72,6 +85,11 @@ export default function SignIn() {
             Iniciar Sesión
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            {formError && (
+              <Typography variant="body2" color="error" marginBottom={2}>
+                {formError}
+              </Typography>
+            )}
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
