@@ -13,6 +13,7 @@ import {editCourse} from "../../../services/axios_utils";
 import AppAppBar from '../../views/AppAppBar';
 import { FormControl } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
+import {useNavigate} from "react-router-dom";
 
 function EditCourse() {
     const location = useLocation();
@@ -28,6 +29,7 @@ function EditCourse() {
     });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newModule, setNewModule] = useState({ name: ''});
+    const navigate = useNavigate();
     console.log(originalCourseData);
 
     const handleActivoChange = () => {
@@ -39,6 +41,7 @@ function EditCourse() {
 
     const handleGuardarCambios = () => {
         console.log(editedCourse);
+        navigate("/course");
     };
 
     const openModal = () => {
