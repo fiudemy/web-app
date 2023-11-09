@@ -9,8 +9,9 @@ import {InputLabel, MenuItem, Select} from "@mui/material";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import NewModuleModal from "./NewModuleModal";
-import {createCourse, editCourse} from "../../../services/axios_utils";
+import {editCourse} from "../../../services/axios_utils";
 import AppAppBar from '../../views/AppAppBar';
+import { FormControl } from '@mui/material';
 
 function EditCourse() {
     const location = useLocation();
@@ -77,6 +78,7 @@ function EditCourse() {
                         sx={{ mb: 2 }}
                     />
                     <Grid item xs={12}>
+                        <FormControl sx={{minWidth: '100%'}}>
                         <InputLabel htmlFor="category-select">Categoría</InputLabel>
                         <Select
                             labelId="category-select"
@@ -84,6 +86,7 @@ function EditCourse() {
                             fullWidth
                             defaultValue='otros'
                             sx={{ mb: 2 }}
+                            label="Categoría"
                             onChange={(e) => setEditedCourse({ ...editedCourse, category: e.target.value })}
                         >
                             <MenuItem value="fisica">Física</MenuItem>
@@ -92,6 +95,7 @@ function EditCourse() {
                             <MenuItem value="literatura">Literatura</MenuItem>
                             <MenuItem value="otros">Otros</MenuItem>
                         </Select>
+                        </FormControl>
                     </Grid>
                     <TextField
                         label="Precio"
@@ -118,7 +122,7 @@ function EditCourse() {
                         rows={4}
                         sx={{ mb: 2 }}
                     />
-                        <label>Activo:
+                        <label>ACTIVO:
                             <input
                                 type="checkbox"
                                 name="activo"
@@ -126,7 +130,7 @@ function EditCourse() {
                                 onChange={handleActivoChange}
                             />
                         </label>
-                        <Box sx={{ marginBottom: '30px', ml: 3 }}>
+                        <Box sx={{ marginTop: '10px',marginBottom: '30px' }}>
                             <Typography variant="h6" marked={'left'}>
                                 Añadir nuevo módulo
                             </Typography>

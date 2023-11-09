@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import AppAppBar from './AppAppBar';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements, PaymentElement, useElements, CardElement } from '@stripe/react-stripe-js';
+import { Elements, PaymentElement, useElements } from '@stripe/react-stripe-js';
 import InputLabel from '@mui/material/InputLabel';
 import { useNavigate } from 'react-router-dom';
 
