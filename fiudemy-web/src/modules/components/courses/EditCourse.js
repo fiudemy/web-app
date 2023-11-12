@@ -14,6 +14,8 @@ import AppAppBar from '../../views/AppAppBar';
 import { FormControl } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import {useNavigate} from "react-router-dom";
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 
 
@@ -83,8 +85,6 @@ function EditCourse() {
 
     }
 
-
-
     const setSectionValue = (index, key, value) => {
         const newSections = [...editedCourse.sections];
         newSections[index][key] = value;
@@ -96,6 +96,12 @@ function EditCourse() {
         editedCourse.sections.push(newModule);
     }
     
+    const removeSection = (index) => {
+        setEditedCourse({
+          ...editedCourse,
+          sections: editedCourse.sections.filter((_, i) => i !== index),
+        });
+      };
     
     return (
         <>
@@ -177,7 +183,21 @@ function EditCourse() {
                             <TextField label="Descripción de la sección" defaultValue={section.description} sx={{ marginBottom: '10px' }} onChange={(e) => setSectionValue(index, 'description', e.target.value)} />
                             <TextField label="Video de la sección" defaultValue={section.video_url} sx={{ marginBottom: '10px' }} onChange={(e) => setSectionValue(index, 'video_url', e.target.value)} />
                            
+                            <Button
+                            color="secondary"
+                            onClick={() => removeSection(index)}
+                            style={{
+                                marginTop: '30px',
+                                marginLeft : '10px',
+                            }}
+                            >
+                            <DeleteIcon />
+                            </Button>
                             </Paper>
+
+                            
+
+                            
                         </div>
                         ))}
                         <Box sx={{ marginTop: '10px', marginBottom: '30px' }}>
