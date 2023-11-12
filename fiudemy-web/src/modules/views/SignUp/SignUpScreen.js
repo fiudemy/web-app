@@ -24,20 +24,20 @@ export default function SignUp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    const firstName = event.currentTarget['firstName'].value;
-    const lastName = event.currentTarget['lastName'].value;
+    const first_name = event.currentTarget['firstName'].value;
+    const last_name = event.currentTarget['lastName'].value;
     const email = event.currentTarget['email'].value;
     const password = event.currentTarget['password'].value;
 
-    if (!firstName || !lastName || !email || !password) {
+    if (!first_name || !last_name || !email || !password) {
       setFormError("Todos los campos son obligatorios.");
       return;
     }
 
     const role = isProfessor ? 'teacher' : 'student';
     const reqData = {
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       email,
       password,
       role,
