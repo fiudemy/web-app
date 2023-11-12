@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, List, ListItem, Typography } from '@mui/material';
+import AppAppBar from "../views/AppAppBar";
 
 const Chats = () => {
    const [selectedChat, setSelectedChat] = useState(null);
@@ -43,35 +44,38 @@ const Chats = () => {
    };
 
    return (
-      <Box display="flex">
-         {/* Left side - List of people */}
-         <Box width={300} borderRight="1px solid #ccc">
-            <List>
-               {chatData.results.map((chat) => (
-                  <ListItem key={chat.id} onClick={() => handleChatSelection(chat)}>
-                     <Typography>{chat.user1}</Typography>
-                  </ListItem>
-               ))}
-            </List>
-         </Box>
+      <Box>
+         <AppAppBar showsSignInOptions={false} isProfessor={false} isChat={true}/>
+         <Box display="flex">
+            {/* Left side - List of people */}
+            <Box width={300} borderRight="1px solid #ccc">
+               <List>
+                  {chatData.results.map((chat) => (
+                     <ListItem key={chat.id} onClick={() => handleChatSelection(chat)}>
+                        <Typography>{chat.user1}</Typography>
+                     </ListItem>
+                  ))}
+               </List>
+            </Box>
 
-         {/* Right side - Display selected chat */}
-         <Box flex={1} p={3}>
-            {selectedChat && (
-               <div>
-                  <Typography variant="h5">Chat with {selectedChat.user1}</Typography>
-                  <List>
-                     {selectedChat.messages.map((message, index) => (
-                        <ListItem key={index}>
-                           <Typography>
-                              {message.sender === '65233646667fb42d32918fc7' ? 'You: ' : `${selectedChat.user1}: `}
-                              {message.message}
-                           </Typography>
-                        </ListItem>
-                     ))}
-                  </List>
-               </div>
-            )}
+            {/* Right side - Display selected chat */}
+            <Box flex={1} p={3}>
+               {selectedChat && (
+                  <div>
+                     <Typography variant="h5">Chat with {selectedChat.user1}</Typography>
+                     <List>
+                        {selectedChat.messages.map((message, index) => (
+                           <ListItem key={index}>
+                              <Typography>
+                                 {message.sender === '65233646667fb42d32918fc7' ? 'You: ' : `${selectedChat.user1}: `}
+                                 {message.message}
+                              </Typography>
+                           </ListItem>
+                        ))}
+                     </List>
+                  </div>
+               )}
+            </Box>
          </Box>
       </Box>
    );

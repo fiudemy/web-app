@@ -18,7 +18,8 @@ const rightLink = {
   ml: 3,
 };
 
-function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor = false }) {
+function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor = false,
+                   isChat = false}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
 
@@ -57,7 +58,7 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
           </Link>
           <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-start', alignItems: "center" }}>
           {
-            isStudent && (
+            isStudent && !isChat && (
               <Box>
               <Link
                 color="inherit"
@@ -78,12 +79,10 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
               {'Marketplace'}
             </Link>
             </Box>
-            
             )
-
           }
           {
-            isProfessor && (
+            isProfessor && !isChat && (
               <Box>
               <Link
                 color="inherit"
@@ -94,14 +93,25 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
               >
                 {'Mis cursos'}
               </Link>
-           
             </Box>
-            
             )
-
           }
+            {
+               isChat && (
+                  <Box>
+                    <Link
+                       color="inherit"
+                       variant="h6"
+                       underline="none"
+                       href="/professor-home/"
+                       sx={rightLink}
+                    >
+                      {'Mis chats'}
+                    </Link>
+                  </Box>
+               )
+            }
           </Box>
-          
           <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-end', alignItems: "center" }}>
           <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
