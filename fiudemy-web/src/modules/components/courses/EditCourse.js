@@ -1,72 +1,89 @@
-import React, { useEffect, useState } from 'react';
-import {useLocation, useParams} from "react-router-dom";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import {InputLabel, MenuItem, Select} from "@mui/material";
-import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-import NewModuleModal from "./NewModuleModal";
-import {editCourse, getCourseById} from "../../../services/axios_utils";
-import AppAppBar from '../../views/AppAppBar';
-import { FormControl } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
-import {useNavigate} from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Checkbox from '@mui/material/Checkbox';
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+import { editCourse, getCourseById } from "../../../services/axios_utils";
+import AppAppBar from '../../views/AppAppBar';
+import NewModuleModal from "./NewModuleModal";
 
-
-
-export const ProfessorViewCourse = ({course, setEditMode}) => {
-    //load the viewr of the course, wiht title description and rest of fields
-
+export const ProfessorViewCourse = ({ course, setEditMode }) => {  
+    const { courseId } = useParams();
+    const navigate = useNavigate();
     return (
-        <>
-        <AppAppBar showsSignInOptions={false}/>
-        <Paper sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', padding: '20px' }}>                
-        <Box sx={{ p: 2 }}>
+      <>
+        <AppAppBar showsSignInOptions={false} />
+        <Paper
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            padding: '20px'
+          }}
+        >
+          <Box sx={{ p: 2 }}>
             <Typography variant="h6" marked={'left'}>
-                {course.title}
+              {course.title}
             </Typography>
-            <Typography >Descripción:</Typography>
-            <Typography >{course.description}</Typography>
-            <Typography >Categoría:</Typography>
-            <Typography >{course.category}</Typography>
-            <Typography >Precio</Typography>
-            <Typography >{course.price}</Typography>
-            <Typography >Horas</Typography>
-            <Typography >{course.hours}</Typography>
-            <Typography >Activo</Typography>
-            <Typography >{course.active}</Typography>
+            <Typography>Descripción:</Typography>
+            <Typography>{course.description}</Typography>
+            <Typography>Categoría:</Typography>
+            <Typography>{course.category}</Typography>
+            <Typography>Precio</Typography>
+            <Typography>{course.price}</Typography>
+            <Typography>Horas</Typography>
+            <Typography>{course.hours}</Typography>
+            <Typography>Activo</Typography>
+            <Typography>{course.active}</Typography>
             <Typography variant="h6" marked={'left'}>
-                Modulos
+              Módulos
             </Typography>
-            {course.sections && course.sections.map((section, index) => (
+            {course.sections &&
+              course.sections.map((section, index) => (
                 <div key={index}>
-                    <Typography variant="h6" marked={'left'}>
+                  <Typography variant="h6" marked={'left'}>
                     {section.title}
-                    </Typography>
-                    <Paper sx={{ p: 2, maxWidth: 350 }}>
-                    <Typography >Descripción modulo</Typography>
-                    <Typography >{section.description}</Typography>
-                    <Typography >Video modulo</Typography>
-                    <Typography >{section.video_url}</Typography>
-                    </Paper>
+                  </Typography>
+                  <Paper sx={{ p: 2, maxWidth: 350 }}>
+                    <Typography>Descripción módulo</Typography>
+                    <Typography>{section.description}</Typography>
+                    <Typography>Video módulo</Typography>
+                    <Typography>{section.video_url}</Typography>
+                  </Paper>
                 </div>
-            ))}
-            <Button variant="contained" color="primary" onClick={() => { setEditMode(true) }}>
-                Editar Curso
-                
+              ))}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setEditMode(true);
+              }}
+            >
+              Editar Curso
             </Button>
-        </Box>
+
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                navigate(`/Evaluations/${course.id}`, { state: { course }});
+              }}
+            >
+              Mis Evaluaciones
+            </Button>
+          </Box>
         </Paper>
-
-        </>
-
-
-    )
-}
+      </>
+    );
+  };
+  
 
 export const ViewCourse = () => {
     const { courseId } = useParams();
@@ -112,7 +129,6 @@ export const ViewCourse = () => {
 
 }
 
-    
 
 function EditCourse({course, courseId, setEditMode}) {
 
