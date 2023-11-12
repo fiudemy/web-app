@@ -55,7 +55,6 @@ function EvaluationItem({ title, prompt, answers }) {
   };
 
   const handleSaveFeedback = (answerId, feedback) => {
-    // Puedes guardar la devolución en tu lógica aquí
     console.log(`Guardando devolución para respuesta ${answerId}: ${feedback}`);
   };
 
@@ -112,7 +111,6 @@ export default function MyEvaluations() {
   const { courseId } = useParams();
   console.log(courseId);
 
-  // Simulando datos de evaluaciones
   const evaluationsData = [
     {
       title: "Evaluación 1",
@@ -133,8 +131,6 @@ export default function MyEvaluations() {
       ],
     },
   ];
-
-  // hacer fetch del curso y sus evaluaciones (puedes agregar tu lógica aquí)
 
   useEffect(() => {
     // Lógica para hacer fetch del curso y sus evaluaciones
