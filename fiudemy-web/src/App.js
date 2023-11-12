@@ -9,6 +9,7 @@ import MarketPlace from './modules/views/MarketPlace';
 import CourseHome from './modules/views/Courses/CourseHomeScreen';
 import withRoot from './modules/withRoot';
 import EditCourse, { ViewCourse } from "./modules/components/courses/EditCourse";
+import Chats from "./modules/components/Chats";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/courses/:courseId" element={<ViewCourse/>}/>
               <Route path="/marketplace" element={<MarketPlace/>}/>
               <Route path="/course" element={<CourseHome/>}/>
+              <Route path="/chats" element={<Chats/>}/>
               <Route path="*" element={<ProductDescription/>}/>
             </Routes>
           </BrowserRouter>

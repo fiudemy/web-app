@@ -76,7 +76,6 @@ export const getCourses = async () => {
     }
   };
 
-
 export const getCourseById = async (id) => {
     try {
         const res = await axios.get(`https://fiudemy.onrender.com/courses/` + id);
@@ -87,4 +86,31 @@ export const getCourseById = async (id) => {
     } catch (error) {
         console.error("Error al obtener el curso:", error);
     }
+}
+
+export const getChats = async () => {
+   try {
+      const userId = localStorage.getItem("userId");
+      const res = await axios.get(`https://fiudemy.onrender.com/chats?user_id=${userId}&ascending=true`);
+      if (res.status === 200) {
+         return res.data;
+      }
+   } catch (error) {
+      console.error("Error al obtener los cursos:", error);
+   }
+};
+
+export const sendMessage = async (chatId, messageData) => {
+   try {
+      const res = await axios.put(`https://fiudemy.onrender.com/chats/${chatId}/new_message`, messageData, {
+         headers: {
+            'Content-Type': 'application/json',
+         },
+      });
+      if (res.status === 200) {
+         console.log("Curso editado con éxito!");
+      }
+   } catch (error) {
+      console.error("Error al mandar el mensaje:", error);
+   }
 }

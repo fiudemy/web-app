@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // Icono de usuario
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import * as React from 'react';
 import AppBar from '../components/AppBar';
 import Toolbar from '../components/Toolbar';
@@ -17,12 +18,16 @@ const rightLink = {
   ml: 3,
 };
 
-function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor = false }) {
+function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor = false,
+                   isChat = false}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
 
   const handleIconClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+  const handleChatClick = (event) => {
+    navigate('/chats')
   };
 
   const handleClose = () => {
@@ -53,7 +58,7 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
           </Link>
           <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-start', alignItems: "center" }}>
           {
-            isStudent && (
+            isStudent && !isChat && (
               <Box>
               <Link
                 color="inherit"
@@ -74,12 +79,10 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
               {'Marketplace'}
             </Link>
             </Box>
-            
             )
-
           }
           {
-            isProfessor && (
+            isProfessor && !isChat && (
               <Box>
               <Link
                 color="inherit"
@@ -90,17 +93,35 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
               >
                 {'Mis cursos'}
               </Link>
-           
             </Box>
-            
             )
-
           }
+            {
+               isChat && (
+                  <Box>
+                    <Link
+                       color="inherit"
+                       variant="h6"
+                       underline="none"
+                       href="/professor-home/"
+                       sx={rightLink}
+                    >
+                      {'Mis chats'}
+                    </Link>
+                  </Box>
+               )
+            }
           </Box>
-          
           <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-end', alignItems: "center" }}>
           <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+              <IconButton
+                 color="inherit"
+                 onClick={handleChatClick}
+                 aria-describedby={anchorEl ? 'user-menu' : undefined}
+              >
+                <ChatBubbleIcon />
+              </IconButton>
                 <IconButton
                     color="inherit"
                     onClick={handleIconClick}
