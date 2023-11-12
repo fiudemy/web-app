@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 
 const CourseHomeBox = ({course, isStudent}) => {
   const navigate = useNavigate();
-  const redirectToEditCourse = () => {
+  const redirectToViewCourse = () => {
       navigate(`/courses/${course.id}`, { state: { course }});
   }
   return (
@@ -38,7 +38,7 @@ const CourseHomeBox = ({course, isStudent}) => {
         </Typography>
       )}
       <Button
-        onClick={redirectToEditCourse}
+        onClick={redirectToViewCourse}
         sx={{
           position: 'absolute',
           bottom: '3px',
@@ -46,7 +46,7 @@ const CourseHomeBox = ({course, isStudent}) => {
           color: '#FF0664',
         }}
       >
-        Editar curso
+        Ver curso
       </Button>
     </Paper>
     </div>

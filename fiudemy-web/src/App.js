@@ -8,7 +8,7 @@ import StudentHome from './modules/views/StudentHome';
 import MarketPlace from './modules/views/MarketPlace';
 import CourseHome from './modules/views/Courses/CourseHomeScreen';
 import withRoot from './modules/withRoot';
-import EditCourse from "./modules/components/courses/EditCourse";
+import EditCourse, { ViewCourse } from "./modules/components/courses/EditCourse";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
               <Route path="/sign-up" element={<SignUp/>}/>
               <Route path="/student-home" element={<StudentHome/>}/>
               <Route path="/professor-home" element={<ProfessorHome/>}/>
-              <Route path="/courses/:courseId" element={<EditCourse/>}/>
+              <Route path="/courses/:courseId" element={<ViewCourse/>}/>
               <Route path="/marketplace" element={<MarketPlace/>}/>
               <Route path="/course" element={<CourseHome/>}/>
               <Route path="*" element={<ProductDescription/>}/>

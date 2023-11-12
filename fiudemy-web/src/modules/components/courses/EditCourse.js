@@ -18,12 +18,105 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 
 
+export const ProfessorViewCourse = ({course, setEditMode}) => {
+    //load the viewr of the course, wiht title description and rest of fields
+
+    return (
+        <>
+        <AppAppBar showsSignInOptions={false}/>
+        <Paper sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', padding: '20px' }}>                
+        <Box sx={{ p: 2 }}>
+            <Typography variant="h6" marked={'left'}>
+                {course.title}
+            </Typography>
+            <Typography >Descripción:</Typography>
+            <Typography >{course.description}</Typography>
+            <Typography >Categoría:</Typography>
+            <Typography >{course.category}</Typography>
+            <Typography >Precio</Typography>
+            <Typography >{course.price}</Typography>
+            <Typography >Horas</Typography>
+            <Typography >{course.hours}</Typography>
+            <Typography >Activo</Typography>
+            <Typography >{course.active}</Typography>
+            <Typography variant="h6" marked={'left'}>
+                Modulos
+            </Typography>
+            {course.sections && course.sections.map((section, index) => (
+                <div key={index}>
+                    <Typography variant="h6" marked={'left'}>
+                    {section.title}
+                    </Typography>
+                    <Paper sx={{ p: 2, maxWidth: 350 }}>
+                    <Typography >Descripción modulo</Typography>
+                    <Typography >{section.description}</Typography>
+                    <Typography >Video modulo</Typography>
+                    <Typography >{section.video_url}</Typography>
+                    </Paper>
+                </div>
+            ))}
+            <Button variant="contained" color="primary" onClick={() => { setEditMode(true) }}>
+                Editar Curso
+                
+            </Button>
+        </Box>
+        </Paper>
+
+        </>
+
+
+    )
+}
+
+export const ViewCourse = () => {
+    const { courseId } = useParams();
+    const [course, setCourse] = useState(null);
+    const isProfessor = localStorage.getItem("userRole") === "teacher";
+    const [editMode , setEditMode] = useState(false);
+
+
+    useEffect(() => {
+        const fetchCourse = async () => {
+            try {
+                const response = await getCourseById(courseId);
+                if (response) {
+                    setCourse(response);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchCourse();
+    }, [courseId]);
+
+
+    if (course === null) {
+        return <div>Loading...</div>;
+    }
+
+    if (isProfessor) {
+        if (course.sections.length === 0 || editMode) {
+            return (
+                <EditCourse course={course} courseId={courseId} setEditMode={setEditMode}/>
+            );
+        }
+        return (
+            <ProfessorViewCourse course={course} setEditMode={setEditMode}/>
+        );
+    
+    }
+
+    
+    
+
+
+}
 
     
 
-function EditCourse() {
-    const { courseId } = useParams();
-    const [editedCourse, setEditedCourse] = useState(null);
+function EditCourse({course, courseId, setEditMode}) {
+
+    const [editedCourse, setEditedCourse] = useState(course);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openAddModuleModal = () => {
         setIsModalOpen(true);
@@ -34,12 +127,10 @@ function EditCourse() {
 
 
     useEffect(() => {
-        console.log("entra useffect");
         const fetchCourse = async () => {
             try {
                 const response = await getCourseById(courseId);
                 if (response) {
-                    console.log("]response", response);
                     setEditedCourse(response);
                     // setModuleCount(response.sections.length);
                 }
@@ -49,15 +140,11 @@ function EditCourse() {
         };
         fetchCourse();
     }, [courseId]);
-    const navigate = useNavigate();
 
 
     if (editedCourse === null) {
         return <div>Loading...</div>;
     }
-
-  
-
 
 
     const handleActivoChange = () => {
@@ -68,9 +155,7 @@ function EditCourse() {
     };
 
     const handleGuardarCambios = async () => {
-        console.log(courseId);
         const teacherEmail = localStorage.getItem("email");
-        console.log(editedCourse);
         await editCourse({
             title: editedCourse.name,
             description: editedCourse.description,
@@ -81,7 +166,7 @@ function EditCourse() {
             active: editedCourse.active,
             sections: editedCourse.sections,
         }, courseId);
-        navigate("/course");
+        setEditMode(false);
 
     }
 
@@ -106,7 +191,8 @@ function EditCourse() {
     return (
         <>
             <AppAppBar showsSignInOptions={false}/>
-            <Paper sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', padding: '20px' }}>                <Box sx={{ p: 2 }}>
+            <Paper sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', padding: '20px' }}>                
+            <Box sx={{ p: 2 }}>
                     <Typography variant="h6" marked={'left'} sx={{ mb: 2 }}>
                         Editar curso
                     </Typography>
