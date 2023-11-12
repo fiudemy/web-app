@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { Box, List, ListItem, Typography } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AppAppBar from "../views/AppAppBar";
@@ -11,6 +11,7 @@ const Chats = () => {
    const [selectedChat, setSelectedChat] = useState(null);
    const [chatData, setChatsData] = useState(null);
    const [newMessage, setNewMessage] = useState('');
+   const messagesContainerRef = useRef(null);
    useEffect(() => {
       const setChats = async () => {
          const chat = await getChats();
@@ -19,6 +20,12 @@ const Chats = () => {
       }
       setChats();
    }, []);
+   useEffect(() => {
+      // Scroll to the bottom when the selectedChat changes
+      if (messagesContainerRef.current) {
+         messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      }
+   }, [selectedChat]);
    /*const chatData = {
       results: [
          {
@@ -153,7 +160,10 @@ const Chats = () => {
                         display: "flex",
                         flexDirection: "column",
                         rowGap: "10px",
-                     }}>
+                        maxHeight: "80vh", // Set your desired max height
+                        overflowY: "auto", // Add a vertical scrollbar if the content exceeds the max height
+                        }}
+                        ref={messagesContainerRef}>
                         {selectedChat.messages.map((message, index) => (
                            <Box key={index}>
                               <Typography>
