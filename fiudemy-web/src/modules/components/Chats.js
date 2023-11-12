@@ -140,7 +140,12 @@ const Chats = () => {
             {/* Right side - Display selected chat */}
             <Box flex={1} p={3}>
                {selectedChat && (
-                  <Box sx={{display: "flex", flexDirection: "column", justifyContent: "space-between", height: "80vh"}}>
+                  <Box sx={{
+                     display: "flex",
+                     flexDirection: "column",
+                     justifyContent: "space-between",
+                     height: "80vh",
+                     width: "100vh"}}>
                      <Box sx={{
                         fontVariant:"h5",
                         height: "50px",
@@ -157,6 +162,7 @@ const Chats = () => {
                      <Box sx={{
                         paddingTop: "20px",
                         paddingLeft: "20px",
+                        paddingRight: "20px",
                         display: "flex",
                         flexDirection: "column",
                         rowGap: "10px",
@@ -166,10 +172,39 @@ const Chats = () => {
                         ref={messagesContainerRef}>
                         {selectedChat.messages.map((message, index) => (
                            <Box key={index}>
-                              <Typography>
-                                 {message.sender === currentUserId ? 'You: ' : `${selectedChat.user2_name}: `}
-                                 {message.message}
-                              </Typography>
+                              {message.sender === currentUserId ? (
+                                 <Box sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "flex-end",
+                                 }}>
+                                    <Box sx={{
+                                       display: "flex",
+                                       flexDirection: "row",
+                                       justifyContent: "flex-end",
+                                       width: "50%",
+                                       background: "rgba(255,53,103,0.66)",
+                                       borderRadius: "15px",
+                                       paddingRight: "15px",
+                                    }}>{`${message.message}`}</Box>
+                                 </Box>
+                              ) : (
+                                 <Box sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "flex-start",
+                                 }}>
+                                    <Box sx={{
+                                       display: "flex",
+                                       flexDirection: "row",
+                                       justifyContent: "flex-start",
+                                       width: "50%",
+                                       background: "rgba(255,200,212,0.49)",
+                                       borderRadius: "15px",
+                                       paddingLeft: "15px",
+                                    }}>{`${message.message}`}</Box>
+                                 </Box>
+                              )}
                            </Box>
                         ))}
                      </Box>
