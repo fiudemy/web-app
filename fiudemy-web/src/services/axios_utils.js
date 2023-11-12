@@ -88,3 +88,32 @@ export const getCourseById = async (id) => {
         console.error("Error al obtener el curso:", error);
     }
 }
+
+export const getStudentViewedSections= async (user_id, course_id) => {
+    try {
+        const res = await axios.get(`https://fiudemy.onrender.com/progress?user_id=` + user_id + `&course_id=` + course_id);
+        if (res.status === 200) {
+            console.log("data api", res.data);
+            return res.data;
+        }
+    } catch (error) {
+        console.error("Error al obtener el curso:", error);
+    }
+}
+
+export const setSectionWiewStatus = async (formData, status) => {
+    try {
+        const url = "https://fiudemy.onrender.com/progress/" + status === false ? "not_completed" : "completed";
+        const res = await axios.post(url, formData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (res.status === 201) {
+          console.log("Estado de visualizacion de seccion cambiado con éxito!");
+        }
+      } catch (error) {
+        console.error("Error al cambiar estado de visualizacion de seccion:", error);
+      }
+}
+

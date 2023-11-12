@@ -15,6 +15,7 @@ import { FormControl } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { YoutubeEmbed, getEmbeddedYoutubeUrl } from './YoutubeEmbed';
+import { StudentViewCourse } from './StudentViewCourse';
 
 
 
@@ -111,6 +112,11 @@ export const ViewCourse = () => {
         );
     
     }
+    else {
+        return (
+            <StudentViewCourse course={course}/>
+        );
+    }
 
     
     
@@ -183,7 +189,6 @@ function EditCourse({course, courseId, setEditMode}) {
     }
 
     const handleAgregarModulo = async (courseId, newModule) => {
-        console.log("new module is ", newModule);   
         editedCourse.sections.push(newModule);
     }
     
