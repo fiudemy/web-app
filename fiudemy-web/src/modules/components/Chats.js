@@ -108,7 +108,18 @@ const Chats = () => {
       setSelectedChat(updatedChat);
       setNewMessage('');
    }
-
+   const transformDate = (date) => {
+        console.log(date);
+        return new Intl.DateTimeFormat('es-AR', {
+           year: 'numeric',
+           month: '2-digit',
+           day: '2-digit',
+           hour: '2-digit',
+           minute: '2-digit',
+           hour12: false,
+           timeZone: 'America/Argentina/Buenos_Aires',
+        }).format(new Date(date))
+   }
    if (!chatData) {
       return <div> Loading </div>
    }
@@ -185,8 +196,22 @@ const Chats = () => {
                                        width: "50%",
                                        background: "rgba(255,53,103,0.66)",
                                        borderRadius: "15px",
+                                       paddingLeft: "15px",
                                        paddingRight: "15px",
-                                    }}>{`${message.message}`}</Box>
+                                    }}>
+                                       <Box sx ={{
+                                          display: "flex",
+                                          flexDirection: "column",}}>
+                                          {`${message.message}`}
+                                          <Box sx={{
+                                             fontSize: "10px",
+                                             display: "flex",
+                                             flexDirection: "row",
+                                             justifyContent: "flex-end"}}>
+                                             {transformDate(message.time)}
+                                          </Box>
+                                       </Box>
+                                    </Box>
                                  </Box>
                               ) : (
                                  <Box sx={{
@@ -201,8 +226,22 @@ const Chats = () => {
                                        width: "50%",
                                        background: "rgba(255,200,212,0.49)",
                                        borderRadius: "15px",
+                                       paddingRight: "15px",
                                        paddingLeft: "15px",
-                                    }}>{`${message.message}`}</Box>
+                                    }}>
+                                       <Box sx ={{
+                                          display: "flex",
+                                          flexDirection: "column",}}>
+                                          {`${message.message}`}
+                                          <Box sx={{
+                                             fontSize: "10px",
+                                             display: "flex",
+                                             flexDirection: "row",
+                                             justifyContent: "flex-start"}}>
+                                             {transformDate(message.time)}
+                                          </Box>
+                                       </Box>
+                                    </Box>
                                  </Box>
                               )}
                            </Box>
