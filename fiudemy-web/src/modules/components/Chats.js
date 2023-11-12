@@ -11,7 +11,9 @@ const Chats = () => {
          {
             id: '65501b55526e4efa99f694a1',
             user1: '65233646667fb42d32918fc7',
+            user1_name: 'andres',
             user2: '65386e58642f664c56ab800f',
+            user2_name: 'carlos',
             messages: [
                {
                   sender: '65233646667fb42d32918fc7',
@@ -37,7 +39,9 @@ const Chats = () => {
          {
             id: '65501b55526e4efa99f694a1',
             user1: '65233646667fb42d32918fc8',
+            user1_name: 'andres',
             user2: '65386e58642f664c56ab800f',
+            user2_name: 'diego',
             messages: [
                {
                   sender: '65233646667fb42d32918fc7',
@@ -77,7 +81,7 @@ const Chats = () => {
                         justifyContent: "center"
                      }}>
                         <AccountCircleIcon />
-                        {chat.user1}
+                        {chat.user2_name}
                      </Box>
                   ))}
             </Box>
@@ -95,7 +99,7 @@ const Chats = () => {
                         columnGap: "5px"
                         }}>
                         <AccountCircleIcon />
-                        {selectedChat.user1}
+                        {selectedChat.user2_name}
                      </Box>
                      <Box sx={{
                         paddingTop: "20px",
@@ -107,7 +111,7 @@ const Chats = () => {
                         {selectedChat.messages.map((message, index) => (
                            <Box key={index}>
                               <Typography>
-                                 {message.sender === '65233646667fb42d32918fc7' ? 'You: ' : `${selectedChat.user1}: `}
+                                 {message.sender === '65233646667fb42d32918fc7' ? 'You: ' : `${selectedChat.user2_name}: `}
                                  {message.message}
                               </Typography>
                            </Box>
