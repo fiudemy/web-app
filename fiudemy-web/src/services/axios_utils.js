@@ -88,3 +88,17 @@ export const getChats = async () => {
    }
 };
 
+export const sendMessage = async (chatId, messageData) => {
+   try {
+      const res = await axios.put(`https://fiudemy.onrender.com/chats/${chatId}/new_message`, messageData, {
+         headers: {
+            'Content-Type': 'application/json',
+         },
+      });
+      if (res.status === 200) {
+         console.log("Curso editado con éxito!");
+      }
+   } catch (error) {
+      console.error("Error al mandar el mensaje:", error);
+   }
+}

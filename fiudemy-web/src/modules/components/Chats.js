@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Box, List, ListItem, Typography } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AppAppBar from "../views/AppAppBar";
-import {getChats} from "../../services/axios_utils";
+import {getChats, sendMessage} from "../../services/axios_utils";
 import TextField from "@mui/material/TextField";
 import SendIcon from '@mui/icons-material/Send';
 import IconButton from "@mui/material/IconButton";
@@ -73,18 +73,23 @@ const Chats = () => {
       setSelectedChat(chat);
    };
 
-   const sendMessage = () => {
+   const handleSendMessage = async () => {
       console.log("Sending message");
       if (newMessage.trim() === '') {
          return;
       }
+      const chatData = {
+         "sender": localStorage.getItem("userId"),
+         "message": newMessage,
+      }
+      console.log(chatData);
       // Simulate API post request (replace this with your actual API call)
       const updatedChat = {
          ...selectedChat,
          messages: [
             ...selectedChat.messages,
             {
-               sender: '65233646667fb42d32918fc7', // Assuming the user is sending the message
+               sender: chatData["sender"], // Assuming the user is sending the message
                message: newMessage,
                last_modified: new Date().toISOString(),
                date_created: new Date().toISOString(),
@@ -92,6 +97,7 @@ const Chats = () => {
          ],
       };
       // Update the state with the new message
+      await sendMessage(selectedChat.id, chatData);
       setSelectedChat(updatedChat);
       setNewMessage('');
    }
@@ -166,7 +172,7 @@ const Chats = () => {
                            value={newMessage}
                            onChange={(e) => setNewMessage(e.target.value)}
                            sx={{width: "100%"}}/>
-                        <IconButton onClick={sendMessage}>
+                        <IconButton onClick={handleSendMessage}>
                            <SendIcon/>
                         </IconButton>
                      </Box>
