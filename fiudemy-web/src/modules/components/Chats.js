@@ -12,6 +12,7 @@ const Chats = () => {
    const [chatData, setChatsData] = useState(null);
    const [newMessage, setNewMessage] = useState('');
    const messagesContainerRef = useRef(null);
+   const currentUserId = localStorage.getItem("userId");
    useEffect(() => {
       const setChats = async () => {
          const chat = await getChats();
@@ -81,12 +82,11 @@ const Chats = () => {
    };
 
    const handleSendMessage = async () => {
-      console.log("Sending message");
       if (newMessage.trim() === '') {
          return;
       }
       const chatData = {
-         "sender": localStorage.getItem("userId"),
+         "sender": currentUserId,
          "message": newMessage,
       }
       console.log(chatData);
@@ -167,7 +167,7 @@ const Chats = () => {
                         {selectedChat.messages.map((message, index) => (
                            <Box key={index}>
                               <Typography>
-                                 {message.sender === '65233646667fb42d32918fc7' ? 'You: ' : `${selectedChat.user2_name}: `}
+                                 {message.sender === currentUserId ? 'You: ' : `${selectedChat.user2_name}: `}
                                  {message.message}
                               </Typography>
                            </Box>
