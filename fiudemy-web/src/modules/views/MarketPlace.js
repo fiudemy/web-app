@@ -108,11 +108,11 @@ const MarketPopupBody = ({course}) => {
         </Typography>
         <Typography>{course.hours + " horas"}</Typography>
         <Button variant="contained" color="success" sx={{ mt: 6, width: '40%', color: '#fff' }} onClick={handleClick}>
-          Comprar
+          Pagar
         </Button>
         <Dialog open={open} maxWidth="md" fullWidth={true} fullHeight={true} sx={{ width: '50%', height: '100%', margin: 'auto'}}>
         <Elements stripe={stripePromise} options={options}>
-          <PaymentForm stripe={stripePromise} courseId={course.id}/>
+          <PaymentForm courseId={course.id}/>
         </Elements>
         </Dialog>
       </DialogContent>
@@ -120,9 +120,8 @@ const MarketPopupBody = ({course}) => {
   );
 };
 
-const PaymentForm = ({stripe, courseId}) => {
+const PaymentForm = ({courseId}) => {
   const navigate = useNavigate();
-  const elements = useElements();
   const [formError, setFormError] = useState(null);
   const formContainerStyles = {
     width: '540px', // Ancho del 100% del contenedor padre
@@ -134,7 +133,6 @@ const PaymentForm = ({stripe, courseId}) => {
   };
 
   const handlePay = (courseId) => {
-    console.log("course is ", courseId );
     const paymentData = {
       user_id: localStorage.getItem('userId'),
       course_id: courseId,
@@ -170,7 +168,7 @@ const PaymentForm = ({stripe, courseId}) => {
         ¡Que disfrute su compra!
     </Typography>
     {formError && <Typography variant="body2" color="error" >{formError}</Typography>}
-    <Button variant="contained" color="success" sx={{ mt: 1, color: '#fff' }} onClick={handlePay(courseId)}>
+    <Button variant="contained" color="success" sx={{ mt: 1, color: '#fff' }} onClick={() => handlePay(courseId)}>
       Pagar
     </Button>
     </div>
