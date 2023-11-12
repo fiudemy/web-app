@@ -21,7 +21,6 @@ export default function TeacherHome() {
         const response = await getCourses();
         if (Array.isArray(response.results)) {
           const courses = response.results;
-          console.log(courses)
           const teacherEmail = localStorage.getItem("email");
           if (teacherEmail) {
             const filteredCourses = courses
@@ -33,8 +32,8 @@ export default function TeacherHome() {
                 category : filteredCourse.category,
                 price: filteredCourse.price,
                 hours: filteredCourse.hours,
+                sections: filteredCourse.sections,
               }));
-            console.log(filteredCourses)
             setCursos(filteredCourses);
           }
         }
@@ -49,7 +48,6 @@ export default function TeacherHome() {
   const handleAddCourse = () => {
     //const datateacher = JSON.parse(localStorage.getItem('teacherData'))
     const teacherEmail = localStorage.getItem("email");
-    console.log(newCourse);
     if (newCourse.name && newCourse.description) {
       createCourse({
         title: newCourse.name,
