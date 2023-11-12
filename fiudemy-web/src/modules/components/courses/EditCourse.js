@@ -15,10 +15,21 @@ import { FormControl } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import {useNavigate} from "react-router-dom";
 
+
+
+    
+
 function EditCourse() {
     const { courseId } = useParams();
     const [editedCourse, setEditedCourse] = useState(null);
-    const [moduleCount, setModuleCount] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const openAddModuleModal = () => {
+        setIsModalOpen(true);
+    };
+    const closeAddModuleModal = () => {
+        setIsModalOpen(false);
+    };
+
 
     useEffect(() => {
         console.log("entra useffect");
@@ -28,7 +39,7 @@ function EditCourse() {
                 if (response) {
                     console.log("]response", response);
                     setEditedCourse(response);
-                    setModuleCount(response.sections.length);
+                    // setModuleCount(response.sections.length);
                 }
             } catch (error) {
                 console.error(error);
@@ -72,9 +83,6 @@ function EditCourse() {
 
     }
 
-    const addModule = () => {
-        setModuleCount(moduleCount + 1);
-      };
 
 
     const setSectionValue = (index, key, value) => {
@@ -82,12 +90,17 @@ function EditCourse() {
         newSections[index][key] = value;
         setEditedCourse({ ...editedCourse, sections: newSections });
     }
+
+    const handleAgregarModulo = async (courseId, newModule) => {
+        console.log("new module is ", newModule);   
+        editedCourse.sections.push(newModule);
+    }
+    
     
     return (
         <>
             <AppAppBar showsSignInOptions={false}/>
-            <Paper sx={{ position: 'absolute', width: 900, top: '70%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-                <Box sx={{ p: 2 }}>
+            <Paper sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', padding: '20px' }}>                <Box sx={{ p: 2 }}>
                     <Typography variant="h6" marked={'left'} sx={{ mb: 2 }}>
                         Editar curso
                     </Typography>
@@ -167,27 +180,6 @@ function EditCourse() {
                             </Paper>
                         </div>
                         ))}
-                        {/* <Box sx={{ marginTop: '10px',marginBottom: '30px' }}>
-                            <Typography variant="h6" marked={'left'}>
-                                Añadir nuevo módulo
-                            </Typography>
-                            <Paper sx={{ p: 2, maxWidth: 350 }}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={openModal}
-                                    style={{
-                                        borderRadius: '50%',
-                                        width: '50px',
-                                        height: '50px',
-                                        minWidth: 0,
-                                        padding: 0,
-                                    }}
-                                >
-                                    <AddIcon />
-                                </Button>
-                            </Paper>
-                        </Box> */}
                         <Box sx={{ marginTop: '10px', marginBottom: '30px' }}>
                             <Typography variant="h6" marked={'left'}>
                                 Añadir nuevo módulo
@@ -197,7 +189,7 @@ function EditCourse() {
                                 <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={addModule}
+                                onClick={openAddModuleModal}
                                 style={{
                                     borderRadius: '50%',
                                     width: '50px',
@@ -210,6 +202,7 @@ function EditCourse() {
                                 </Button>
                             </Paper>
                         </Box>
+
                     <div>
                         <Button variant="contained" color="primary" onClick={() => { handleGuardarCambios(); }}>
                             Guardar Cambios
@@ -217,6 +210,12 @@ function EditCourse() {
                     </div>
                 </Box>
             </Paper>
+            <NewModuleModal
+                open={isModalOpen}
+                onClose={closeAddModuleModal}
+                onAddModule={handleAgregarModulo}
+                courseId = {courseId}
+            />
        
         </>
     );
