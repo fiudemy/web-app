@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Box, List, ListItem, Typography } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AppAppBar from "../views/AppAppBar";
+import {getChats} from "../../services/axios_utils";
+import TextField from "@mui/material/TextField";
+import SendIcon from '@mui/icons-material/Send';
+import IconButton from "@mui/material/IconButton";
 
 const Chats = () => {
    const [selectedChat, setSelectedChat] = useState(null);
-
-   const chatData = {
+   const [chatData, setChatsData] = useState(null);
+   const [newMessage, setNewMessage] = useState('');
+   useEffect(() => {
+      const setChats = async () => {
+         const chat = await getChats();
+         setChatsData(chat);
+         console.log(chat);
+      }
+      setChats();
+   }, []);
+   /*const chatData = {
       results: [
          {
             id: '65501b55526e4efa99f694a1',
@@ -55,11 +68,37 @@ const Chats = () => {
          // Add more conversations as needed
       ],
    };
-
+*/
    const handleChatSelection = (chat) => {
       setSelectedChat(chat);
    };
 
+   const sendMessage = () => {
+      console.log("Sending message");
+      if (newMessage.trim() === '') {
+         return;
+      }
+      // Simulate API post request (replace this with your actual API call)
+      const updatedChat = {
+         ...selectedChat,
+         messages: [
+            ...selectedChat.messages,
+            {
+               sender: '65233646667fb42d32918fc7', // Assuming the user is sending the message
+               message: newMessage,
+               last_modified: new Date().toISOString(),
+               date_created: new Date().toISOString(),
+            },
+         ],
+      };
+      // Update the state with the new message
+      setSelectedChat(updatedChat);
+      setNewMessage('');
+   }
+
+   if (!chatData) {
+      return <div> Loading </div>
+   }
    return (
       <Box >
          <AppAppBar showsSignInOptions={false} isProfessor={false} isChat={true}/>
@@ -88,7 +127,7 @@ const Chats = () => {
             {/* Right side - Display selected chat */}
             <Box flex={1} p={3}>
                {selectedChat && (
-                  <Box>
+                  <Box sx={{display: "flex", flexDirection: "column", justifyContent: "space-between", height: "80vh"}}>
                      <Box sx={{
                         fontVariant:"h5",
                         height: "50px",
@@ -96,7 +135,8 @@ const Chats = () => {
                         display: "flex",
                         alignItems: "center",
                         paddingLeft: "20px",
-                        columnGap: "5px"
+                        columnGap: "5px",
+                        fontWeight: "bold"
                         }}>
                         <AccountCircleIcon />
                         {selectedChat.user2_name}
@@ -116,6 +156,19 @@ const Chats = () => {
                               </Typography>
                            </Box>
                         ))}
+                     </Box>
+                     <Box sx={{display: "flex", flexDirection: "row"}}>
+                        <TextField
+                           id="standard-search"
+                           type="search"
+                           label="Escribe un mensaje..."
+                           variant="standard"
+                           value={newMessage}
+                           onChange={(e) => setNewMessage(e.target.value)}
+                           sx={{width: "100%"}}/>
+                        <IconButton onClick={sendMessage}>
+                           <SendIcon/>
+                        </IconButton>
                      </Box>
                   </Box>
                )}

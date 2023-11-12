@@ -75,3 +75,16 @@ export const getCourses = async () => {
       console.error("Error al obtener los cursos:", error);
     }
   };
+
+export const getChats = async () => {
+   try {
+      const userId = localStorage.getItem("userId");
+      const res = await axios.get(`https://fiudemy.onrender.com/chats?user_id=${userId}&ascending=true`);
+      if (res.status === 200) {
+         return res.data;
+      }
+   } catch (error) {
+      console.error("Error al obtener los cursos:", error);
+   }
+};
+
