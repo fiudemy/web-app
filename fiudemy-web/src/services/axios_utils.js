@@ -75,3 +75,16 @@ export const getCourses = async () => {
       console.error("Error al obtener los cursos:", error);
     }
   };
+
+
+export const getCourseById = async (id) => {
+    try {
+        const res = await axios.get(`https://fiudemy.onrender.com/courses/` + id);
+        if (res.status === 200) {
+            console.log("data api", res.data);
+            return res.data;
+        }
+    } catch (error) {
+        console.error("Error al obtener el curso:", error);
+    }
+}
