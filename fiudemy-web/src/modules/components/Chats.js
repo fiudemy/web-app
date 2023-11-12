@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, List, ListItem, Typography } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AppAppBar from "../views/AppAppBar";
 
 const Chats = () => {
@@ -15,6 +16,18 @@ const Chats = () => {
                {
                   sender: '65233646667fb42d32918fc7',
                   message: 'hola',
+                  last_modified: '2023-11-12T00:24:53.014000',
+                  date_created: '2023-11-12T00:24:53.014000',
+               },
+               {
+                  sender: '65386e58642f664c56ab800f',
+                  message: 'como andas?',
+                  last_modified: '2023-11-12T00:24:53.014000',
+                  date_created: '2023-11-12T00:24:53.014000',
+               },
+               {
+                  sender: '65233646667fb42d32918fc7',
+                  message: 'bn vos?',
                   last_modified: '2023-11-12T00:24:53.014000',
                   date_created: '2023-11-12T00:24:53.014000',
                },
@@ -44,36 +57,63 @@ const Chats = () => {
    };
 
    return (
-      <Box>
+      <Box >
          <AppAppBar showsSignInOptions={false} isProfessor={false} isChat={true}/>
          <Box display="flex">
             {/* Left side - List of people */}
-            <Box width={300} borderRight="1px solid #ccc">
-               <List>
+            <Box sx={{
+               width: "300px",
+               height: "100%",
+               display: "flex",
+               flexDirection: "column",
+               paddingTop: "25px",
+               rowGap: "25px"
+            }} borderRight="1px solid #ccc">
                   {chatData.results.map((chat) => (
-                     <ListItem key={chat.id} onClick={() => handleChatSelection(chat)}>
-                        <Typography>{chat.user1}</Typography>
-                     </ListItem>
+                     <Box key={chat.id} onClick={() => handleChatSelection(chat)} sx={{
+                        height: "50px",
+                        borderBottom: "1px solid #ccc",
+                        display: "flex",
+                        justifyContent: "center"
+                     }}>
+                        <AccountCircleIcon />
+                        {chat.user1}
+                     </Box>
                   ))}
-               </List>
             </Box>
-
             {/* Right side - Display selected chat */}
             <Box flex={1} p={3}>
                {selectedChat && (
-                  <div>
-                     <Typography variant="h5">Chat with {selectedChat.user1}</Typography>
-                     <List>
+                  <Box>
+                     <Box sx={{
+                        fontVariant:"h5",
+                        height: "50px",
+                        background: "#ff3567",
+                        display: "flex",
+                        alignItems: "center",
+                        paddingLeft: "20px",
+                        columnGap: "5px"
+                        }}>
+                        <AccountCircleIcon />
+                        {selectedChat.user1}
+                     </Box>
+                     <Box sx={{
+                        paddingTop: "20px",
+                        paddingLeft: "20px",
+                        display: "flex",
+                        flexDirection: "column",
+                        rowGap: "10px",
+                     }}>
                         {selectedChat.messages.map((message, index) => (
-                           <ListItem key={index}>
+                           <Box key={index}>
                               <Typography>
                                  {message.sender === '65233646667fb42d32918fc7' ? 'You: ' : `${selectedChat.user1}: `}
                                  {message.message}
                               </Typography>
-                           </ListItem>
+                           </Box>
                         ))}
-                     </List>
-                  </div>
+                     </Box>
+                  </Box>
                )}
             </Box>
          </Box>
