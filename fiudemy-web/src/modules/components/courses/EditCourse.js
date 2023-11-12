@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {useLocation, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -13,14 +13,14 @@ import {editCourse, getCourseById} from "../../../services/axios_utils";
 import AppAppBar from '../../views/AppAppBar';
 import { FormControl } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
-import {useNavigate} from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { YoutubeEmbed, getEmbeddedYoutubeUrl } from './YoutubeEmbed';
 
 
 
 export const ProfessorViewCourse = ({course, setEditMode}) => {
     //load the viewr of the course, wiht title description and rest of fields
-
+    
     return (
         <>
         <AppAppBar showsSignInOptions={false}/>
@@ -51,7 +51,11 @@ export const ProfessorViewCourse = ({course, setEditMode}) => {
                     <Typography >Descripción modulo</Typography>
                     <Typography >{section.description}</Typography>
                     <Typography >Video modulo</Typography>
-                    <Typography >{section.video_url}</Typography>
+                    {
+                        getEmbeddedYoutubeUrl(section.video_url) === null ?
+                        <Typography >{"Url de video invalido"}</Typography> :
+                    <YoutubeEmbed url={getEmbeddedYoutubeUrl(section.video_url)} />
+                    }
                     </Paper>
                 </div>
             ))}
@@ -61,6 +65,8 @@ export const ProfessorViewCourse = ({course, setEditMode}) => {
             </Button>
         </Box>
         </Paper>
+
+        
 
         </>
 
