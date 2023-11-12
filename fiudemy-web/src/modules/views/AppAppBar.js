@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // Icono de usuario
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import * as React from 'react';
 import AppBar from '../components/AppBar';
 import Toolbar from '../components/Toolbar';
@@ -23,6 +24,9 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
 
   const handleIconClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+  const handleChatClick = (event) => {
+    navigate('/chats')
   };
 
   const handleClose = () => {
@@ -101,6 +105,13 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
           <Box sx={{flex:1, display : 'flex', justifyContent : 'flex-end', alignItems: "center" }}>
           <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+              <IconButton
+                 color="inherit"
+                 onClick={handleChatClick}
+                 aria-describedby={anchorEl ? 'user-menu' : undefined}
+              >
+                <ChatBubbleIcon />
+              </IconButton>
                 <IconButton
                     color="inherit"
                     onClick={handleIconClick}
