@@ -76,12 +76,48 @@ export const getCourses = async () => {
     }
   };
 
-
 export const getCourseById = async (id) => {
     try {
         const res = await axios.get(`https://fiudemy.onrender.com/courses/` + id);
         if (res.status === 200) {
-            console.log("data api", res.data);
+            return res.data;
+        }
+    } catch (error) {
+        console.error("Error al obtener el curso:", error);
+    }
+}
+
+
+export const getChats = async () => {
+   try {
+      const userId = localStorage.getItem("userId");
+      const res = await axios.get(`https://fiudemy.onrender.com/chats?user_id=${userId}&ascending=true`);
+      if (res.status === 200) {
+         return res.data;
+      }
+   } catch (error) {
+      console.error("Error al obtener los cursos:", error);
+   }
+};
+
+export const sendMessage = async (chatId, messageData) => {
+   try {
+      const res = await axios.put(`https://fiudemy.onrender.com/chats/${chatId}/new_message`, messageData, {
+         headers: {
+            'Content-Type': 'application/json',
+         },
+      });
+      if (res.status === 200) {
+         console.log("Curso editado con éxito!");
+      }
+   } catch (error) {
+      console.error("Error al mandar el mensaje:", error);
+   }
+}
+export const getStudentViewedSections= async (user_id, course_id) => {
+    try {
+        const res = await axios.get(`https://fiudemy.onrender.com/progress?user_id=` + user_id + `&course_id=` + course_id);
+        if (res.status === 200) {
             return res.data;
         }
     } catch (error) {
@@ -90,15 +126,15 @@ export const getCourseById = async (id) => {
 }
 
 export const getEvaluations = async (CourseId) => {
-    try {
-        const res = await axios.get(`https://fiudemy.onrender.com/evaluations?=${CourseId}`);
-        if (res.status === 200) {
-            console.log("data api", res.data);
-            return res.data;
-        }
-    } catch (error) {
-        console.error("Error al obtener el curso:", error);
-    }
+  try {
+      const res = await axios.get(`https://fiudemy.onrender.com/evaluations?=${CourseId}`);
+      if (res.status === 200) {
+          console.log("data api", res.data);
+          return res.data;
+      }
+  } catch (error) {
+      console.error("Error al obtener el curso:", error);
+  }
 }
 
 export const saveEvaluation = async (formData) => {
@@ -116,3 +152,19 @@ export const saveEvaluation = async (formData) => {
       console.error("Error al crear la Evaluacion:", error);
     }
   };
+export const setSectionWiewStatus = async (formData, status) => {
+    try {
+        const url = "https://fiudemy.onrender.com/progress/" + (status === false ? "not_completed" : "completed");        console.log("url", url);
+        const res = await axios.post(url, formData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (res.status === 201) {
+          console.log("Estado de visualizacion de seccion cambiado con éxito!");
+        }
+      } catch (error) {
+        console.error("Error al cambiar estado de visualizacion de seccion:", error);
+      }
+}
+

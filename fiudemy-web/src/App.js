@@ -10,6 +10,7 @@ import SignIn from "./modules/views/SignIn/SignInScreen";
 import SignUp from "./modules/views/SignUp/SignUpScreen";
 import StudentHome from './modules/views/StudentHome';
 import withRoot from './modules/withRoot';
+import Chats from "./modules/components/Chats";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path="/marketplace" element={<MarketPlace/>}/>
               <Route path="/Evaluations/:courseId" element={<MyEvaluations/>}/>
               <Route path="/course" element={<CourseHome/>}/>
+              <Route path="/chats" element={<Chats/>}/>
               <Route path="*" element={<ProductDescription/>}/>
             </Routes>
           </BrowserRouter>
