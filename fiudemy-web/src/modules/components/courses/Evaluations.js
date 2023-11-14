@@ -28,19 +28,26 @@ function StudentAnswer({ studentName, answer, onFeedbackChange, onSaveFeedback }
           <Typography>{studentName}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>{answer.text}</Typography>
-          <TextField
-            label="Devolución del profesor"
-            value={feedback}
-            fullWidth
-            multiline
-            rows={4}
-            onChange={handleFeedbackChange}
-            sx={{ mb: 2 }}
-          />
-          <Button variant="contained" color="primary" onClick={handleSaveFeedback}>
-            Guardar devolución
-          </Button>
+        <Typography>{answer.text}</Typography>
+
+          { answer.counterresponse ?
+            <Typography sx={{ ml:3}}>{answer.counterresponse}</Typography>
+            : (
+              <>
+              <TextField
+                label="Devolución del profesor"
+                value={feedback}
+                fullWidth
+                multiline
+                rows={4}
+                onChange={handleFeedbackChange}
+                sx={{ mb: 2, ml:3 }}
+              />
+              <Button variant="contained" color="primary" onClick={handleSaveFeedback}>
+                Guardar devolución
+              </Button>
+          </>
+          )}
         </AccordionDetails>
       </Accordion>
     </Box>
@@ -61,6 +68,8 @@ function EvaluationItem({ title, prompt, answers }) {
     console.log(`Guardando devolución para respuesta ${answerId}: ${feedback}`);
   };
 
+ 
+
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -72,16 +81,12 @@ function EvaluationItem({ title, prompt, answers }) {
         </Box>
       </AccordionSummary>
       <AccordionDetails>
-        <TextField
-          label="Descripción del curso"
-          value={prompt}
-          fullWidth
-          multiline
-          rows={4}
-          sx={{ mb: 2 }}
-        />
-        {/* Renderizar las respuestas de los alumnos */}
-        {answers.map((answer, index) => (
+      < Typography sx={{ mb: 1, fontWeight: 'bold' }}>Descripción de la evaluación</Typography>
+
+        < Typography sx={{ mb: 5, ml:1}}>{prompt}</Typography>
+        {
+        
+        answers? answers.map((answer, index) => (
           <StudentAnswer
             key={index}
             studentName={answer.studentName}
@@ -89,7 +94,8 @@ function EvaluationItem({ title, prompt, answers }) {
             onFeedbackChange={handleFeedbackChange}
             onSaveFeedback={handleSaveFeedback}
           />
-        ))}
+        )) : <div>No hay respuestas aún</div>
+        }
       </AccordionDetails>
     </Accordion>
   );
@@ -107,7 +113,7 @@ function EvaluationsView({ evaluations, openModal}) {
           key={'a'}
           title={evaluation.title}
           prompt={evaluation.question}
-          answers={[]}
+          answers={evaluation.answers}
         />
       ))}
       <Box sx={{ marginTop: '20px' ,textAlign  : 'center'}}>
