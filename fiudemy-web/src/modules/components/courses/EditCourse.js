@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
-import {InputLabel, MenuItem, Select} from "@mui/material";
+import { InputLabel, MenuItem, Select} from "@mui/material";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import NewModuleModal from "./NewModuleModal";
@@ -15,6 +15,7 @@ import { FormControl } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { YoutubeEmbed, getEmbeddedYoutubeUrl } from './YoutubeEmbed';
+import { StudentViewCourse } from './StudentViewCourse';
 
 
 
@@ -24,48 +25,101 @@ export const ProfessorViewCourse = ({course, setEditMode}) => {
     return (
         <>
         <AppAppBar showsSignInOptions={false}/>
-        <Paper sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', padding: '20px' }}>                
-        <Box sx={{ p: 2 }}>
-            <Typography variant="h6" marked={'left'}>
-                {course.title}
+        {/* Main content */}
+      <Paper
+        sx={{ padding: 3, border: '2px solid #e0e0e0', borderRadius: 12, m: 3, p:5 }}
+      >
+        {/* Course Title and Logo */}
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 3 }}>
+          {/* Course Logo */}
+          {/* <img src={course.logo} alt="Course Logo" style={{ marginRight: 10, width: 60, height: 60 }} /> */}
+
+          {/* Course Title */}
+          <Typography variant="h4" component="div">
+            {course.title}
+          </Typography>
+        </Box>
+
+        {/* Course Details */}
+        <Box
+        sx={{
+            '& > :not(style) + :not(style)': {
+            marginTop: '8px', // Add margin to separate each pair of Typography components
+            },
+        }}
+        >
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                Descripción:
             </Typography>
-            <Typography >Descripción:</Typography>
-            <Typography >{course.description}</Typography>
-            <Typography >Categoría:</Typography>
-            <Typography >{course.category}</Typography>
-            <Typography >Precio</Typography>
-            <Typography >{course.price}</Typography>
-            <Typography >Horas</Typography>
-            <Typography >{course.hours}</Typography>
-            <Typography >Activo</Typography>
-            <Typography >{course.active}</Typography>
-            <Typography variant="h6" marked={'left'}>
-                Modulos
+            <Typography sx={{ paddingBottom: '8px' }}>
+                {course.description}
             </Typography>
-            {course.sections && course.sections.map((section, index) => (
-                <div key={index}>
-                    <Typography variant="h6" marked={'left'}>
-                    {section.title}
-                    </Typography>
-                    <Paper sx={{ p: 2, maxWidth: 350 }}>
-                    <Typography >Descripción modulo</Typography>
-                    <Typography >{section.description}</Typography>
-                    <Typography >Video modulo</Typography>
-                    {
-                        getEmbeddedYoutubeUrl(section.video_url) === null ?
-                        <Typography >{"Url de video invalido"}</Typography> :
-                    <YoutubeEmbed url={getEmbeddedYoutubeUrl(section.video_url)} />
-                    }
-                    </Paper>
-                </div>
-            ))}
-            <Button variant="contained" color="primary" onClick={() => { setEditMode(true) }}>
-                Editar Curso
-                
-            </Button>
+
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                Categoría:
+            </Typography>
+            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                {course.category}
+            </Typography>
+
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                Precio:
+            </Typography>
+            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                {course.price}
+            </Typography>
+
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                Horas:
+            </Typography>
+            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                {course.hours}
+            </Typography>
+
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                Activo:
+            </Typography>
+            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                {course.active}
+        </Typography>
         </Box>
         </Paper>
+        <Paper
+        sx={{ padding: 3, border: '2px solid #e0e0e0', borderRadius: 12, m: 3, p: 5 }}
+      >
+        {course.sections &&
+          course.sections.map((section, index) => (
+            <div key={index} style={{ marginBottom: 80 }}>
+              <Typography variant="h4" marked="left" sx={{ borderBottom: '2px solid #e0e0e0', paddingBottom: 1, marginBottom: 3 }}>
+                {section.title}
+              </Typography>
+              <Box
+                elevation={3} // Add shadow
+                sx={{ padding: 2, maxWidth: "80 %", marginBottom: 5, '& > :not(style) + :not(style)': {
+                    marginTop: '8px', // Add margin to separate each pair of Typography components
+                    } }}
+              >
+                <Typography variant="body1" sx={{ fontWeight: 'bold'}}>Descripción del módulo:</Typography>
+                <Typography variant="body2" paragraph>
+                  {section.description}
+                </Typography>
+                
+                {getEmbeddedYoutubeUrl(section.video_url) === null ? (
+                  <Typography variant="body2">Url de video inválido</Typography>
+                ) : (
+                    <Box sx={{ marginTop: 3, marginBottom: 3 }}>
+                  <YoutubeEmbed url={getEmbeddedYoutubeUrl(section.video_url)} />
+                    </Box>
+                )}
+              </Box>
+            </div>
+          ))}
 
+        {/* Edit Button */}
+        <Button variant="contained" color="primary" onClick={() => setEditMode(true)} sx={{ marginTop: 3 }}>
+          Editar Curso
+        </Button>
+        </Paper>
         
 
         </>
@@ -110,6 +164,11 @@ export const ViewCourse = () => {
             <ProfessorViewCourse course={course} setEditMode={setEditMode}/>
         );
     
+    }
+    else {
+        return (
+            <StudentViewCourse course={course}/>
+        );
     }
 
     
@@ -183,7 +242,6 @@ function EditCourse({course, courseId, setEditMode}) {
     }
 
     const handleAgregarModulo = async (courseId, newModule) => {
-        console.log("new module is ", newModule);   
         editedCourse.sections.push(newModule);
     }
     
