@@ -34,11 +34,34 @@ const changeSectionViewStatus = (section, course, completedSectionsIds, setViewe
     }
 };
 
+export const getStudentResponseFromEvaluation = (evaluation) => {
+    const userID = localStorage.getItem('userId');
+    if (!evaluation.responses) {
+      return "Agrega una respuesta para la evaluacion!";
+     }
+    const res = evaluation.responses.find((response) => response.user_id === userID);
+    if (!res) {
+        return "Agrega una respuesta para la evaluacion!";
+    }
+    return res.answer;
+}
+
+export const getTeacherResponseFromEvaluation = (evaluation) => {
+    const userID = localStorage.getItem('userId');
+    if (!evaluation.responses) {
+      return "El profesor no ha respondido aún";
+    }
+    const res = evaluation.responses.find((response) => response.user_id === userID);
+    if (!res.counterresponse) {
+        return "El profesor no ha respondido aún";
+    }
+    return res.counterresponse;
+}
+
 export const StudentViewCourse = ({course, setEditMode}) => {
     const [answer, setAnswer] = useState({});
-    const [oldAnswers,setOldAnswers] = useState(null)
     const [completedSectionsIds, setViewedSections] = useState(null);
-    const[evaluations,setEvaluations] = useState([])
+    const[evaluations,setEvaluations] = useState([]);
 
     const handleEnviar = (evaluationId) => {
         const res = answer[evaluationId];
@@ -202,19 +225,44 @@ export const StudentViewCourse = ({course, setEditMode}) => {
                 <Typography variant="body2" paragraph>
                   {evaluation.question}
                 </Typography>
-                <TextField
-                    label="Respuesta"
-                    value = "respuesta"
-                    onChange={(e) => handleAnswerChange(evaluation.id, e.target.value)}
-                    fullWidth
-                    multiline
-                    rows={4}
-                    sx={{ mb: 2 }}
-                    />
-                
-                <Button variant="contained" color="primary" onClick={() => handleEnviar(evaluation.id)}>
-                    Enviar
-                </Button>
+                <Box sx={{ marginTop: 3, marginBottom: 3, marginLeft: 3 }}>
+                <Typography variant="body1" sx={{ fontWeight: 'bold', marginBottom: 3,}}>Respuesta del Estudiante:</Typography>
+
+                { evaluation.responses && evaluation.responses.find((response) => response.user_id === localStorage.getItem('userId')) ? (
+                  <Typography variant="body2" paragraph>
+                    {getStudentResponseFromEvaluation(evaluation)}
+                  </Typography>
+                ) : (
+                  <>
+                  <TextField
+                      label="Respuesta"
+                      value = {getStudentResponseFromEvaluation(evaluation)}
+                      onChange={(e) => handleAnswerChange(evaluation.id, e.target.value)}
+                      fullWidth
+                      multiline
+                      rows={4}
+                      sx={{ mb: 2 }}
+                      />
+                  <Button variant="contained" color="primary" onClick={() => handleEnviar(evaluation.id)}>
+                      Enviar
+                  </Button>
+                  </>
+                )}
+                </Box>
+
+                { evaluation.responses && evaluation.responses.find((response) => response.user_id === localStorage.getItem('userId')) ? (
+
+
+                <Box sx={{ marginTop: 3, marginBottom: 3, marginLeft: 5 }}>
+                  <Typography variant="body1" sx={{ fontWeight: 'bold'}}>Respuesta del Profesor:</Typography>
+                  <Typography variant="body2" paragraph>
+                    {getTeacherResponseFromEvaluation(evaluation)}
+                  </Typography>
+                </Box>
+                ) : (
+                  null
+                )}
+
               </Box>
 
 
