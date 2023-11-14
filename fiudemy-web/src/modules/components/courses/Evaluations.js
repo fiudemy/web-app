@@ -103,6 +103,14 @@ function EvaluationsView({ evaluations }) {
           answers={evaluation.answers}
         />
       ))}
+      <Box sx={{ marginTop: '20px' ,textAlign  : 'center'}}>
+        <Button variant="contained" color="primary" sx={{ mb: 2 }}>
+          Guardar Cambios
+        </Button>
+        <Button variant="contained" color="primary" sx={{ mb: 2, marginLeft: 2 }}>
+          Añadir Evaluación
+        </Button>
+      </Box>
     </Box>
   );
 }
