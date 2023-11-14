@@ -119,7 +119,7 @@ export const ProfessorViewCourse = ({course, setEditMode}) => {
         <Button variant="contained" color="primary" onClick={() => setEditMode(true)} sx={{ marginTop: 3 }}>
           Editar Curso
         </Button>
-      </Paper>
+        </Paper>
         
 
         </>

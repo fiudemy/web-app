@@ -80,7 +80,6 @@ export const getCourseById = async (id) => {
     try {
         const res = await axios.get(`https://fiudemy.onrender.com/courses/` + id);
         if (res.status === 200) {
-            console.log("data api", res.data);
             return res.data;
         }
     } catch (error) {
@@ -118,7 +117,6 @@ export const getStudentViewedSections= async (user_id, course_id) => {
     try {
         const res = await axios.get(`https://fiudemy.onrender.com/progress?user_id=` + user_id + `&course_id=` + course_id);
         if (res.status === 200) {
-            console.log("data api", res.data);
             return res.data;
         }
     } catch (error) {
@@ -128,7 +126,7 @@ export const getStudentViewedSections= async (user_id, course_id) => {
 
 export const setSectionWiewStatus = async (formData, status) => {
     try {
-        const url = "https://fiudemy.onrender.com/progress/" + status === false ? "not_completed" : "completed";
+        const url = "https://fiudemy.onrender.com/progress/" + (status === false ? "not_completed" : "completed");        console.log("url", url);
         const res = await axios.post(url, formData, {
           headers: {
             'Content-Type': 'application/json',
