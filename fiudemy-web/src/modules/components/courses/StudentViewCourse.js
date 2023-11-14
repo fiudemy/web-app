@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import React, { useEffect, useState } from 'react';
+import { getEvaluations } from "../../../services/axios_utils";
 
-import Button from "@mui/material/Button";
-
+import { Button, TextField } from "@mui/material";
 import AppAppBar from '../../views/AppAppBar';
 
-import { YoutubeEmbed, getEmbeddedYoutubeUrl } from './YoutubeEmbed';
 import Checkbox from '@mui/material/Checkbox';
 import { getStudentViewedSections, setSectionWiewStatus } from '../../../services/axios_utils';
+import { YoutubeEmbed, getEmbeddedYoutubeUrl } from './YoutubeEmbed';
 
 const wasSectionCompletedByStudent = (section, completedSectionsIds) => (
     completedSectionsIds.includes(section.id)
@@ -35,7 +35,24 @@ const changeSectionViewStatus = (section, course, completedSectionsIds, setViewe
 };
 
 export const StudentViewCourse = ({course, setEditMode}) => {
+    const [answer, setAnswer] = useState({});
+    const [oldAnswers,setOldAnswers] = useState(null)
     const [completedSectionsIds, setViewedSections] = useState(null);
+    const[evaluations,setEvaluations] = useState([])
+
+    const handleEnviar = (evaluationId) => {
+        const res = answer[evaluationId];
+        const userID = localStorage.getItem('userId');
+        console.log('Enviando respuesta a la API:', res, 'para la evaluación con ID:', evaluationId, 'user id', userID);
+
+    }
+
+    const handleAnswerChange = (evaluationId, value) => {
+        setAnswer((prevRespuestas) => ({
+          ...prevRespuestas,
+          [evaluationId]: value,
+        }));
+      };
     useEffect(() => {
         const fetchViewedSections = async () => {
             try {
@@ -50,12 +67,23 @@ export const StudentViewCourse = ({course, setEditMode}) => {
         fetchViewedSections();
     }, [course]);
 
-    if (!course || !completedSectionsIds) {
+    useEffect(() => {
+        const fetchEvaluations = async () => {
+          try{
+            const res = await getEvaluations(course.id);
+            setEvaluations(res.results)
+          }catch(error){
+            console.log(error)
+          }
+        }
+        fetchEvaluations()
+      }, [course.id]);
+
+    if (!course || !completedSectionsIds || !evaluations) {
         return <div>Loading...</div>;
     }
 
-    console.log("viewed sections", completedSectionsIds);
-
+    
 
     return (
         <>
@@ -155,7 +183,46 @@ export const StudentViewCourse = ({course, setEditMode}) => {
 
         </Paper>
 
+        <Paper
+        sx={{ padding: 3, border: '2px solid #e0e0e0', borderRadius: 12, m: 3, p: 5 }}
+        > 
+        {evaluations &&
+          evaluations.map((evaluation) => (
+            <div key={evaluation.title} style={{ marginBottom: 80 }}>
+              <Typography variant="h5" marked="left" sx={{ borderBottom: '2px solid #e0e0e0', paddingBottom: 1, marginBottom: 3 }}>
+                {evaluation.title}
+              </Typography>
+              <Box
+                elevation={3} // Add shadow
+                sx={{ padding: 2, maxWidth: "80 %", marginBottom: 5, '& > :not(style) + :not(style)': {
+                    marginTop: '8px', // Add margin to separate each pair of Typography components
+                    } }}
+              >
+                <Typography variant="body1" sx={{ fontWeight: 'bold'}}>Consigna de la Evaluacion:</Typography>
+                <Typography variant="body2" paragraph>
+                  {evaluation.question}
+                </Typography>
+                <TextField
+                    label="Respuesta"
+                    value = "respuesta"
+                    onChange={(e) => handleAnswerChange(evaluation.id, e.target.value)}
+                    fullWidth
+                    multiline
+                    rows={4}
+                    sx={{ mb: 2 }}
+                    />
+                
+                <Button variant="contained" color="primary" onClick={() => handleEnviar(evaluation.id)}>
+                    Enviar
+                </Button>
+              </Box>
 
+
+
+            </div>
+            ))}
+
+        </Paper>
         
 
         </>
