@@ -1,18 +1,19 @@
-import * as React from 'react';
-import { styled, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { NestedList } from './ListItemsCourse';
-import theme from '../../../modules/theme';
+import MenuIcon from '@mui/icons-material/Menu';
+import MuiAppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import MuiDrawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
+import List from '@mui/material/List';
+import { styled, ThemeProvider } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import * as React from 'react';
+import theme from '../../../modules/theme';
+import { NestedList } from './ListItemsCourse';
+import { NestedListEvaluations } from './ListItemsEvaluations';
 
 const drawerWidth = 240;
 
@@ -60,7 +61,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export const CourseToolBar = () => {
+export const CourseToolBar = ({isEvaluation}) => {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -113,7 +114,7 @@ export const CourseToolBar = () => {
           </Toolbar>
           <Divider />
           <List component="nav" sx={{ minWidth: '200px' }}>
-            <NestedList />
+          {isEvaluation ? <NestedListEvaluations/> : <NestedList />}
           </List>
         </Drawer>
         <Box

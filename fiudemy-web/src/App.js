@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignIn from "./modules/views/SignIn/SignInScreen";
-import SignUp from "./modules/views/SignUp/SignUpScreen";
+import { ViewCourse } from "./modules/components/courses/EditCourse";
+import MyEvaluations from './modules/components/courses/Evaluations';
+import CourseHome from './modules/views/Courses/CourseHomeScreen';
+import MarketPlace from './modules/views/MarketPlace';
 import ProductDescription from './modules/views/ProductDescription';
 import ProfessorHome from './modules/views/ProfessorHome';
+import SignIn from "./modules/views/SignIn/SignInScreen";
+import SignUp from "./modules/views/SignUp/SignUpScreen";
 import StudentHome from './modules/views/StudentHome';
-import MarketPlace from './modules/views/MarketPlace';
-import CourseHome from './modules/views/Courses/CourseHomeScreen';
 import withRoot from './modules/withRoot';
-import EditCourse, { ViewCourse } from "./modules/components/courses/EditCourse";
 import Chats from "./modules/components/Chats";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
               <Route path="/professor-home" element={<ProfessorHome/>}/>
               <Route path="/courses/:courseId" element={<ViewCourse/>}/>
               <Route path="/marketplace" element={<MarketPlace/>}/>
+              <Route path="/Evaluations/:courseId" element={<MyEvaluations/>}/>
               <Route path="/course" element={<CourseHome/>}/>
               <Route path="/chats" element={<Chats/>}/>
               <Route path="*" element={<ProductDescription/>}/>

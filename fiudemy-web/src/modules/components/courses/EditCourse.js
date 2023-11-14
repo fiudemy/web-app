@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -21,7 +21,8 @@ import { StudentViewCourse } from './StudentViewCourse';
 
 export const ProfessorViewCourse = ({course, setEditMode}) => {
     //load the viewr of the course, wiht title description and rest of fields
-    
+    const navigate = useNavigate();
+
     return (
         <>
         <AppAppBar showsSignInOptions={false}/>
@@ -116,9 +117,22 @@ export const ProfessorViewCourse = ({course, setEditMode}) => {
           ))}
 
         {/* Edit Button */}
-        <Button variant="contained" color="primary" onClick={() => setEditMode(true)} sx={{ marginTop: 3 }}>
+        <Box className='d-flex align-items-center'>
+        <Button variant="contained" color="primary" onClick={() => setEditMode(true)} sx={{ marginTop: 3, marginRight: 3 }}>
           Editar Curso
         </Button>
+
+         <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            navigate(`/Evaluations/${course.id}`, { state: { course }});
+          }}
+          sx={{ marginTop: 3 }}
+        >
+          Mis Evaluaciones
+        </Button>
+        </Box>
         </Paper>
         
 
@@ -180,7 +194,6 @@ export const ViewCourse = () => {
     
 
 function EditCourse({course, courseId, setEditMode}) {
-
     const [editedCourse, setEditedCourse] = useState(course);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openAddModuleModal = () => {
@@ -251,6 +264,7 @@ function EditCourse({course, courseId, setEditMode}) {
           sections: editedCourse.sections.filter((_, i) => i !== index),
         });
       };
+
     
     return (
         <>
@@ -373,7 +387,7 @@ function EditCourse({course, courseId, setEditMode}) {
                             </Paper>
                         </Box>
 
-                    <div>
+                    <div className='d-flex justify-content-center'>
                         <Button variant="contained" color="primary" onClick={() => { handleGuardarCambios(); }}>
                             Guardar Cambios
                         </Button>
