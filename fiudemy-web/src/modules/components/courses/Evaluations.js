@@ -3,8 +3,11 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, TextField } from '@
 import Button from '@mui/material/Button';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { getEvaluations, saveEvaluation } from '../../../services/axios_utils';
 import AppAppBar from "../../views/AppAppBar";
 import Typography from "../Typography";
+import NewEvaluationModal from './NewEvaluatioModal';
+
 
 function StudentAnswer({ studentName, answer, onFeedbackChange, onSaveFeedback }) {
   const [feedback, setFeedback] = useState("");
@@ -92,22 +95,26 @@ function EvaluationItem({ title, prompt, answers }) {
   );
 }
 
-function EvaluationsView({ evaluations }) {
+function EvaluationsView({ evaluations, openModal}) {
+
+  if(!evaluations){
+    return <div>Loading</div>
+  }
   return (
     <Box sx={{ marginBottom: '200px', marginTop: '30px' }}>
-      {evaluations.map((evaluation, index) => (
+      {evaluations.map((evaluation) => (
         <EvaluationItem
-          key={index}
+          key={'a'}
           title={evaluation.title}
-          prompt={evaluation.prompt}
-          answers={evaluation.answers}
+          prompt={evaluation.question}
+          answers={[]}
         />
       ))}
       <Box sx={{ marginTop: '20px' ,textAlign  : 'center'}}>
         <Button variant="contained" color="primary" sx={{ mb: 2 }}>
           Guardar Cambios
         </Button>
-        <Button variant="contained" color="primary" sx={{ mb: 2, marginLeft: 2 }}>
+        <Button variant="contained" color="primary" sx={{ mb: 2, marginLeft: 2 }} onClick ={openModal}>
           Añadir Evaluación
         </Button>
       </Box>
@@ -116,38 +123,55 @@ function EvaluationsView({ evaluations }) {
 }
 
 export default function MyEvaluations() {
+  const[evaluations,setEvaluations] = useState([])
   const { courseId } = useParams();
-  console.log(courseId);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const evaluationsData = [
-    {
-      title: "Evaluación 1",
-      prompt: "Consigna de la evaluación 1",
-      answers: [
-        { id: 1, studentName: "Alumno 1", text: "Respuesta 1" },
-        { id: 2, studentName: "Alumno 2", text: "Respuesta 2" },
-        { id: 3, studentName: "Alumno 3", text: "Respuesta 3" },
-      ],
-    },
-    {
-      title: "Evaluación 2",
-      prompt: "Consigna de la evaluación 2",
-      answers: [
-        { id: 4, studentName: "Alumno 4", text: "Respuesta 1" },
-        { id: 5, studentName: "Alumno 5", text: "Respuesta 2" },
-        { id: 6, studentName: "Alumno 6", text: "Respuesta 3" },
-      ],
-    },
-  ];
+  const openModal = () => {
+      setIsModalOpen(true);
+  };
+  const closeModal = () => {
+      setIsModalOpen(false);
+  };
+
+
+  const handleAddEvaluation = async (courseId, newEvaluation)=> {
+    console.log("new module is ", newEvaluation);   
+    await (saveEvaluation({
+      title : newEvaluation.title,
+      question : newEvaluation.question,
+      course_id : courseId
+    }))
+
+  }
+
+  
 
   useEffect(() => {
-    // Lógica para hacer fetch del curso y sus evaluaciones
+    const fetchEvaluations = async () => {
+      try{
+        const res = await getEvaluations(courseId);
+        setEvaluations(res.results)
+      }catch(error){
+        console.log(error)
+      }
+    }
+    fetchEvaluations()
   }, [courseId]);
-
+  
+  if (!evaluations) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <AppAppBar showsSignInOptions={false} />
-      <EvaluationsView evaluations={evaluationsData} />
+      <EvaluationsView evaluations={evaluations} openModal={openModal} />
+      <NewEvaluationModal
+                open={isModalOpen}
+                onClose={closeModal}
+                onAddEvaluation={handleAddEvaluation}
+                courseId = {courseId}
+            />
     </>
   );
 }

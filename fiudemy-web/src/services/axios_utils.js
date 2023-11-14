@@ -88,3 +88,31 @@ export const getCourseById = async (id) => {
         console.error("Error al obtener el curso:", error);
     }
 }
+
+export const getEvaluations = async (CourseId) => {
+    try {
+        const res = await axios.get(`https://fiudemy.onrender.com/evaluations?=${CourseId}`);
+        if (res.status === 200) {
+            console.log("data api", res.data);
+            return res.data;
+        }
+    } catch (error) {
+        console.error("Error al obtener el curso:", error);
+    }
+}
+
+export const saveEvaluation = async (formData) => {
+    try {
+      console.log(formData)
+      const res = await axios.post(`https://fiudemy.onrender.com/evaluations`, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (res.status === 201) {
+        console.log("Evaluacion creada con éxito!");
+      }
+    } catch (error) {
+      console.error("Error al crear la Evaluacion:", error);
+    }
+  };
