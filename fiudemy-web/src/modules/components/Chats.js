@@ -6,6 +6,7 @@ import {getChats, sendMessage} from "../../services/axios_utils";
 import TextField from "@mui/material/TextField";
 import SendIcon from '@mui/icons-material/Send';
 import IconButton from "@mui/material/IconButton";
+import { Link } from 'react-router-dom';
 
 const Chats = () => {
    const [selectedChat, setSelectedChat] = useState(null);
@@ -144,7 +145,11 @@ const Chats = () => {
                         justifyContent: "center"
                      }}>
                         <AccountCircleIcon />
-                        {chat.user2_name}
+                        {currentUserId === chat.user1 ? (
+                           chat.user2_name
+                        ) : (
+                           chat.user1_name
+                        )}
                      </Box>
                   ))}
             </Box>
@@ -168,7 +173,15 @@ const Chats = () => {
                         fontWeight: "bold"
                         }}>
                         <AccountCircleIcon />
-                        {selectedChat.user2_name}
+                        {currentUserId === selectedChat.user1 ? (
+                           <Link to={`/profile/${selectedChat.user2}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                              <Typography>{selectedChat.user2_name}</Typography>
+                           </Link>
+                        ) : (
+                           <Link to={`/profile/${selectedChat.user1}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                              <Typography>{selectedChat.user1_name}</Typography>
+                           </Link>
+                        )}
                      </Box>
                      <Box sx={{
                         paddingTop: "20px",

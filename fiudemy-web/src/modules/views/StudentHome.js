@@ -25,7 +25,7 @@ export default function StudentHome() {
   }, [userId]);
  
   useEffect(() => {
-    fetch( 'https://fiudemy.onrender.com/courses?sort_by=purchase_count&ascending=false&limit=10')
+    fetch('https://fiudemy.onrender.com/courses?sort_by=purchase_count&ascending=false&limit=10')
       .then(response => response.json())
       .then(data => {
         const filteredCourses = data.results.filter(course => !courses.some(c => c.id === course.id));

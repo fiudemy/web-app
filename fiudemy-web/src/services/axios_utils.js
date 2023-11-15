@@ -100,6 +100,31 @@ export const getChats = async () => {
    }
 };
 
+export const createChat = async (user1, user2) => {
+    try {
+        const response = await axios.post(
+          'https://fiudemy.onrender.com/chats',
+          {
+            user1,
+            user2,
+            messages: []
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+    
+        const chatData = response.data;
+        console.log('Chat creado:', chatData);
+    
+        return chatData;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
 export const sendMessage = async (chatId, messageData) => {
    try {
       const res = await axios.put(`https://fiudemy.onrender.com/chats/${chatId}/new_message`, messageData, {
@@ -113,4 +138,170 @@ export const sendMessage = async (chatId, messageData) => {
    } catch (error) {
       console.error("Error al mandar el mensaje:", error);
    }
+}
+
+export const getUserById = async (userId) => {
+    try {
+        const res = await axios.get(`https://fiudemy.onrender.com/users/${userId}`);
+        if (res.status === 200) {
+           return res.data;
+        }
+    } catch (error) {
+        console.error("Error al obtener la información del usuario:", error);
+    }
+}
+
+export const getCoursesByTeacherEmail = async (teacherEmail) => {
+    try {
+        const response = await getCourses();
+        if (Array.isArray(response.results)) {
+            const courses = response.results;
+            if (teacherEmail) {
+                const filteredCourses = courses
+                    .filter(course => course.teacher === teacherEmail)
+                    .map(filteredCourse => ({
+                    id: filteredCourse.id,
+                    title: filteredCourse.title,
+                    description: filteredCourse.description,
+                    category : filteredCourse.category,
+                    price: filteredCourse.price,
+                    hours: filteredCourse.hours,
+                    sections: filteredCourse.sections,
+                    }));
+                return filteredCourses;
+            };
+            return [];
+        };
+        return [];
+    } catch (error) {
+        console.error("Error al obtener los cursos del profesor");
+    }   
+}
+
+export const getCoursesByStudentId = async (userId) => {
+    try {
+        const response = await fetch(`https://fiudemy.onrender.com/courses?user_id=${userId}`);
+        if (!response.ok) {
+          console.error("Error al pedir los cursos del estudiante");
+        }
+        const data = await response.json();
+    
+        if (data !== undefined) {
+          return data.results;
+        } else {
+          return [];
+        }
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+};
+
+export const getAllUsers = async () => {
+    try {
+        const response = await fetch(`https://fiudemy.onrender.com/users`)
+        if (!response.ok) {
+            console.error("Error obteniendo todos los usuarios");
+        }        
+        const data = await response.json();
+    
+        if (data !== undefined) {
+        return data.results;
+        } else {
+        return [];
+        }
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+
+export const updateUserProfilePicture = async () => {
+    // TODO complete with backend call
+    console.log("uploading pic");
+}
+
+export const getFriendsFrom = async () => {
+    const userId = localStorage.getItem("userId");
+    try {
+        const response = await fetch(`https://fiudemy.onrender.com/friends?from=${userId}`);
+        if (!response.ok) {
+            console.error("Error obteniendo todos los amigos");
+        }        
+        const data = await response.json();
+    
+        if (data !== undefined) {
+            return data.results;
+        } else {
+            return [];
+        }
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+
+export const getFriendsTo = async () => {
+    const userId = localStorage.getItem("userId");
+    try {
+        const response = await fetch(`https://fiudemy.onrender.com/friends?to=${userId}&ascending=true`);
+        if (!response.ok) {
+            console.error("Error obteniendo todos los amigos");
+        }        
+        const data = await response.json();
+    
+        if (data !== undefined) {
+            console.log(data.results);
+            return data.results;
+        } else {
+            return [];
+        }
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+
+export const acceptFriendship = async (friendshipId) => {
+    axios.post(`https://fiudemy.onrender.com/friends/${friendshipId}/accept`)
+    .then(response => {
+      console.log('Friend request accepted:', response.data);
+    })
+    .catch(error => {
+      console.error('Error accepting friend request:', error);
+    });
+}
+
+export const rejectFriendship = async (friendshipId) => {
+    axios.post(`https://fiudemy.onrender.com/friends/${friendshipId}/reject`)
+    .then(response => {
+      console.log('Friend request accepted:', response.data);
+    })
+    .catch(error => {
+      console.error('Error accepting friend request:', error);
+    });
+}
+
+export const sendFriendRequestTo = async (friendId) => {
+    const currentUserId = localStorage.getItem("userId");
+    console.log("YO: ", currentUserId);
+    console.log("Friend: ", friendId);
+    axios.post(
+        'https://fiudemy.onrender.com/friends',
+        {
+            from: currentUserId,
+            to: friendId
+        },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+    )
+    .then(response => {
+        console.log('Friend request created:', response.data);
+    })
+    .catch(error => {
+        console.error('Error creating friend request:', error);
+    });
 }

@@ -10,6 +10,10 @@ import CourseHome from './modules/views/Courses/CourseHomeScreen';
 import withRoot from './modules/withRoot';
 import EditCourse, { ViewCourse } from "./modules/components/courses/EditCourse";
 import Chats from "./modules/components/Chats";
+import Profile from './modules/views/Profile';
+import Friends from './modules/views/Friends';
+import FriendsApplication from './modules/views/FriendsApplication';
+import Users from './modules/views/Users';
 
 function App() {
   return (
@@ -26,6 +30,10 @@ function App() {
               <Route path="/marketplace" element={<MarketPlace/>}/>
               <Route path="/course" element={<CourseHome/>}/>
               <Route path="/chats" element={<Chats/>}/>
+              <Route path="/profile/:userId" element={<Profile/>}/>
+              <Route path="/friends/:userId" element={<Friends/>}/>
+              <Route path="/friendsApplication/:userId" element={<FriendsApplication/>}/>
+              <Route path="/users" element={<Users/>}/>
               <Route path="*" element={<ProductDescription/>}/>
             </Routes>
           </BrowserRouter>
