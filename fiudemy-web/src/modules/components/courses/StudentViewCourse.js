@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from 'react';
-import { getEvaluations } from "../../../services/axios_utils";
+import { getEvaluations, getEvaluationsByUserId, saveStudentAnswer } from "../../../services/axios_utils";
 
 import { Button, TextField } from "@mui/material";
 import AppAppBar from '../../views/AppAppBar';
@@ -35,15 +35,12 @@ const changeSectionViewStatus = (section, course, completedSectionsIds, setViewe
 };
 
 export const getStudentResponseFromEvaluation = (evaluation) => {
-    const userID = localStorage.getItem('userId');
-    if (!evaluation.responses) {
-      return "Agrega una respuesta para la evaluacion!";
-     }
-    const res = evaluation.responses.find((response) => response.user_id === userID);
+   
+    const res = evaluation.answer
     if (!res) {
         return "Agrega una respuesta para la evaluacion!";
     }
-    return res.answer;
+    return res;
 }
 
 export const getTeacherResponseFromEvaluation = (evaluation) => {
@@ -66,7 +63,26 @@ export const StudentViewCourse = ({course, setEditMode}) => {
     const handleEnviar = (evaluationId) => {
         const res = answer[evaluationId];
         const userID = localStorage.getItem('userId');
-        console.log('Enviando respuesta a la API:', res, 'para la evaluación con ID:', evaluationId, 'user id', userID);
+        saveStudentAnswer({
+          user_id: userID,
+          answer: res,
+        }, evaluationId);
+        //add answer to evaluation
+        setEvaluations((prevEvaluations) => {
+          const newEvaluations = prevEvaluations.map((evaluation) => {
+            if (evaluation.id === evaluationId) {
+              return {
+                ...evaluation,
+                answer: res,
+              };
+            }
+            return evaluation;
+          });
+          return newEvaluations;
+        }
+        );
+
+
 
     }
 
@@ -93,7 +109,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
     useEffect(() => {
         const fetchEvaluations = async () => {
           try{
-            const res = await getEvaluations(course.id);
+            const res = await getEvaluationsByUserId(course.id, localStorage.getItem("userId"))
             setEvaluations(res.results)
           }catch(error){
             console.log(error)
@@ -101,6 +117,8 @@ export const StudentViewCourse = ({course, setEditMode}) => {
         }
         fetchEvaluations()
       }, [course.id]);
+
+    console.log("evaluations", evaluations);
 
     if (!course || !completedSectionsIds || !evaluations) {
         return <div>Loading...</div>;
@@ -228,7 +246,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
                 <Box sx={{ marginTop: 3, marginBottom: 3, marginLeft: 3 }}>
                 <Typography variant="body1" sx={{ fontWeight: 'bold', marginBottom: 3,}}>Respuesta del Estudiante:</Typography>
 
-                { evaluation.responses && evaluation.responses.find((response) => response.user_id === localStorage.getItem('userId')) ? (
+                { evaluation.answer ? (
                   <Typography variant="body2" paragraph>
                     {getStudentResponseFromEvaluation(evaluation)}
                   </Typography>
@@ -236,7 +254,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
                   <>
                   <TextField
                       label="Respuesta"
-                      value = {getStudentResponseFromEvaluation(evaluation)}
+                      value = {answer[evaluation.id] || ''}
                       onChange={(e) => handleAnswerChange(evaluation.id, e.target.value)}
                       fullWidth
                       multiline
@@ -250,7 +268,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
                 )}
                 </Box>
 
-                { evaluation.responses && evaluation.responses.find((response) => response.user_id === localStorage.getItem('userId')) ? (
+                { evaluation.answer ? (
 
 
                 <Box sx={{ marginTop: 3, marginBottom: 3, marginLeft: 5 }}>
@@ -261,7 +279,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
                 </Box>
                 ) : (
                   null
-                )}
+                )}               
 
               </Box>
 
