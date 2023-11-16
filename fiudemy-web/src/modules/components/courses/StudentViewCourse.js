@@ -59,6 +59,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
     const [answer, setAnswer] = useState({});
     const [completedSectionsIds, setViewedSections] = useState(null);
     const[evaluations,setEvaluations] = useState([]);
+    const courseSectionQuantity = course.sections.length;
 
     const handleEnviar = (evaluationId) => {
         const res = answer[evaluationId];
@@ -153,37 +154,64 @@ export const StudentViewCourse = ({course, setEditMode}) => {
             <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                 Descripción:
             </Typography>
-            <Typography sx={{ paddingBottom: '8px' }}>
+            <Typography sx={{ marginBottom: 5  }}>
                 {course.description}
             </Typography>
 
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                Categoría:
-            </Typography>
-            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
-                {course.category}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 3 }}>
 
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                Precio:
-            </Typography>
-            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
-                {course.price}
-            </Typography>
+                <Box sx={{ marginRight: 5 }}>
 
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                Horas:
-            </Typography>
-            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
-                {course.hours}
-            </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                        Categoría:
+                    </Typography>
+                    <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                        {course.category}
+                    </Typography>
 
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                Activo:
-            </Typography>
-            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
-                {course.active}
-        </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                        Precio:
+                    </Typography>
+                    <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                        {course.price}
+                    </Typography>
+
+                </Box>
+
+                <Box >
+
+                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                        Horas:
+                    </Typography>
+                    <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                        {course.hours}
+                    </Typography>
+                        
+                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                        Activo:
+                    </Typography>
+                    <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                        {course.active ? "Si" : "No"}
+                    </Typography>
+
+                </Box>
+
+            </Box>
+
+            {/* create a mui progress bar based on courseSectionQuantity ant the viewed sections length */}
+          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+            Progreso
+          </Typography>
+       
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 3 }}>
+            <progress value={completedSectionsIds.length} max={courseSectionQuantity}  sx={{ marginRight: 4, width: 60, height: 60 }} />
+            <Box>
+            <Typography  component="div" sx={{ marginLeft: 2}}>
+                {Math.round((completedSectionsIds.length / courseSectionQuantity) * 100)}%
+                </Typography>
+
+            </Box>
+        </Box>
         </Box>
         </Paper>
 
