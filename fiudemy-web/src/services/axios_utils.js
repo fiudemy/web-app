@@ -208,10 +208,10 @@ export const setSectionWiewStatus = async (formData, status) => {
       }
 }
 
-export const saveTeacherResponse = async (formData, evaluationId, answerId) => {
+export const saveTeacherResponse = async (formData, evaluationId, studentId) => {
   try {
       console.log(formData)
-      const res = await axios.put(`https://fiudemy.onrender.com/courses/${evaluationId}/answers/${answerId}`, formData, {
+      const res = await axios.put(`https://fiudemy.onrender.com/courses/${evaluationId}/answers/${studentId}`, formData, {
           headers: {
               'Content-Type': 'application/json',
           },

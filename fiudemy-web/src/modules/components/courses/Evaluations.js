@@ -9,8 +9,8 @@ import Typography from "../Typography";
 import NewEvaluationModal from './NewEvaluatioModal';
 
 
-function StudentAnswer({ studentName, answer, evaluationId, counterresponse }) {
-  const [feedback, setFeedback] = useState(counterresponse ? counterresponse : '');
+function StudentAnswer({setEvaluations, studentName, answer, evaluationId, counterresponse }) {
+  const [feedback, setFeedback] = useState(counterresponse ? counterresponse : null);
 
   const handleFeedbackChange = (event) => {
     setFeedback(event.target.value);
@@ -19,7 +19,31 @@ function StudentAnswer({ studentName, answer, evaluationId, counterresponse }) {
   const handleSaveFeedback = async () => {
     await saveTeacherResponse({
       counter_response: feedback,
-    }, evaluationId, answer.id);
+    }, evaluationId, answer.user_id);
+    setEvaluations((prevEvauations) => {
+      const newEvaluations = prevEvauations.map((evaluation) => {
+        if (evaluation.id === evaluationId) {
+          const newAnswers = evaluation.answers.map((studentAnswer) => {
+            if (studentAnswer.user_id === answer.user_id) {
+              return {
+                ...studentAnswer,
+                counter_response: feedback,
+              };
+            }
+            return studentAnswer;
+          });
+          return {
+            ...evaluation,
+            answers: newAnswers,
+          };
+        }
+        return evaluation;
+      });
+      return newEvaluations;
+
+    });
+
+
   };
 
   return (
@@ -55,7 +79,7 @@ function StudentAnswer({ studentName, answer, evaluationId, counterresponse }) {
   );
 }
 
-function EvaluationItem({ evaluationId, title, prompt, answers }) {
+function EvaluationItem({ evaluationId, title, prompt, answers, evaluations, setEvaluations }) {
  
 
   return (
@@ -81,6 +105,8 @@ function EvaluationItem({ evaluationId, title, prompt, answers }) {
             answer={answer}
             evaluationId={evaluationId}
             counterresponse={answer.counter_response}
+            evaluations={evaluations}
+            setEvaluations={setEvaluations}
 
           />
         )) : <div>No hay respuestas aún</div>
@@ -90,7 +116,7 @@ function EvaluationItem({ evaluationId, title, prompt, answers }) {
   );
 }
 
-function EvaluationsView({ evaluations, openModal}) {
+function EvaluationsView({ evaluations, openModal, setEvaluations }) {
 
   if(!evaluations){
     return <div>Loading</div>
@@ -104,6 +130,8 @@ function EvaluationsView({ evaluations, openModal}) {
           prompt={evaluation.question}
           answers={evaluation.answers}
           evaluationId={evaluation.id}
+          evaluations={evaluations}
+          setEvaluations={setEvaluations}
         />
       ))}
       <Box sx={{ marginTop: '20px' ,textAlign  : 'center'}}>
@@ -162,8 +190,8 @@ export default function MyEvaluations() {
   }
   return (
     <>
-      <AppAppBar showsSignInOptions={false} />
-      <EvaluationsView evaluations={evaluations} openModal={openModal} />
+      <AppAppBar showsSignInOptions={false} isProfessor={true} courseId={courseId} />
+      <EvaluationsView evaluations={evaluations} openModal={openModal} setEvaluations={setEvaluations}/>
       <NewEvaluationModal
                 open={isModalOpen}
                 onClose={closeModal}

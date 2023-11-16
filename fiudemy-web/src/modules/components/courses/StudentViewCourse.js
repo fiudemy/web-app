@@ -128,7 +128,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
 
     return (
         <>
-        <AppAppBar showsSignInOptions={false}/>
+        <AppAppBar showsSignInOptions={false} isStudent={true} />
         <Paper
         sx={{ padding: 3, border: '2px solid #e0e0e0', borderRadius: 12, m: 3, p:5 }}
       >

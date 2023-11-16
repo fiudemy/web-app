@@ -25,7 +25,7 @@ export const ProfessorViewCourse = ({course, setEditMode}) => {
 
     return (
         <>
-        <AppAppBar showsSignInOptions={false}/>
+        <AppAppBar showsSignInOptions={false} courseId={course.id} isProfessor={true} />
         {/* Main content */}
       <Paper
         sx={{ padding: 3, border: '2px solid #e0e0e0', borderRadius: 12, m: 3, p:5 }}
@@ -127,7 +127,7 @@ export const ProfessorViewCourse = ({course, setEditMode}) => {
           variant="contained"
           color="primary"
           onClick={() => {
-            navigate(`/Evaluations/${course.id}`, { state: { course }});
+            navigate(`/evaluations/${course.id}`, { state: { course }});
           }}
           sx={{ marginTop: 3 }}
         >
@@ -269,7 +269,7 @@ function EditCourse({course, courseId, setEditMode}) {
     
     return (
         <>
-            <AppAppBar showsSignInOptions={false}/>
+            <AppAppBar showsSignInOptions={false} courseId={courseId} isProfessor={true} />
             <Paper sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', padding: '20px' }}>                
             <Box sx={{ p: 2 }}>
                     <Typography variant="h6" marked={'left'} sx={{ mb: 2 }}>
