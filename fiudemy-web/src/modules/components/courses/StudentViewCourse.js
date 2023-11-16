@@ -11,12 +11,12 @@ import Checkbox from '@mui/material/Checkbox';
 import { getStudentViewedSections, setSectionWiewStatus } from '../../../services/axios_utils';
 import { YoutubeEmbed, getEmbeddedYoutubeUrl } from './YoutubeEmbed';
 
-const wasSectionCompletedByStudent = (section, completedSectionsIds) => (
-    completedSectionsIds.includes(section.id)
-)
+const wasSectionCompletedByStudent = (section, completedSectionsIds) => {
+
+    return completedSectionsIds.includes(section.id)
+};
 
 const changeSectionViewStatus = (section, course, completedSectionsIds, setViewedSections) => {
-    console.log("section id and completed sections ids", section.id, completedSectionsIds);
     const requestData = {
         "user_id" : localStorage.getItem("userId"),
         "section_id" : section.id,
@@ -118,7 +118,6 @@ export const StudentViewCourse = ({course, setEditMode}) => {
         fetchEvaluations()
       }, [course.id]);
 
-    console.log("evaluations", evaluations);
 
     if (!course || !completedSectionsIds || !evaluations) {
         return <div>Loading...</div>;
@@ -217,7 +216,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
                 )}
               </Box>
 
-            <Checkbox value={wasSectionCompletedByStudent(section, completedSectionsIds)} onChange={() => changeSectionViewStatus(section, course, completedSectionsIds, setViewedSections)} /> 
+            <Checkbox checked={wasSectionCompletedByStudent(section, completedSectionsIds)} onChange={() => changeSectionViewStatus(section, course, completedSectionsIds, setViewedSections)} /> 
 
             </div>
           ))}
