@@ -208,3 +208,18 @@ export const setSectionWiewStatus = async (formData, status) => {
       }
 }
 
+export const saveTeacherResponse = async (formData, evaluationId, answerId) => {
+  try {
+      console.log(formData)
+      const res = await axios.put(`https://fiudemy.onrender.com/courses/${evaluationId}/answers/${answerId}`, formData, {
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+      if (res.status === 200) {
+          console.log("Respuesta a evaluacion creada con éxito!");
+      }
+  } catch (error) {
+      console.error("Error al crear la respuesta:", error);
+  }
+};

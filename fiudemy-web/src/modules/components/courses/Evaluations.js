@@ -3,22 +3,23 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, TextField } from '@
 import Button from '@mui/material/Button';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getEvaluations, saveEvaluation } from '../../../services/axios_utils';
+import { getEvaluations, saveEvaluation, saveTeacherResponse } from '../../../services/axios_utils';
 import AppAppBar from "../../views/AppAppBar";
 import Typography from "../Typography";
 import NewEvaluationModal from './NewEvaluatioModal';
 
 
-function StudentAnswer({ studentName, answer, onFeedbackChange, onSaveFeedback }) {
-  const [feedback, setFeedback] = useState("");
+function StudentAnswer({ studentName, answer, evaluationId, counterresponse }) {
+  const [feedback, setFeedback] = useState(counterresponse ? counterresponse : '');
 
   const handleFeedbackChange = (event) => {
     setFeedback(event.target.value);
-    onFeedbackChange(answer.id, event.target.value);
   };
 
-  const handleSaveFeedback = () => {
-    onSaveFeedback(answer.id, feedback);
+  const handleSaveFeedback = async () => {
+    await saveTeacherResponse({
+      counter_response: feedback,
+    }, evaluationId, answer.id);
   };
 
   return (
@@ -54,20 +55,7 @@ function StudentAnswer({ studentName, answer, onFeedbackChange, onSaveFeedback }
   );
 }
 
-function EvaluationItem({ title, prompt, answers }) {
-  const [feedbackMap, setFeedbackMap] = useState({});
-
-  const handleFeedbackChange = (answerId, feedback) => {
-    setFeedbackMap((prevFeedbackMap) => ({
-      ...prevFeedbackMap,
-      [answerId]: feedback,
-    }));
-  };
-
-  const handleSaveFeedback = (answerId, feedback) => {
-    console.log(`Guardando devolución para respuesta ${answerId}: ${feedback}`);
-  };
-
+function EvaluationItem({ evaluationId, title, prompt, answers }) {
  
 
   return (
@@ -91,8 +79,9 @@ function EvaluationItem({ title, prompt, answers }) {
             key={index}
             studentName={answer.studentName}
             answer={answer}
-            onFeedbackChange={handleFeedbackChange}
-            onSaveFeedback={handleSaveFeedback}
+            evaluationId={evaluationId}
+            counterresponse={answer.counter_response}
+
           />
         )) : <div>No hay respuestas aún</div>
         }
@@ -114,6 +103,7 @@ function EvaluationsView({ evaluations, openModal}) {
           title={evaluation.title}
           prompt={evaluation.question}
           answers={evaluation.answers}
+          evaluationId={evaluation.id}
         />
       ))}
       <Box sx={{ marginTop: '20px' ,textAlign  : 'center'}}>
@@ -164,6 +154,8 @@ export default function MyEvaluations() {
     }
     fetchEvaluations()
   }, [courseId]);
+
+  console.log("evaluations are ", evaluations);
   
   if (!evaluations) {
     return <div>Loading...</div>;
