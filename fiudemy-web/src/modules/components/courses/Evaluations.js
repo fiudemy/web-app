@@ -3,63 +3,88 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, TextField } from '@
 import Button from '@mui/material/Button';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getEvaluations, saveEvaluation } from '../../../services/axios_utils';
+import { getEvaluations, saveEvaluation, saveTeacherResponse } from '../../../services/axios_utils';
 import AppAppBar from "../../views/AppAppBar";
 import Typography from "../Typography";
 import NewEvaluationModal from './NewEvaluatioModal';
 
 
-function StudentAnswer({ studentName, answer, onFeedbackChange, onSaveFeedback }) {
-  const [feedback, setFeedback] = useState("");
+function StudentAnswer({setEvaluations, answer, evaluationId }) {
+  const [feedback, setFeedback] = useState(answer.counter_response ? answer.counter_response : null);
+
+  console.log("student answer", answer);
 
   const handleFeedbackChange = (event) => {
     setFeedback(event.target.value);
-    onFeedbackChange(answer.id, event.target.value);
   };
 
-  const handleSaveFeedback = () => {
-    onSaveFeedback(answer.id, feedback);
+  const handleSaveFeedback = async () => {
+    await saveTeacherResponse({
+      counter_response: feedback,
+    }, evaluationId, answer.user_id);
+    setEvaluations((prevEvauations) => {
+      const newEvaluations = prevEvauations.map((evaluation) => {
+        if (evaluation.id === evaluationId) {
+          const newAnswers = evaluation.answers.map((studentAnswer) => {
+            if (studentAnswer.user_id === answer.user_id) {
+              return {
+                ...studentAnswer,
+                counter_response: feedback,
+              };
+            }
+            return studentAnswer;
+          });
+          return {
+            ...evaluation,
+            answers: newAnswers,
+          };
+        }
+        return evaluation;
+      });
+      return newEvaluations;
+
+    });
+
+
   };
 
   return (
     <Box sx={{ mb: 2 }}>
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>{studentName}</Typography>
+          <Typography>{answer.student_name}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>{answer.text}</Typography>
-          <TextField
-            label="Devolución del profesor"
-            value={feedback}
-            fullWidth
-            multiline
-            rows={4}
-            onChange={handleFeedbackChange}
-            sx={{ mb: 2 }}
-          />
-          <Button variant="contained" color="primary" onClick={handleSaveFeedback}>
-            Guardar devolución
-          </Button>
+        <Typography sx={{ fontWeight: 'bold'}}>Respuesta del estudiante </Typography>
+
+        <Typography sx={{ mb:5}} >{answer.answer}</Typography>
+
+          { answer.counter_response ?
+            <Typography sx={{ ml:3}}>{answer.counter_response}</Typography>
+            : (
+              <>
+              <TextField
+                label="Devolución del profesor"
+                value={feedback}
+                fullWidth
+                multiline
+                rows={4}
+                onChange={handleFeedbackChange}
+                sx={{ mb: 2, ml:3 }}
+              />
+              <Button variant="contained" color="primary" onClick={handleSaveFeedback}>
+                Guardar devolución
+              </Button>
+          </>
+          )}
         </AccordionDetails>
       </Accordion>
     </Box>
   );
 }
 
-function EvaluationItem({ title, prompt, answers }) {
-  const [feedbackMap, setFeedbackMap] = useState({});
-
-  const handleFeedbackChange = (answerId, feedback) => {
-    setFeedbackMap((prevFeedbackMap) => ({
-      ...prevFeedbackMap,
-      [answerId]: feedback,
-    }));
-  };
-
-  const handleSaveFeedback = (answerId, feedback) => {
-    console.log(`Guardando devolución para respuesta ${answerId}: ${feedback}`);
-  };
+function EvaluationItem({ evaluationId, title, prompt, answers, evaluations, setEvaluations }) {
+ 
 
   return (
     <Accordion>
@@ -72,30 +97,28 @@ function EvaluationItem({ title, prompt, answers }) {
         </Box>
       </AccordionSummary>
       <AccordionDetails>
-        <TextField
-          label="Descripción del curso"
-          value={prompt}
-          fullWidth
-          multiline
-          rows={4}
-          sx={{ mb: 2 }}
-        />
-        {/* Renderizar las respuestas de los alumnos */}
-        {answers.map((answer, index) => (
+      < Typography sx={{ mb: 1, fontWeight: 'bold' }}>Descripción de la evaluación</Typography>
+
+        < Typography sx={{ mb: 5, ml:1}}>{prompt}</Typography>
+        {
+        
+        answers.length > 0 ? answers.map((answer, index) => (
           <StudentAnswer
             key={index}
-            studentName={answer.studentName}
             answer={answer}
-            onFeedbackChange={handleFeedbackChange}
-            onSaveFeedback={handleSaveFeedback}
+            evaluationId={evaluationId}
+            evaluations={evaluations}
+            setEvaluations={setEvaluations}
+
           />
-        ))}
+        )) : <div>No hay respuestas aún</div>
+        }
       </AccordionDetails>
     </Accordion>
   );
 }
 
-function EvaluationsView({ evaluations, openModal}) {
+function EvaluationsView({ evaluations, openModal, setEvaluations }) {
 
   if(!evaluations){
     return <div>Loading</div>
@@ -107,7 +130,10 @@ function EvaluationsView({ evaluations, openModal}) {
           key={'a'}
           title={evaluation.title}
           prompt={evaluation.question}
-          answers={[]}
+          answers={evaluation.answers}
+          evaluationId={evaluation.id}
+          evaluations={evaluations}
+          setEvaluations={setEvaluations}
         />
       ))}
       <Box sx={{ marginTop: '20px' ,textAlign  : 'center'}}>
@@ -136,7 +162,6 @@ export default function MyEvaluations() {
 
 
   const handleAddEvaluation = async (courseId, newEvaluation)=> {
-    console.log("new module is ", newEvaluation);   
     await (saveEvaluation({
       title : newEvaluation.title,
       question : newEvaluation.question,
@@ -158,14 +183,16 @@ export default function MyEvaluations() {
     }
     fetchEvaluations()
   }, [courseId]);
+
+  console.log("evaluations", evaluations);
   
   if (!evaluations) {
     return <div>Loading...</div>;
   }
   return (
     <>
-      <AppAppBar showsSignInOptions={false} />
-      <EvaluationsView evaluations={evaluations} openModal={openModal} />
+      <AppAppBar showsSignInOptions={false} isProfessor={true} courseId={courseId} />
+      <EvaluationsView evaluations={evaluations} openModal={openModal} setEvaluations={setEvaluations}/>
       <NewEvaluationModal
                 open={isModalOpen}
                 onClose={closeModal}

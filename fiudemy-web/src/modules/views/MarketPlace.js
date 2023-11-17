@@ -15,7 +15,7 @@ const categories = [
   'Matemática', 'Física', 'Química', 'Biología', 'Programación'
 ]
 
-export const CourseMarketBox = ({course}) => {
+export const CourseMarketBox = ({course, userComesFromHotCourses=false}) => {
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -64,7 +64,7 @@ return (
     </div>
 
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth={true}>
-        <MarketPopupBody course={course} handleClose={handleClose} />
+        <MarketPopupBody course={course} handleClose={handleClose} userComesFromHotCourses={userComesFromHotCourses}/>
         <DialogActions>
           <Button onClick={handleClose}>Cerrar</Button>
         </DialogActions>
@@ -73,7 +73,7 @@ return (
 );
 };
 
-const MarketPopupBody = ({course}) => {
+const MarketPopupBody = ({course, userComesFromHotCourses}) => {
   const [open, setOpen] = React.useState(false);
   const handleClick = () => {
     setOpen(true);
@@ -103,16 +103,27 @@ const MarketPopupBody = ({course}) => {
           Descripcion
         </Typography>
         <Typography>{course.description}</Typography>
-        <Typography variant="h6" sx={{ mt: 6 }}>
-          Duración
-        </Typography>
-        <Typography>{course.hours + " horas"}</Typography>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ marginRight: '80px' }}>
+            <Typography variant="h6" sx={{ mt: 6 }}>
+              Duración
+            </Typography>
+            <Typography>{course.hours + " horas"}</Typography>
+
+            </div>
+            <div>
+            <Typography variant="h6" sx={{ mt: 6 }}>
+              Precio
+            </Typography>
+            <Typography>{course.price}</Typography>
+            </div>
+        </div>
         <Button variant="contained" color="success" sx={{ mt: 6, width: '40%', color: '#fff' }} onClick={handleClick}>
           Pagar
         </Button>
         <Dialog open={open} maxWidth="md" fullWidth={true} fullHeight={true} sx={{ width: '50%', height: '100%', margin: 'auto'}}>
         <Elements stripe={stripePromise} options={options}>
-          <PaymentForm courseId={course.id}/>
+          <PaymentForm courseId={course.id} userComesFromHotCourses={userComesFromHotCourses}/>
         </Elements>
         </Dialog>
       </DialogContent>
@@ -120,7 +131,7 @@ const MarketPopupBody = ({course}) => {
   );
 };
 
-const PaymentForm = ({courseId}) => {
+const PaymentForm = ({courseId, userComesFromHotCourses}) => {
   const navigate = useNavigate();
   const [formError, setFormError] = useState(null);
   const formContainerStyles = {
@@ -132,17 +143,21 @@ const PaymentForm = ({courseId}) => {
     margin: '20px',
   };
 
-  const handlePay = (courseId) => {
+  const handlePay = (courseId, userComesFromHotCourses ) => {
     const paymentData = {
       user_id: localStorage.getItem('userId'),
       course_id: courseId,
     };
+
+    const onPayNavigateTo = userComesFromHotCourses ? ("/courses/" + courseId) : "/student-home";
     
     /*const paymentElement = elements.getElement('payment');
     if (paymentElement && !paymentElement._complete) {
       setFormError('Compra rechazada. Todos los campos son obligatorios.');
       return;
     }*/
+
+    console.log("onpaynavigate to: " + onPayNavigateTo);
 
     fetch('https://fiudemy.onrender.com/payments', {
       method: 'POST',
@@ -153,7 +168,7 @@ const PaymentForm = ({courseId}) => {
     })
       .then(response => response.json())
       .then(data => {
-        navigate("/student-home", { state: { isAlertOpen: true } });
+        navigate(onPayNavigateTo, { state: { isAlertOpen: true } });
       })
       .catch(error => console.error(error));
   };
@@ -168,7 +183,7 @@ const PaymentForm = ({courseId}) => {
         ¡Que disfrute su compra!
     </Typography>
     {formError && <Typography variant="body2" color="error" >{formError}</Typography>}
-    <Button variant="contained" color="success" sx={{ mt: 1, color: '#fff' }} onClick={() => handlePay(courseId)}>
+    <Button variant="contained" color="success" sx={{ mt: 1, color: '#fff' }} onClick={() => handlePay(courseId, userComesFromHotCourses)}>
       Pagar
     </Button>
     </div>
