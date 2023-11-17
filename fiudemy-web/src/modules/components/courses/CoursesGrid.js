@@ -4,6 +4,7 @@ import * as React from 'react';
 import Typography from '../Typography';
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
+import { CourseMarketBox } from '../../views/MarketPlace';
 
 const CourseHomeBox = ({course, isStudent}) => {
   const navigate = useNavigate();
@@ -63,16 +64,23 @@ const NoCoursesAvailable = ()=> {
 }
 
 
-export const CoursesGrid = ({courses,isStudent}) => {
+export const CoursesGrid = ({courses,isStudent, isHotCourses = false}) => {
   return (
       <Grid container spacing={2} sx={{ mt: 2, ml: 3, mb: 6 }}> 
         {
-          courses.length == 0 ? (
+          courses.length === 0 ? (
             <NoCoursesAvailable/>
           ) :
         courses.map((course, index) => (
           <Grid item key={index} >
-            <CourseHomeBox course={course} isStudent= {isStudent} />
+            {
+              isHotCourses ? (
+                <CourseMarketBox course={course} userComesFromHotCourses={true}/>
+              ) : (
+                <CourseHomeBox course={course} isStudent= {isStudent} />
+              )
+            }
+            
           </Grid>
         ))}
       </Grid>

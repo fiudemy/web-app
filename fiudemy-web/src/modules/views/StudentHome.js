@@ -64,7 +64,7 @@ export default function StudentHome() {
       <Typography variant="h6" marked={'left'} sx={{ mt: 2, ml: 3 }}>
         Descubre cursos destacados
       </Typography>
-      <CoursesGrid courses={hotCourses} />
+      <CoursesGrid courses={hotCourses} isHotCourses={true} />
       </Box>
       </>
   );
