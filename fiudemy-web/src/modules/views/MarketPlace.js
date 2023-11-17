@@ -194,6 +194,7 @@ const MarketCoursesGrid = ({courses}) => {
   return (
       <Grid container spacing={2} sx={{ mt: 2, ml: 3, mb: 6 }}> 
         {courses.map((course, index) => (
+          
           <Grid item key={index} >
             <CourseMarketBox course={course} />
           </Grid>
@@ -216,7 +217,7 @@ export default function MarketPlace() {
       })
       .catch(error => console.error(error));
   }, []);
-  const filteredCourses = selectedCategory ? courses.filter(course => course.category === selectedCategory) : courses;
+  const filteredCourses = selectedCategory ? courses.filter(course => course.category === selectedCategory && course.active) : courses.filter(course => course.active);
 
   return (
    <>

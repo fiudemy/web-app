@@ -17,7 +17,6 @@ const Chats = () => {
       const setChats = async () => {
          const chat = await getChats();
          setChatsData(chat);
-         console.log(chat);
       }
       setChats();
    }, []);
@@ -27,56 +26,6 @@ const Chats = () => {
          messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
       }
    }, [selectedChat]);
-   /*const chatData = {
-      results: [
-         {
-            id: '65501b55526e4efa99f694a1',
-            user1: '65233646667fb42d32918fc7',
-            user1_name: 'andres',
-            user2: '65386e58642f664c56ab800f',
-            user2_name: 'carlos',
-            messages: [
-               {
-                  sender: '65233646667fb42d32918fc7',
-                  message: 'hola',
-                  last_modified: '2023-11-12T00:24:53.014000',
-                  date_created: '2023-11-12T00:24:53.014000',
-               },
-               {
-                  sender: '65386e58642f664c56ab800f',
-                  message: 'como andas?',
-                  last_modified: '2023-11-12T00:24:53.014000',
-                  date_created: '2023-11-12T00:24:53.014000',
-               },
-               {
-                  sender: '65233646667fb42d32918fc7',
-                  message: 'bn vos?',
-                  last_modified: '2023-11-12T00:24:53.014000',
-                  date_created: '2023-11-12T00:24:53.014000',
-               },
-               // Add more messages as needed
-            ],
-         },
-         {
-            id: '65501b55526e4efa99f694a1',
-            user1: '65233646667fb42d32918fc8',
-            user1_name: 'andres',
-            user2: '65386e58642f664c56ab800f',
-            user2_name: 'diego',
-            messages: [
-               {
-                  sender: '65233646667fb42d32918fc7',
-                  message: 'pepe',
-                  last_modified: '2023-11-12T00:24:53.014000',
-                  date_created: '2023-11-12T00:24:53.014000',
-               },
-               // Add more messages as needed
-            ],
-         },
-         // Add more conversations as needed
-      ],
-   };
-*/
    const handleChatSelection = (chat) => {
       setSelectedChat(chat);
    };
@@ -89,36 +38,37 @@ const Chats = () => {
          "sender": currentUserId,
          "message": newMessage,
       }
-      console.log(chatData);
-      // Simulate API post request (replace this with your actual API call)
+      const currentDate = new Date().toISOString();
+      const formattedDate = currentDate.slice(0, 23) + '000';
       const updatedChat = {
          ...selectedChat,
          messages: [
             ...selectedChat.messages,
             {
-               sender: chatData["sender"], // Assuming the user is sending the message
+               sender: chatData["sender"],
                message: newMessage,
-               last_modified: new Date().toISOString(),
-               date_created: new Date().toISOString(),
+               time: formattedDate,
+               last_modified: formattedDate,
+               date_created: formattedDate,
             },
          ],
       };
-      // Update the state with the new message
       await sendMessage(selectedChat.id, chatData);
       setSelectedChat(updatedChat);
       setNewMessage('');
    }
    const transformDate = (date) => {
-        console.log(date);
-        return new Intl.DateTimeFormat('es-AR', {
-           year: 'numeric',
-           month: '2-digit',
-           day: '2-digit',
-           hour: '2-digit',
-           minute: '2-digit',
-           hour12: false,
-           timeZone: 'America/Argentina/Buenos_Aires',
-        }).format(new Date(date))
+      const localDate = new Date(date + 'Z'); // Append 'Z' to indicate UTC time
+      const options = {
+         year: 'numeric',
+         month: '2-digit',
+         day: '2-digit',
+         hour: '2-digit',
+         minute: '2-digit',
+         hour12: false,
+         timeZone: 'America/Argentina/Buenos_Aires',
+      };
+      return new Intl.DateTimeFormat('es-AR', options).format(localDate);
    }
    if (!chatData) {
       return <div> Loading </div>

@@ -83,7 +83,7 @@ export const ProfessorViewCourse = ({course, setEditMode}) => {
             <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
                 {course.active ? "Si" : "No"}
 
-        </Typography>
+            </Typography>
         </Box>
         </Paper>
         <Paper
