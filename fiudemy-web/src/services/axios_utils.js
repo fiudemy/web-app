@@ -129,7 +129,6 @@ export const getEvaluations = async (CourseId) => {
   try {
       const res = await axios.get(`https://fiudemy.onrender.com/evaluations?=${CourseId}`);
       if (res.status === 200) {
-          console.log("data api", res.data);
           return res.data;
       }
   } catch (error) {
@@ -141,7 +140,6 @@ export const getEvaluationsByUserId = async (CourseId, userId) => {
   try {
       const res = await axios.get(`https://fiudemy.onrender.com/evaluations?course_id=${CourseId}&user_id=${userId}`);
       if (res.status === 200) {
-          console.log("data api", res.data);
           return res.data;
       }
   } catch (error) {
@@ -211,7 +209,7 @@ export const setSectionWiewStatus = async (formData, status) => {
 export const saveTeacherResponse = async (formData, evaluationId, studentId) => {
   try {
       console.log(formData)
-      const res = await axios.put(`https://fiudemy.onrender.com/courses/${evaluationId}/answers/${studentId}`, formData, {
+      const res = await axios.put(`https://fiudemy.onrender.com/evaluations/${evaluationId}/answers/${studentId}`, formData, {
           headers: {
               'Content-Type': 'application/json',
           },

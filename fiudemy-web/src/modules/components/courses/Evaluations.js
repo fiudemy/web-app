@@ -9,8 +9,10 @@ import Typography from "../Typography";
 import NewEvaluationModal from './NewEvaluatioModal';
 
 
-function StudentAnswer({setEvaluations, studentName, answer, evaluationId, counterresponse }) {
-  const [feedback, setFeedback] = useState(counterresponse ? counterresponse : null);
+function StudentAnswer({setEvaluations, answer, evaluationId }) {
+  const [feedback, setFeedback] = useState(answer.counter_response ? answer.counter_response : null);
+
+  console.log("student answer", answer);
 
   const handleFeedbackChange = (event) => {
     setFeedback(event.target.value);
@@ -50,13 +52,15 @@ function StudentAnswer({setEvaluations, studentName, answer, evaluationId, count
     <Box sx={{ mb: 2 }}>
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>{studentName}</Typography>
+          <Typography>{answer.student_name}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <Typography>{answer.text}</Typography>
+        <Typography sx={{ fontWeight: 'bold'}}>Respuesta del estudiante </Typography>
 
-          { answer.counterresponse ?
-            <Typography sx={{ ml:3}}>{answer.counterresponse}</Typography>
+        <Typography sx={{ mb:5}} >{answer.answer}</Typography>
+
+          { answer.counter_response ?
+            <Typography sx={{ ml:3}}>{answer.counter_response}</Typography>
             : (
               <>
               <TextField
@@ -98,13 +102,11 @@ function EvaluationItem({ evaluationId, title, prompt, answers, evaluations, set
         < Typography sx={{ mb: 5, ml:1}}>{prompt}</Typography>
         {
         
-        answers? answers.map((answer, index) => (
+        answers.length > 0 ? answers.map((answer, index) => (
           <StudentAnswer
             key={index}
-            studentName={answer.studentName}
             answer={answer}
             evaluationId={evaluationId}
-            counterresponse={answer.counter_response}
             evaluations={evaluations}
             setEvaluations={setEvaluations}
 
@@ -160,7 +162,6 @@ export default function MyEvaluations() {
 
 
   const handleAddEvaluation = async (courseId, newEvaluation)=> {
-    console.log("new module is ", newEvaluation);   
     await (saveEvaluation({
       title : newEvaluation.title,
       question : newEvaluation.question,
@@ -183,7 +184,7 @@ export default function MyEvaluations() {
     fetchEvaluations()
   }, [courseId]);
 
-  console.log("evaluations are ", evaluations);
+  console.log("evaluations", evaluations);
   
   if (!evaluations) {
     return <div>Loading...</div>;
