@@ -216,9 +216,22 @@ export const getAllUsers = async () => {
     }
 }
 
-export const updateUserProfilePicture = async () => {
-    // TODO complete with backend call
-    console.log("uploading pic");
+export const updateUserProfilePicture = async (file) => {
+    const userId = localStorage.getItem("userId");
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await axios.put(`https://fiudemy.onrender.com/users/${userId}/profile_picture`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        console.log('Profile picture updated:', response.data);
+    } catch (error) {
+        console.error('Error updating profile picture:', error);
+    }
 }
 
 export const getFriendsFrom = async () => {
@@ -279,6 +292,16 @@ export const rejectFriendship = async (friendshipId) => {
     })
     .catch(error => {
       console.error('Error accepting friend request:', error);
+    });
+}
+
+export const deleteFriendship = async (friendshipId) => {
+    axios.delete(`https://fiudemy.onrender.com/friends/${friendshipId}`)
+    .then(response => {
+      console.log('Friendship deleted:', response.data);
+    })
+    .catch(error => {
+      console.error('Error deleting friendship:', error);
     });
 }
 

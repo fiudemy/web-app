@@ -54,7 +54,7 @@ const Friends = () => {
         <h2>Amigos:</h2>
       </div>
       <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <UsersList users={[]} friends={friends} areCurrentFriends={true}/>
+        <UsersList users={[]} friends={friends} friendships={friendships} areCurrentFriends={true}/>
       </div>
     </>
   );

@@ -10,7 +10,7 @@ import {
     Input,
     CircularProgress,
   } from '@mui/material';
-import { Edit as EditIcon, Chat as ChatIcon, Group as GroupIcon, ArrowBack as ArrowBackIcon } from '@mui/icons-material';
+import { Edit as EditIcon, Chat as ChatIcon, Group as GroupIcon, ArrowBack as ArrowBackIcon, Close } from '@mui/icons-material';
 import {
     getCoursesByTeacherEmail,
     getUserById,
@@ -21,7 +21,8 @@ import {
     getAllUsers,
     getFriendsFrom,
     getFriendsTo,
-    sendFriendRequestTo
+    sendFriendRequestTo,
+    deleteFriendship
 } from '../../services/axios_utils';
 import { PersonAdd, GroupAdd, HowToReg, AccessTime } from '@mui/icons-material';
 import { CoursesGrid } from '../components/courses/CoursesGrid';
@@ -38,9 +39,12 @@ const Profile = () => {
     const [friendCount, setFriendCount] = useState(0);
     const [friends, setFriends] = useState([]);
     const [pendingFriends, setPendingFriends] = useState([]);
+    const [friendships, setFriendships] = useState([]);
     const [isEditProfileOpen, setEditProfileOpen] = useState(false);
     const [isUploading, setUploading] = useState(false);
     const [chatLoading, setChatLoading] = useState(false);
+    const [friendsLoading, setFriendsLoading] = useState(true);
+    const [successMessage, setSuccessMessage] = useState(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -64,11 +68,11 @@ const Profile = () => {
             }
             setIsCurrentUser(userId === currentUserId);
 
-            // if (userId === storedUserId) {
             const userList = await getAllUsers();
             const friendsFrom = await getFriendsFrom();
             const friendsTo = await getFriendsTo();
             const allFriendships = [...friendsFrom, ...friendsTo];
+            setFriendships(allFriendships);
     
             const friendIds = allFriendships
             .filter((friendship) => friendship.status === 'accepted')
@@ -86,7 +90,7 @@ const Profile = () => {
                 return friendship.from === currentUserId ? friendship.to : friendship.from;
             });
             setPendingFriends(pending);
-            // }
+            setFriendsLoading(false);
         };
         fetchUserData();
     }, [userId]);
@@ -95,9 +99,12 @@ const Profile = () => {
         sendFriendRequestTo(userId);
     };
 
-    const handleDeleteFriend = () => {
-        // TODO delete friend
-        console.log("Delete friend");
+    const handleDeleteFriend = async () => {
+        const friendship = friendships.find(friendship => (
+            (friendship.from === userId && friendship.to === currentUserId)
+            || (friendship.to === userId && friendship.from === currentUserId)
+        ));
+        await deleteFriendship(friendship.id);
     }
 
     const handlePendingFriend = () => {
@@ -141,7 +148,8 @@ const Profile = () => {
         if (selectedFile) {
           setUploading(true);
           try {
-            const imageUrl = await updateUserProfilePicture(userId, selectedFile);
+            const imageUrl = await updateUserProfilePicture(selectedFile);
+            setSuccessMessage('Profile picture updated successfully!');
           } catch (error) {
             console.error('Error updating profile picture:', error);
           } finally {
@@ -159,16 +167,20 @@ const Profile = () => {
         navigate(-1);
     };
 
+    const handleCloseSuccessMessage = () => {
+        setSuccessMessage(null);
+    };
+
 
     const isFriend = friends.some((friend) => friend.id === userId);
     const isPendingFriend = pendingFriends.some((pendingFriend) => pendingFriend === userId);
 
     const renderAddFriendButton = () => {
-        console.log(userId);
-
-        if (isFriend) {
+        if (friendsLoading) {
+            return <CircularProgress size={20} />;
+        } else if (isFriend) {
             return (
-                <IconButton onClick={handleDeleteFriend} aria-label="Add as Friend">
+                <IconButton onClick={handleDeleteFriend} aria-label="Delete Friend">
                     <HowToReg />
                 </IconButton>
             );
@@ -203,12 +215,36 @@ const Profile = () => {
             onClick={handleBackButtonClick}
             style={{ margin: '5px', width: 'fit-content' }}
         />
+        {successMessage && (
+            <div
+                style={{
+                    backgroundColor: '#4CAF50',
+                    color: 'white',
+                    padding: '10px',
+                    marginBottom: '20px',
+                    position: 'relative',
+                }}
+            >
+                {successMessage}
+                <IconButton
+                    style={{
+                        position: 'absolute',
+                        top: '5px',
+                        right: '5px',
+                        color: 'white',
+                    }}
+                    onClick={handleCloseSuccessMessage}
+                >
+                    <Close />
+                </IconButton>
+            </div>
+        )}
       {userData && (
         <>
             <div style={{ display: 'flex', alignItems: 'center', marginLeft: "8%", marginTop: "2%", marginBottom: '16px'}}>
                 <div>
                     <img
-                    src={userData.profilePicture ? userData.profilePicture : "https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=1335&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}  // TODO reemplazar por foto del back
+                    src={userData.profile_picture ? userData.profile_picture : "https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=1335&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}  // TODO reemplazar por foto del back
                     alt={userData.first_name}
                     style={{ width: '200px', height: '200px', borderRadius: '50%' }}
                     />
@@ -227,12 +263,12 @@ const Profile = () => {
                 </Typography>
                 {isCurrentUser && (
                     <Button
-                    startIcon={<GroupIcon />}
+                    startIcon={friendsLoading ? <CircularProgress size={20} /> : <GroupIcon />}
                     variant="outlined"
                     onClick={handleFriendCountClick}
                     style={{ marginBottom: '16px', marginLeft: "20px" }}
                     >
-                    {`Amigos: ${friendCount}`}
+                    {friendsLoading ? 'Cargando...' : `Amigos: ${friendCount}`}
                     </Button>
                 )}
                 {isCurrentUser && (

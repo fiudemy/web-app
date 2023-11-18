@@ -50,7 +50,7 @@ const Users = () => {
             <h2>Usuarios:</h2>
         </div>
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <UsersList users={users} friends={friends} requested={requested} />
+            <UsersList users={users} friends={friends} requested={requested} friendships={friendships} />
         </div>
     </>
   );
