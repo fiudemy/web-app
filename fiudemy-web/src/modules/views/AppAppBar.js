@@ -19,7 +19,7 @@ const rightLink = {
 };
 
 function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor = false,
-                   isChat = false}) {
+                   isChat = false, courseId=null}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
 
@@ -107,6 +107,19 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
               >
                 {'Mis cursos'}
               </Link>
+              {
+                courseId && (
+                  <Link
+                    color="inherit"
+                    variant="h6"
+                    underline="none"
+                    href={"/evaluations/" + courseId}
+                    sx={rightLink}
+                  >
+                    {'Evaluaciones'}
+                  </Link>
+                )
+              }
             </Box>
             )
           }

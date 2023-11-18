@@ -1,18 +1,18 @@
-import * as React from 'react';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import DensitySmallIcon from '@mui/icons-material/DensitySmall';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import LogoutIcon from '@mui/icons-material/Logout';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import QuizIcon from '@mui/icons-material/Quiz';
+import Collapse from '@mui/material/Collapse';
+import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import List from '@mui/material/List';
-import Collapse from '@mui/material/Collapse';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import DensitySmallIcon from '@mui/icons-material/DensitySmall';
-import QuizIcon from '@mui/icons-material/Quiz';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import LogoutIcon from '@mui/icons-material/Logout';
-import {useNavigate} from "react-router-dom";
+import * as React from 'react';
+import { useNavigate } from "react-router-dom";
 
 export const NestedList = () => {
   const [open, setOpen] = React.useState(true);
