@@ -11,6 +11,10 @@ import SignUp from "./modules/views/SignUp/SignUpScreen";
 import StudentHome from './modules/views/StudentHome';
 import withRoot from './modules/withRoot';
 import Chats from "./modules/components/Chats";
+import Profile from './modules/views/Profile';
+import Friends from './modules/views/Friends';
+import FriendsApplication from './modules/views/FriendsApplication';
+import Users from './modules/views/Users';
 
 function App() {
   return (
@@ -28,6 +32,10 @@ function App() {
               <Route path="/evaluations/:courseId" element={<MyEvaluations/>}/>
               <Route path="/course" element={<CourseHome/>}/>
               <Route path="/chats" element={<Chats/>}/>
+              <Route path="/profile/:userId" element={<Profile/>}/>
+              <Route path="/friends/:userId" element={<Friends/>}/>
+              <Route path="/friendsApplication/:userId" element={<FriendsApplication/>}/>
+              <Route path="/users" element={<Users/>}/>
               <Route path="*" element={<ProductDescription/>}/>
             </Routes>
           </BrowserRouter>

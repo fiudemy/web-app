@@ -26,6 +26,7 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
   const handleIconClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleChatClick = (event) => {
     navigate('/chats')
   };
@@ -37,6 +38,10 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
   const handleLogOut = () => {
     setAnchorEl(null);
     navigate("/");
+  };
+
+  const handleProfileClick = () => {
+    navigate(`/profile/${localStorage.getItem("userId")}`);
   };
 
   const open = Boolean(anchorEl);
@@ -75,9 +80,18 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
               underline="none"
               href="/marketplace/"
               sx={rightLink}
-            >
-              {'Marketplace'}
-            </Link>
+              >
+                {'Marketplace'}
+              </Link>
+              <Link
+              color="inherit"
+              variant="h6"
+              underline="none"
+              href="/users/"
+              sx={rightLink}
+              >
+                {'Usuarios'}
+              </Link>
             </Box>
             )
           }
@@ -178,6 +192,12 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
+              <MenuItem onClick={handleProfileClick}>
+                <ListItemIcon>
+                  <AccountCircleIcon fontSize="small" />
+                </ListItemIcon>
+                Mi perfil
+              </MenuItem>
               <MenuItem onClick={handleLogOut}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
