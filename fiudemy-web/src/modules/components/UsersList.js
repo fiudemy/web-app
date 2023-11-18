@@ -23,7 +23,8 @@ const UsersList = ({ users, friends, requested = [], friendships = [], areCurren
         event.preventDefault();
         setDeleteLoading(true);
         const foundFriendship = friendships.find(friendship => (
-            friendship.from === friendId || friendship.to === currentUserId
+            (friendship.from === friendId && friendship.to === currentUserId) ||
+            (friendship.from === currentUserId && friendship.to === friendId)
         ));
         await deleteFriendship(foundFriendship.id);
         setDeleteLoading(false);
@@ -40,8 +41,9 @@ const UsersList = ({ users, friends, requested = [], friendships = [], areCurren
         event.preventDefault();
         setAcceptFriendLoading(true);
         const foundFriendship = friendships.find(friendship => (
-            friendship.from === friendId || friendship.to === currentUserId
+            friendship.from === friendId && friendship.to === currentUserId
         ));
+        console.log("Friendship id: ", foundFriendship.id);
         await acceptFriendship(foundFriendship.id);
         setAcceptFriendLoading(false);
     };
@@ -50,7 +52,7 @@ const UsersList = ({ users, friends, requested = [], friendships = [], areCurren
         event.preventDefault();
         setRejectFriendLoading(true);
         const foundFriendship = friendships.find(friendship => (
-            friendship.from === friendId || friendship.to === currentUserId
+            friendship.from === friendId && friendship.to === currentUserId
         ));
         rejectFriendship(foundFriendship.id);
         setRejectFriendLoading(false);
