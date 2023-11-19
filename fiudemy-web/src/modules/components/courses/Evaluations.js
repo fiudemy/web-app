@@ -3,7 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, TextField } from '@
 import Button from '@mui/material/Button';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getEvaluations, saveEvaluation, saveTeacherResponse } from '../../../services/axios_utils';
+import { getEvaluations, saveEvaluation, saveEvaluationFile, saveTeacherResponse } from '../../../services/axios_utils';
 import AppAppBar from "../../views/AppAppBar";
 import Typography from "../Typography";
 import NewEvaluationModal from './NewEvaluatioModal';
@@ -162,11 +162,14 @@ export default function MyEvaluations() {
 
 
   const handleAddEvaluation = async (courseId, newEvaluation)=> {
-    await (saveEvaluation({
+    const res = await (saveEvaluation({
       title : newEvaluation.title,
       question : newEvaluation.question,
       course_id : courseId
-    }))
+    }));
+    await (saveEvaluationFile({
+      file: newEvaluation.file,
+    }, res.id));
 
   }
 
