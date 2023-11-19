@@ -14,7 +14,6 @@ export default function StudentHome() {
   const userId = localStorage.getItem('userId');
   const location = useLocation();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-
   
   useEffect(() => {
     fetch(`https://fiudemy.onrender.com/courses?user_id=${userId}`)

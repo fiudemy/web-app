@@ -157,6 +157,7 @@ const Profile = () => {
             setEditProfileOpen(false);
           }
         }
+        window.location.reload();
     };
 
     const handleEditProfileClick = () => {
