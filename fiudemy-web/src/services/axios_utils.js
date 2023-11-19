@@ -157,6 +157,20 @@ export const sendForumMessage = async (discussionId, messageData) => {
    }
 }
 
+export const createNewDiscussion = async (discussionData) => {
+   try {
+      const res = await axios.post(`https://fiudemy.onrender.com/forums/`, discussionData, {
+         headers: {
+            'Content-Type': 'application/json',
+         },
+      });
+      console.log("Discusión creada con éxito!");
+      return res.data
+   } catch (error) {
+      console.error("Error al mandar el mensaje:", error);
+   }
+}
+
 export const getUserById = async (userId) => {
     try {
         const res = await axios.get(`https://fiudemy.onrender.com/users/${userId}`);

@@ -1,5 +1,11 @@
 import {Link, useParams} from "react-router-dom";
-import {getForumData, sendForumMessage, sendMessage} from "../../../services/axios_utils";
+import {
+   createCourse,
+   createNewDiscussion,
+   getForumData,
+   sendForumMessage,
+   sendMessage
+} from "../../../services/axios_utils";
 import {useEffect, useRef, useState} from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -9,6 +15,8 @@ import ForumIcon from '@mui/icons-material/Forum';
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CreateDiscussionModal from "./CreateDiscussionModal";
 
 export const CourseForum = () => {
    const { courseId } = useParams();
@@ -17,6 +25,7 @@ export const CourseForum = () => {
    const [newMessage, setNewMessage] = useState('');
    const currentUserId = localStorage.getItem("userId");
    const currentUserFullName = localStorage.getItem("fullName");
+   const [createDiscussion, setCreateDiscussion] = useState(false);
    const messagesContainerRef = useRef(null);
    useEffect(() => {
       const fetchAndSetForumData = async () => {
@@ -74,6 +83,37 @@ export const CourseForum = () => {
       };
       return new Intl.DateTimeFormat('es-AR', options).format(localDate);
    }
+   const closeModal = () => {
+      setCreateDiscussion(false);
+   };
+   const handleDiscussionCreation = () => {
+      setCreateDiscussion(true);
+   }
+   const onCreateDiscussion = async (discussion) => {
+      if (discussion.title.trim() === '') {
+         return;
+      }
+      const discussionData = {
+         "course_id": courseId,
+         "title": discussion.title,
+         "description": "string",
+         "messages": []
+      }
+      const result = await createNewDiscussion(discussionData);
+      console.log(result);
+      const updatedForumData = {
+         ...forumData,
+         results: [
+            ...forumData.results,
+            {
+               ...discussionData,
+               id: result.id
+            }
+         ]
+      }
+      setForumData(updatedForumData);
+      setCreateDiscussion(false);
+   }
    if (!forumData) {
       return <div> Loading </div>
    }
@@ -103,6 +143,15 @@ export const CourseForum = () => {
                         {discussion.title}
                      </Box>
                   ))}
+                  <Box onClick={() => handleDiscussionCreation()} sx={{
+                     height: "50px",
+                     borderBottom: "1px solid #ccc",
+                     display: "flex",
+                     justifyContent: "center",
+                  }}>
+                     <AddCircleOutlineIcon />
+                     Crear discusión
+                  </Box>
                </Box>
             </Box>
             {/* Right side - Display messages of the selected discussion */}
@@ -203,6 +252,11 @@ export const CourseForum = () => {
                )}
             </Box>
          </Box>
+         <CreateDiscussionModal
+            open={createDiscussion}
+            onClose={closeModal}
+            onCreateDiscussion={onCreateDiscussion}
+         />
       </Box>
    );
 };
