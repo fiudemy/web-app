@@ -129,10 +129,20 @@ export const ProfessorViewCourse = ({course, setEditMode}) => {
           onClick={() => {
             navigate(`/evaluations/${course.id}`, { state: { course }});
           }}
-          sx={{ marginTop: 3 }}
+          sx={{ marginTop: 3, marginRight: 3 }}
         >
           Mis Evaluaciones
         </Button>
+           <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                 navigate(`/forums/${course.id}`, { state: { course }});
+              }}
+              sx={{ marginTop: 3 }}
+           >
+              Foro de Consultas
+           </Button>
         </Box>
         </Paper>
         

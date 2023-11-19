@@ -436,3 +436,14 @@ export const saveTeacherResponse = async (formData, evaluationId, studentId) => 
       console.error("Error al crear la respuesta:", error);
   }
 };
+
+export const getForumData = async (courseId) => {
+   try {
+      const res = await axios.get(`https://fiudemy.onrender.com/forums?course_id=${courseId}&ascending=true`);
+      if (res.status === 200) {
+         return res.data;
+      }
+   } catch (error) {
+      console.error("Error al obtener los cursos:", error);
+   }
+};
