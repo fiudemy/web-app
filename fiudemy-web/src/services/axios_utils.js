@@ -414,6 +414,7 @@ export const saveEvaluation = async (formData) => {
       });
       if (res.status === 201) {
         console.log("Evaluacion creada con éxito!");
+        return res.data;
       }
     } catch (error) {
       console.error("Error al crear la Evaluacion:", error);
@@ -478,3 +479,35 @@ export const getForumData = async (courseId) => {
       console.error("Error al obtener los cursos:", error);
    }
 };
+
+
+export const saveEvaluationFile = async (formData, evaluationId) => {
+    try {
+        
+        const response = await axios.post(`https://fiudemy.onrender.com/evaluations/${evaluationId}/file`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        console.log('evaluation file updated:', response.data);
+    } catch (error) {
+        console.error('Error updating evaluation file:', error);
+    }
+}
+
+
+export const saveAnswerFile = async (formData, evaluationId, userId) => {
+    try {
+        
+        const response = await axios.put(`https://fiudemy.onrender.com/evaluations/${evaluationId}/answers/${userId}/answer_file`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        console.log('evaluation asnwer file updated:', response.data);
+    } catch (error) {
+        console.error('Error updating evaluation answer file:', error);
+    }
+}

@@ -3,7 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, TextField } from '@
 import Button from '@mui/material/Button';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getEvaluations, saveEvaluation, saveTeacherResponse } from '../../../services/axios_utils';
+import { getEvaluations, saveEvaluation, saveEvaluationFile, saveTeacherResponse } from '../../../services/axios_utils';
 import AppAppBar from "../../views/AppAppBar";
 import Typography from "../Typography";
 import NewEvaluationModal from './NewEvaluatioModal';
@@ -57,12 +57,28 @@ function StudentAnswer({setEvaluations, answer, evaluationId }) {
         <AccordionDetails>
         <Typography sx={{ fontWeight: 'bold'}}>Respuesta del estudiante </Typography>
 
-        <Typography sx={{ mb:5}} >{answer.answer}</Typography>
+        {answer.answer && answer.answer_file ? (
+              <Box sx={{ borderLeft: '2px solid #000',mt:2, ml:3, pl:2}}>
+              <Typography sx={{ mb:3}} >{answer.answer}</Typography>
+              <Typography sx={{ mb: 4 }}>
+                <a href={answer.answer_file} download>
+                  Descagar archivo adjunto
+                </a>
+              </Typography>
+              </Box>
+        ) : (
+          null)}
 
           { answer.counter_response ?
+            <>
+            <Typography sx={{ fontWeight: 'bold', mb:2}}>Devolución del profesor </Typography>
+
             <Typography sx={{ ml:3}}>{answer.counter_response}</Typography>
+            </>
             : (
               <>
+              <Typography sx={{ fontWeight: 'bold', mb:2}}>Devolución del profesor </Typography>
+
               <TextField
                 label="Devolución del profesor"
                 value={feedback}
@@ -83,8 +99,7 @@ function StudentAnswer({setEvaluations, answer, evaluationId }) {
   );
 }
 
-function EvaluationItem({ evaluationId, title, prompt, answers, evaluations, setEvaluations }) {
- 
+function EvaluationItem({ evaluationId, title, prompt, file, answers, evaluations, setEvaluations }) {
 
   return (
     <Accordion>
@@ -93,13 +108,20 @@ function EvaluationItem({ evaluationId, title, prompt, answers, evaluations, set
           <Typography variant="h6" marked={'left'}>
             {title}
           </Typography>
-          <br />
         </Box>
       </AccordionSummary>
       <AccordionDetails>
       < Typography sx={{ mb: 1, fontWeight: 'bold' }}>Descripción de la evaluación</Typography>
 
-        < Typography sx={{ mb: 5, ml:1}}>{prompt}</Typography>
+        < Typography sx={{ mb: 3, ml:1}}>{prompt}</Typography>
+        <Typography sx={{ mb: 4 }}>
+          <a href={file} download>
+            Archivo adjunto consigna de la evaluación
+          </a>
+        </Typography>
+
+        < Typography sx={{ mt: 3,mb:2, ml:1, fontWeight: 'bold' }}>Respuestas de los estudiantes</Typography>
+
         {
         
         answers.length > 0 ? answers.map((answer, index) => (
@@ -134,6 +156,7 @@ function EvaluationsView({ evaluations, openModal, setEvaluations }) {
           evaluationId={evaluation.id}
           evaluations={evaluations}
           setEvaluations={setEvaluations}
+          file={evaluation.file}
         />
       ))}
       <Box sx={{ marginTop: '20px' ,textAlign  : 'center'}}>
@@ -162,12 +185,16 @@ export default function MyEvaluations() {
 
 
   const handleAddEvaluation = async (courseId, newEvaluation)=> {
-    await (saveEvaluation({
+    const res = await (saveEvaluation({
       title : newEvaluation.title,
       question : newEvaluation.question,
       course_id : courseId
-    }))
+    }));
+    await (saveEvaluationFile({
+      file: newEvaluation.file,
+    }, res.id));
 
+    window.location.reload();
   }
 
   

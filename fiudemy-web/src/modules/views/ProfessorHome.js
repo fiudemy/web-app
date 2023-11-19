@@ -56,9 +56,11 @@ export default function TeacherHome() {
         category: newCourse.category,
         price: newCourse.price,
         hours: newCourse.hours,
-        active: newCourse.active // Todo: recibir del back
+        active: false,
+        sections: []
       });
     }
+    window.location.reload();
   };
   
   const openModal = () => {

@@ -180,7 +180,8 @@ export const ViewCourse = () => {
     }
 
     if (isProfessor) {
-        if (course.sections.length === 0 || editMode) {
+        
+        if (! course.sections || course.sections.length === 0 || editMode) {
             return (
                 <EditCourse course={course} courseId={courseId} setEditMode={setEditMode}/>
             );

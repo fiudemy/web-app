@@ -3,9 +3,9 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from 'react';
 import jsPDF from 'jspdf';
-import { getEvaluations, getEvaluationsByUserId, getUserById, saveStudentAnswer } from "../../../services/axios_utils";
+import { getEvaluations, getEvaluationsByUserId, getUserById, saveAnswerFile, saveStudentAnswer } from "../../../services/axios_utils";
 
-import { Button, TextField } from "@mui/material";
+import { Button, CircularProgress, DialogContent, Input, TextField } from "@mui/material";
 import AppAppBar from '../../views/AppAppBar';
 
 import Checkbox from '@mui/material/Checkbox';
@@ -54,26 +54,31 @@ export const getTeacherResponseFromEvaluation = (evaluation) => {
 }
 
 export const StudentViewCourse = ({course, setEditMode}) => {
+    const [isUploading, setUploading] = useState(false);
     const [answer, setAnswer] = useState({});
     const navigate = useNavigate();
     const [completedSectionsIds, setViewedSections] = useState(null);
     const[evaluations,setEvaluations] = useState([]);
     const courseSectionQuantity = course.sections.length;
 
-    const handleEnviar = (evaluationId) => {
+    const handleEnviar = async (evaluationId) => {
         const res = answer[evaluationId];
+        const evaluation = evaluations.find((evaluation) => evaluation.id === evaluationId);
         const userID = localStorage.getItem('userId');
-        saveStudentAnswer({
+        await saveStudentAnswer({
           user_id: userID,
           answer: res,
         }, evaluationId);
         //add answer to evaluation
+        const answer_file = await saveAnswerFile({ file: evaluation.answer_file }, evaluationId, userID);
+
         setEvaluations((prevEvaluations) => {
           const newEvaluations = prevEvaluations.map((evaluation) => {
             if (evaluation.id === evaluationId) {
               return {
                 ...evaluation,
                 answer: res,
+                answer_file: answer_file,
               };
             }
             return evaluation;
@@ -81,6 +86,8 @@ export const StudentViewCourse = ({course, setEditMode}) => {
           return newEvaluations;
         }
         );
+
+        window.location.reload();
 
 
 
@@ -105,6 +112,25 @@ export const StudentViewCourse = ({course, setEditMode}) => {
         };
         fetchViewedSections();
     }, [course]);
+
+    const handleFileChange = async (evaluationId, event) => {
+        const selectedFile = event.target.files[0];
+        setEvaluations((prevEvaluations) => {
+          const newEvaluations = prevEvaluations.map((evaluation) => {
+            if (evaluation.id === evaluationId) {
+              return {
+                ...evaluation,
+                answer_file: selectedFile,
+              };
+            }
+            return evaluation;
+          });
+          return newEvaluations;
+        }
+        );
+
+    }
+
 
     useEffect(() => {
         const fetchEvaluations = async () => {
@@ -153,6 +179,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
       // Save the PDF as a file
       doc.save('certificado.pdf');
     };
+
 
 
     return (
@@ -308,7 +335,10 @@ export const StudentViewCourse = ({course, setEditMode}) => {
         sx={{ padding: 3, border: '2px solid #e0e0e0', borderRadius: 12, m: 3, p: 5 }}
         > 
         {evaluations &&
-          evaluations.map((evaluation) => (
+          evaluations.map((evaluation) => {
+          console.log("AAAAAAAAa", !!evaluation.answers[0]?.answer_file);
+
+          return(
             <div key={evaluation.title} style={{ marginBottom: 100 }}>
               <Typography variant="h5" marked="left" sx={{ borderBottom: '2px solid #e0e0e0', paddingBottom: 1, marginBottom: 3 }}>
                 {evaluation.title}
@@ -344,14 +374,47 @@ export const StudentViewCourse = ({course, setEditMode}) => {
                       rows={4}
                       sx={{ mb: 2 }}
                       />
-                  <Button variant="contained" color="primary" onClick={() => handleEnviar(evaluation.id)}>
-                      Enviar
+                      </>
+                      )
+                }
+
+                { !!evaluation.answers[0]?.answer_file ? (
+                  
+                  <Typography sx={{ mb: 1 }}>
+                      
+                      <a href={evaluation.answers[0].answer_file } download>
+                        Archivo adjunto
+                      </a>
+                  </Typography>
+                  
+                ) : (
+                  <>
+                  <DialogContent>
+                    <Input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={(e) => handleFileChange(evaluation.id, e)}
+                        disabled={isUploading}
+                    />
+                    {isUploading && <CircularProgress />}
+                    </DialogContent>
+
+                  <Button variant="contained" color="primary" onClick={() => handleEnviar(evaluation.id)} disabled={ !evaluation.answer_file}>
+                  Enviar
                   </Button>
                   </>
-                )}
+
+
+                )
+              } 
+                  
+                
                 </Box>
 
-                { evaluation.answer ? (
+
+
+
+                { evaluation.answer && evaluation.answers[0]?.answer_file ? (
 
 
                 <Box sx={{ marginTop: 3, marginBottom: 3, marginLeft: 5, borderLeft: '2px solid #e0e0e0', paddingLeft: 2  }}>
@@ -369,7 +432,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
 
 
             </div>
-            ))}
+            )})}
 
         </Paper>
         
