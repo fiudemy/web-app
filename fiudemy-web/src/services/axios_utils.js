@@ -26,7 +26,9 @@ export const logIn = async (email) => {
         if (res.status === 200) {
             const userId = res.data.results[0].id;
             const userRole = res.data.results[0].role;
-            return [userId, userRole];
+            const fullName = `${res.data.results[0].first_name} ${res.data.results[0].last_name}`;
+            console.log(fullName);
+            return [userId, userRole, fullName];
         }
     } catch (error) {
         console.error(error);
@@ -133,8 +135,37 @@ export const sendMessage = async (chatId, messageData) => {
          },
       });
       if (res.status === 200) {
-         console.log("Curso editado con éxito!");
+         console.log("Mensaje mandado con éxito!");
       }
+   } catch (error) {
+      console.error("Error al mandar el mensaje:", error);
+   }
+}
+
+export const sendForumMessage = async (discussionId, messageData) => {
+   try {
+      const res = await axios.put(`https://fiudemy.onrender.com/forums/${discussionId}/new_message`, messageData, {
+         headers: {
+            'Content-Type': 'application/json',
+         },
+      });
+      if (res.status === 200) {
+         console.log("Mensaje enviado al foro con éxito!");
+      }
+   } catch (error) {
+      console.error("Error al mandar el mensaje:", error);
+   }
+}
+
+export const createNewDiscussion = async (discussionData) => {
+   try {
+      const res = await axios.post(`https://fiudemy.onrender.com/forums/`, discussionData, {
+         headers: {
+            'Content-Type': 'application/json',
+         },
+      });
+      console.log("Discusión creada con éxito!");
+      return res.data
    } catch (error) {
       console.error("Error al mandar el mensaje:", error);
    }
@@ -435,4 +466,15 @@ export const saveTeacherResponse = async (formData, evaluationId, studentId) => 
   } catch (error) {
       console.error("Error al crear la respuesta:", error);
   }
+};
+
+export const getForumData = async (courseId) => {
+   try {
+      const res = await axios.get(`https://fiudemy.onrender.com/forums?course_id=${courseId}&ascending=true`);
+      if (res.status === 200) {
+         return res.data;
+      }
+   } catch (error) {
+      console.error("Error al obtener los cursos:", error);
+   }
 };

@@ -11,6 +11,7 @@ import AppAppBar from '../../views/AppAppBar';
 import Checkbox from '@mui/material/Checkbox';
 import { getStudentViewedSections, setSectionWiewStatus } from '../../../services/axios_utils';
 import { YoutubeEmbed, getEmbeddedYoutubeUrl } from './YoutubeEmbed';
+import {useNavigate} from "react-router-dom";
 
 const wasSectionCompletedByStudent = (section, completedSectionsIds) => {
 
@@ -54,6 +55,7 @@ export const getTeacherResponseFromEvaluation = (evaluation) => {
 
 export const StudentViewCourse = ({course, setEditMode}) => {
     const [answer, setAnswer] = useState({});
+    const navigate = useNavigate();
     const [completedSectionsIds, setViewedSections] = useState(null);
     const[evaluations,setEvaluations] = useState([]);
     const courseSectionQuantity = course.sections.length;
@@ -239,6 +241,16 @@ export const StudentViewCourse = ({course, setEditMode}) => {
 
             </Box>
         </Box>
+           <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                 navigate(`/forums/${course.id}`, { state: { course }});
+              }}
+              sx={{ marginTop: 3, marginBottom: 3 }}
+           >
+              Foro de Consultas
+           </Button>
         {completionPercentage === 100 && (
 
         <Box sx={{marginBottom: 3 }}>
