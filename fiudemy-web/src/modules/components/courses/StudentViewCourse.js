@@ -2,7 +2,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from 'react';
-import { getEvaluations, getEvaluationsByUserId, saveStudentAnswer } from "../../../services/axios_utils";
+import jsPDF from 'jspdf';
+import { getEvaluations, getEvaluationsByUserId, getUserById, saveStudentAnswer } from "../../../services/axios_utils";
 
 import { Button, TextField } from "@mui/material";
 import AppAppBar from '../../views/AppAppBar';
@@ -122,6 +123,36 @@ export const StudentViewCourse = ({course, setEditMode}) => {
 
     const completionPercentage = Math.round((completedSectionsIds.length / courseSectionQuantity) * 100)
 
+    const generateCertificate = async () => {
+      const userData = await getUserById(localStorage.getItem("userId"));
+      const userName = `${userData.first_name} ${userData.last_name}`;
+      
+      // Create a new jsPDF object
+      const doc = new jsPDF();
+
+      // Add title and heading
+      doc.setFontSize(24);
+      doc.text("Certificado de Completitud", doc.internal.pageSize.width / 2, 30, { align: 'center' });
+    
+      // Add user and course information
+      doc.setFontSize(16);
+      doc.text(`El presente certificado se otorga a:`, 20, 50);
+      doc.setFontSize(18);
+      doc.text(userName, doc.internal.pageSize.width / 2, 60, { align: 'center' });
+      doc.setFontSize(16);
+      doc.text(`por haber completado satisfactoriamente el curso:`, 20, 70);
+      doc.setFontSize(18);
+      doc.text(course.title, doc.internal.pageSize.width / 2, 80, { align: 'center' });
+
+      // Add date and signature
+      doc.setFontSize(12);
+      doc.text(new Date().toLocaleDateString(), 90, 110);
+
+      // Save the PDF as a file
+      doc.save('certificado.pdf');
+    };
+
+
     return (
         <>
         <AppAppBar showsSignInOptions={false} isStudent={true} />
@@ -213,12 +244,12 @@ export const StudentViewCourse = ({course, setEditMode}) => {
         <Box sx={{marginBottom: 3 }}>
 
           <Typography variant="body1" sx={{ fontWeight: 'bold', marginBottom: 2}}>
-              Certificado de completitud
-            </Typography>
+            Certificado de completitud
+          </Typography>
 
-            <Button variant="contained" color="success" onClick={console.log("descargar pdf")} sx={{ color: 'white'}}>
-              Descargar PDF
-            </Button>
+          <Button variant="contained" color="success" onClick={generateCertificate} sx={{ color: 'white'}}>
+            Descargar PDF
+          </Button>
           
         </Box>
         )}
