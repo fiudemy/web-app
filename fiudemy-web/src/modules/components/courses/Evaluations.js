@@ -83,8 +83,7 @@ function StudentAnswer({setEvaluations, answer, evaluationId }) {
   );
 }
 
-function EvaluationItem({ evaluationId, title, prompt, answers, evaluations, setEvaluations }) {
- 
+function EvaluationItem({ evaluationId, title, prompt, file, answers, evaluations, setEvaluations }) {
 
   return (
     <Accordion>
@@ -93,13 +92,17 @@ function EvaluationItem({ evaluationId, title, prompt, answers, evaluations, set
           <Typography variant="h6" marked={'left'}>
             {title}
           </Typography>
-          <br />
         </Box>
       </AccordionSummary>
       <AccordionDetails>
       < Typography sx={{ mb: 1, fontWeight: 'bold' }}>Descripción de la evaluación</Typography>
 
         < Typography sx={{ mb: 5, ml:1}}>{prompt}</Typography>
+        <Typography sx={{ mb: 1 }}>
+          <a href={file} download>
+            Descagar archivo adjunto
+          </a>
+        </Typography>
         {
         
         answers.length > 0 ? answers.map((answer, index) => (
@@ -134,6 +137,7 @@ function EvaluationsView({ evaluations, openModal, setEvaluations }) {
           evaluationId={evaluation.id}
           evaluations={evaluations}
           setEvaluations={setEvaluations}
+          file={evaluation.file}
         />
       ))}
       <Box sx={{ marginTop: '20px' ,textAlign  : 'center'}}>
