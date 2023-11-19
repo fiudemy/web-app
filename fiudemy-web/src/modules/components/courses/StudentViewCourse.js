@@ -44,15 +44,11 @@ export const getStudentResponseFromEvaluation = (evaluation) => {
 }
 
 export const getTeacherResponseFromEvaluation = (evaluation) => {
-    const userID = localStorage.getItem('userId');
-    if (!evaluation.responses) {
+
+  if (!evaluation.counter_response) {
       return "El profesor no ha respondido aún";
     }
-    const res = evaluation.responses.find((response) => response.user_id === userID);
-    if (!res.counterresponse) {
-        return "El profesor no ha respondido aún";
-    }
-    return res.counterresponse;
+    return evaluation.counter_response;
 }
 
 export const StudentViewCourse = ({course, setEditMode}) => {
@@ -124,7 +120,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
         return <div>Loading...</div>;
     }
 
-    
+    console.log("evaluations", evaluations);
 
     return (
         <>
@@ -256,22 +252,25 @@ export const StudentViewCourse = ({course, setEditMode}) => {
         > 
         {evaluations &&
           evaluations.map((evaluation) => (
-            <div key={evaluation.title} style={{ marginBottom: 80 }}>
+            <div key={evaluation.title} style={{ marginBottom: 100 }}>
               <Typography variant="h5" marked="left" sx={{ borderBottom: '2px solid #e0e0e0', paddingBottom: 1, marginBottom: 3 }}>
                 {evaluation.title}
               </Typography>
               <Box
                 elevation={3} // Add shadow
-                sx={{ padding: 2, maxWidth: "80 %", marginBottom: 5, '& > :not(style) + :not(style)': {
+                sx={{ padding: 2, maxWidth: "80 %", marginBottom: 6, '& > :not(style) + :not(style)': {
                     marginTop: '8px', // Add margin to separate each pair of Typography components
                     } }}
               >
+                <Box sx={{ marginTop: 3, marginBottom: 4, }}>
                 <Typography variant="body1" sx={{ fontWeight: 'bold'}}>Consigna de la Evaluacion:</Typography>
                 <Typography variant="body2" paragraph>
                   {evaluation.question}
                 </Typography>
-                <Box sx={{ marginTop: 3, marginBottom: 3, marginLeft: 3 }}>
-                <Typography variant="body1" sx={{ fontWeight: 'bold', marginBottom: 3,}}>Respuesta del Estudiante:</Typography>
+                </Box>
+
+                <Box sx={{ marginTop: 3, marginBottom: 4, marginLeft: 3, borderLeft: '2px solid #e0e0e0', paddingLeft: 2 }}>
+                <Typography variant="body1" sx={{ fontWeight: 'bold', marginBottom: 2,}}>Respuesta del Estudiante:</Typography>
 
                 { evaluation.answer ? (
                   <Typography variant="body2" paragraph>
@@ -298,7 +297,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
                 { evaluation.answer ? (
 
 
-                <Box sx={{ marginTop: 3, marginBottom: 3, marginLeft: 5 }}>
+                <Box sx={{ marginTop: 3, marginBottom: 3, marginLeft: 5, borderLeft: '2px solid #e0e0e0', paddingLeft: 2  }}>
                   <Typography variant="body1" sx={{ fontWeight: 'bold'}}>Respuesta del Profesor:</Typography>
                   <Typography variant="body2" paragraph>
                     {getTeacherResponseFromEvaluation(evaluation)}

@@ -20,7 +20,6 @@ export default function StudentHome() {
     fetch(`https://fiudemy.onrender.com/courses?user_id=${userId}`)
       .then(response => response.json())
       .then(data => {
-        console.log( " and data.results is " + JSON.stringify(data.results));
         setCourses(data.results.filter(course => course.active));
   
         fetch('https://fiudemy.onrender.com/courses?sort_by=purchase_count&ascending=false&limit=10')
