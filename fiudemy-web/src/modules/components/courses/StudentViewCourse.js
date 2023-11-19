@@ -120,7 +120,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
         return <div>Loading...</div>;
     }
 
-    console.log("evaluations", evaluations);
+    const completionPercentage = Math.round((completedSectionsIds.length / courseSectionQuantity) * 100)
 
     return (
         <>
@@ -199,15 +199,29 @@ export const StudentViewCourse = ({course, setEditMode}) => {
             Progreso
           </Typography>
        
-        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
             <progress value={completedSectionsIds.length} max={courseSectionQuantity}  sx={{ marginRight: 4, width: 60, height: 60 }} />
             <Box>
             <Typography  component="div" sx={{ marginLeft: 2}}>
-                {Math.round((completedSectionsIds.length / courseSectionQuantity) * 100)}%
+                {completionPercentage}%
                 </Typography>
 
             </Box>
         </Box>
+        {completionPercentage === 100 && (
+
+        <Box sx={{marginBottom: 3 }}>
+
+          <Typography variant="body1" sx={{ fontWeight: 'bold', marginBottom: 2}}>
+              Certificado de completitud
+            </Typography>
+
+            <Button variant="contained" color="success" onClick={console.log("descargar pdf")} sx={{ color: 'white'}}>
+              Descargar PDF
+            </Button>
+          
+        </Box>
+        )}
         </Box>
         </Paper>
 
