@@ -60,7 +60,6 @@ export const StudentViewCourse = ({course, setEditMode}) => {
     const [completedSectionsIds, setViewedSections] = useState(null);
     const[evaluations,setEvaluations] = useState([]);
     const courseSectionQuantity = course.sections.length;
-    console.log("evaluations", evaluations);
 
     const handleEnviar = async (evaluationId) => {
         const res = answer[evaluationId];
@@ -71,7 +70,6 @@ export const StudentViewCourse = ({course, setEditMode}) => {
           answer: res,
         }, evaluationId);
         //add answer to evaluation
-        console.log("res", evaluation.answer_file);
         const answer_file = await saveAnswerFile({ file: evaluation.answer_file }, evaluationId, userID);
 
         setEvaluations((prevEvaluations) => {
@@ -88,6 +86,8 @@ export const StudentViewCourse = ({course, setEditMode}) => {
           return newEvaluations;
         }
         );
+
+        window.location.reload();
 
 
 
@@ -399,7 +399,7 @@ export const StudentViewCourse = ({course, setEditMode}) => {
                     {isUploading && <CircularProgress />}
                     </DialogContent>
 
-                  <Button variant="contained" color="primary" onClick={() => handleEnviar(evaluation.id)}>
+                  <Button variant="contained" color="primary" onClick={() => handleEnviar(evaluation.id)} disabled={ !evaluation.answer_file}>
                   Enviar
                   </Button>
                   </>

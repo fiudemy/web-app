@@ -57,12 +57,28 @@ function StudentAnswer({setEvaluations, answer, evaluationId }) {
         <AccordionDetails>
         <Typography sx={{ fontWeight: 'bold'}}>Respuesta del estudiante </Typography>
 
-        <Typography sx={{ mb:5}} >{answer.answer}</Typography>
+        {answer.answer && answer.answer_file ? (
+              <Box sx={{ borderLeft: '2px solid #000',mt:2, ml:3, pl:2}}>
+              <Typography sx={{ mb:3}} >{answer.answer}</Typography>
+              <Typography sx={{ mb: 4 }}>
+                <a href={answer.answer_file} download>
+                  Descagar archivo adjunto
+                </a>
+              </Typography>
+              </Box>
+        ) : (
+          null)}
 
           { answer.counter_response ?
+            <>
+            <Typography sx={{ fontWeight: 'bold', mb:2}}>Devolución del profesor </Typography>
+
             <Typography sx={{ ml:3}}>{answer.counter_response}</Typography>
+            </>
             : (
               <>
+              <Typography sx={{ fontWeight: 'bold', mb:2}}>Devolución del profesor </Typography>
+
               <TextField
                 label="Devolución del profesor"
                 value={feedback}
@@ -97,12 +113,15 @@ function EvaluationItem({ evaluationId, title, prompt, file, answers, evaluation
       <AccordionDetails>
       < Typography sx={{ mb: 1, fontWeight: 'bold' }}>Descripción de la evaluación</Typography>
 
-        < Typography sx={{ mb: 5, ml:1}}>{prompt}</Typography>
-        <Typography sx={{ mb: 1 }}>
+        < Typography sx={{ mb: 3, ml:1}}>{prompt}</Typography>
+        <Typography sx={{ mb: 4 }}>
           <a href={file} download>
-            Descagar archivo adjunto
+            Archivo adjunto consigna de la evaluación
           </a>
         </Typography>
+
+        < Typography sx={{ mt: 3,mb:2, ml:1, fontWeight: 'bold' }}>Respuestas de los estudiantes</Typography>
+
         {
         
         answers.length > 0 ? answers.map((answer, index) => (
@@ -175,6 +194,7 @@ export default function MyEvaluations() {
       file: newEvaluation.file,
     }, res.id));
 
+    window.location.reload();
   }
 
   
