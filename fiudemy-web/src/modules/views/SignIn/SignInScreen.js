@@ -35,9 +35,11 @@ export default function SignIn() {
     const userData = await logIn(email);
     const userId = userData[0];
     const userRole = userData[1];
+    const fullName = userData[2];
     localStorage.setItem("email", email);
     localStorage.setItem("userId", userId);
     localStorage.setItem("userRole", userRole);
+    localStorage.setItem("fullName", fullName);
 
     if (!email || !password) {
       setFormError("Todos los campos son obligatorios.");

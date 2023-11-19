@@ -1,5 +1,5 @@
-import {useParams} from "react-router-dom";
-import {getForumData} from "../../../services/axios_utils";
+import {Link, useParams} from "react-router-dom";
+import {getForumData, sendForumMessage, sendMessage} from "../../../services/axios_utils";
 import {useEffect, useRef, useState} from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -16,6 +16,7 @@ export const CourseForum = () => {
    const [selectedDiscussion, setSelectedDiscussion] = useState(null);
    const [newMessage, setNewMessage] = useState('');
    const currentUserId = localStorage.getItem("userId");
+   const currentUserFullName = localStorage.getItem("fullName");
    const messagesContainerRef = useRef(null);
    useEffect(() => {
       const fetchAndSetForumData = async () => {
@@ -38,6 +39,26 @@ export const CourseForum = () => {
       if (newMessage.trim() === '') {
          return;
       }
+      const chatData = {
+         "sender": currentUserId,
+         "message": newMessage,
+      }
+      const currentDate = new Date().toISOString();
+      const formattedDate = currentDate.slice(0, 23) + '000';
+      await sendForumMessage(selectedDiscussion.id, chatData);
+      const updatedDiscussion = {
+         ...selectedDiscussion,
+         messages: [
+            ...selectedDiscussion.messages,
+            {
+               sender: chatData["sender"],
+               message: newMessage,
+               time: formattedDate,
+               sender_name: currentUserFullName,
+            },
+         ],
+      };
+      setSelectedDiscussion(updatedDiscussion);
       setNewMessage('');
    }
    const transformDate = (date) => {
@@ -140,12 +161,17 @@ export const CourseForum = () => {
                                        flexDirection: "column",
                                        fontSize: "10px",
                                        alignItems: "center"}}>
-                                       <AccountCircleIcon fontSize={"medium"}/>
+                                       <Link to={`/profile/${message.sender}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                          <IconButton>
+                                             <AccountCircleIcon fontSize={"medium"}/>
+                                          </IconButton>
+                                       </Link>
                                        <Box>{message.sender_name}</Box>
                                     </Box>
                                     <Box sx ={{
                                        display: "flex",
-                                       flexDirection: "column",}}>
+                                       flexDirection: "column",
+                                       justifyContent: "space-between"}}>
                                        {`${message.message}`}
                                        <Box sx={{
                                           fontSize: "10px",
