@@ -58,6 +58,7 @@ const Chats = () => {
       setSelectedChat(updatedChat);
       setNewMessage('');
    }
+   const isStudent = localStorage.getItem("userRole") === "student";
    const transformDate = (date) => {
       const localDate = new Date(date + 'Z'); // Append 'Z' to indicate UTC time
       const options = {
@@ -76,7 +77,7 @@ const Chats = () => {
    }
    return (
       <Box >
-         <AppAppBar showsSignInOptions={false} isProfessor={false} isChat={true}/>
+         <AppAppBar showsSignInOptions={false} isStudent={isStudent} isChat={true}/>
          <Box display="flex">
             {/* Left side - List of people */}
             <Box sx={{

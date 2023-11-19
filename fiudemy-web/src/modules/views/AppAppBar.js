@@ -130,10 +130,10 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
                        color="inherit"
                        variant="h6"
                        underline="none"
-                       href="/professor-home/"
+                       href={isStudent ? "/student-home/" : "/professor-home/"}
                        sx={rightLink}
                     >
-                      {'Mis chats'}
+                      {'Mis cursos'}
                     </Link>
                   </Box>
                )
