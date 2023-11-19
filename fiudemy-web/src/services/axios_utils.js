@@ -495,3 +495,19 @@ export const saveEvaluationFile = async (formData, evaluationId) => {
         console.error('Error updating evaluation file:', error);
     }
 }
+
+
+export const saveAnswerFile = async (formData, evaluationId, userId) => {
+    try {
+        
+        const response = await axios.put(`https://fiudemy.onrender.com/evaluations/${evaluationId}/answers/${userId}/answer_file`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        console.log('evaluation asnwer file updated:', response.data);
+    } catch (error) {
+        console.error('Error updating evaluation answer file:', error);
+    }
+}
