@@ -33,6 +33,7 @@ export default function TeacherHome() {
                 price: filteredCourse.price,
                 hours: filteredCourse.hours,
                 sections: filteredCourse.sections,
+                active: filteredCourse.active
               }));
             setCursos(filteredCourses);
           }

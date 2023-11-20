@@ -35,7 +35,13 @@ const CourseHomeBox = ({course, isStudent}) => {
       </div>
       {isStudent === false && (
         <Typography sx={{ color: 'rgba(0, 0, 0, 0.5)' }}>
-          El curso no está activo
+          {
+            course.active ? (
+              "Curso activo"
+            ) : (
+              "El curso no esta activo"
+            )
+          }
         </Typography>
       )}
       <Button
