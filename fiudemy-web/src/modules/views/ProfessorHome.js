@@ -46,11 +46,12 @@ export default function TeacherHome() {
     fetchCourses();
   }, []);
 
-  const handleAddCourse = () => {
+  const handleAddCourse = async () => {
     //const datateacher = JSON.parse(localStorage.getItem('teacherData'))
+    console.log("Curso nuevo: ", newCourse);
     const teacherEmail = localStorage.getItem("email");
   
-      createCourse({
+      await createCourse({
         title: newCourse.title,
         description: newCourse.description,
         teacher: teacherEmail,
