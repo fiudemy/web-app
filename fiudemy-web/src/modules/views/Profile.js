@@ -97,6 +97,7 @@ const Profile = () => {
 
     const handleAddFriend = () => {
         sendFriendRequestTo(userId);
+        window.location.reload();
     };
 
     const handleDeleteFriend = async () => {
@@ -105,6 +106,8 @@ const Profile = () => {
             || (friendship.to === userId && friendship.from === currentUserId)
         ));
         await deleteFriendship(friendship.id);
+        window.location.reload();
+
     }
 
     const handlePendingFriend = () => {

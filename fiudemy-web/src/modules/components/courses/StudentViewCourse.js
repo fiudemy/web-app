@@ -354,6 +354,12 @@ export const StudentViewCourse = ({course, setEditMode}) => {
                 <Typography variant="body2" paragraph>
                   {evaluation.question}
                 </Typography>
+                <Typography sx={{ mb: 1 }}>
+                      
+                      <a href={evaluation.file } download>
+                        Archivo adjunto
+                      </a>
+                  </Typography>
                 </Box>
 
                 <Box sx={{ marginTop: 3, marginBottom: 4, marginLeft: 3, borderLeft: '2px solid #e0e0e0', paddingLeft: 2 }}>
