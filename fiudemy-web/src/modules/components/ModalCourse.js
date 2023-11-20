@@ -42,11 +42,11 @@ function CourseModal({ open, onClose, onAddCourse, newCourse, setNewCourse }) {
               sx={{ mb: 2 }}
               onChange={(e) => setNewCourse({ ...newCourse, category: e.target.value })}
             >
-              <MenuItem value="fisica">Física</MenuItem>
-              <MenuItem value="matematica">Matemática</MenuItem>
-              <MenuItem value="programacion">Programación</MenuItem>
-              <MenuItem value="literatura">Literatura</MenuItem>
-              <MenuItem value="otros">Otros</MenuItem>
+              <MenuItem value="Física">Física</MenuItem>
+              <MenuItem value="Matemática">Matemática</MenuItem>
+              <MenuItem value="Programación">Programación</MenuItem>
+              <MenuItem value="Literatura">Literatura</MenuItem>
+              <MenuItem value="Otros">Otros</MenuItem>
             </Select>
           </Grid>
           <TextField
