@@ -49,9 +49,9 @@ export default function TeacherHome() {
   const handleAddCourse = () => {
     //const datateacher = JSON.parse(localStorage.getItem('teacherData'))
     const teacherEmail = localStorage.getItem("email");
-    if (newCourse.name && newCourse.description) {
+    if (newCourse.title && newCourse.description) {
       createCourse({
-        title: newCourse.name,
+        title: newCourse.title,
         description: newCourse.description,
         teacher: teacherEmail,
         category: newCourse.category,

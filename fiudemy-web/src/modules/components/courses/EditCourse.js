@@ -243,6 +243,7 @@ function EditCourse({course, courseId, setEditMode}) {
         setIsModalOpen(false);
     };
 
+    console.log("edited course", editedCourse);
 
     useEffect(() => {
         const fetchCourse = async () => {
@@ -275,7 +276,7 @@ function EditCourse({course, courseId, setEditMode}) {
     const handleGuardarCambios = async () => {
         const teacherEmail = localStorage.getItem("email");
         await editCourse({
-            title: editedCourse.name,
+            title: editedCourse.title,
             description: editedCourse.description,
             teacher: teacherEmail,
             category: editedCourse.category,

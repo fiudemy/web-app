@@ -27,7 +27,7 @@ function CourseModal({ open, onClose, onAddCourse, newCourse, setNewCourse }) {
           </Typography>
           <TextField
             label="Nombre del curso"
-            value={newCourse.name}
+            value={newCourse.title}
             onChange={(e) => setNewCourse({ ...newCourse, name: e.target.value })}
             fullWidth
             sx={{ mb: 2 }}
