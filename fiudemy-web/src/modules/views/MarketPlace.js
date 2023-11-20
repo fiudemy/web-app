@@ -12,7 +12,7 @@ import InputLabel from '@mui/material/InputLabel';
 import { useNavigate } from 'react-router-dom';
 
 const categories = [
-  'Matemática', 'Física', 'Química', 'Biología', 'Programación'
+  'Matemática', 'Física', 'Literatura', 'Biología', 'Programación', "Otros"
 ]
 
 export const CourseMarketBox = ({course, userComesFromHotCourses=false}) => {
