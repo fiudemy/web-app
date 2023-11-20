@@ -15,6 +15,7 @@ import Profile from './modules/views/Profile';
 import Friends from './modules/views/Friends';
 import FriendsApplication from './modules/views/FriendsApplication';
 import Users from './modules/views/Users';
+import Students from './modules/views/Students';
 import {CourseForum} from "./modules/components/courses/Forum";
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
               <Route path="/friendsApplication/:userId" element={<FriendsApplication/>}/>
               <Route path="/users" element={<Users/>}/>
               <Route path="/forums/:courseId" element={<CourseForum/>}/>
+              <Route path="/students/:courseId" element={<Students/>}/>
               <Route path="*" element={<ProductDescription/>}/>
             </Routes>
           </BrowserRouter>

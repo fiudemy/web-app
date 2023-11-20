@@ -28,7 +28,7 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
   };
 
   const handleChatClick = (event) => {
-    navigate('/chats')
+    navigate('/chats');
   };
 
   const handleClose = () => {
@@ -120,6 +120,15 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
                   </Link>
                 )
               }
+              <Link
+                color="inherit"
+                variant="h6"
+                underline="none"
+                href="/users/"
+                sx={rightLink}
+              >
+                {'Usuarios'}
+              </Link>
             </Box>
             )
           }
@@ -134,6 +143,15 @@ function AppAppBar({ showsSignInOptions = true, isStudent = false, isProfessor =
                        sx={rightLink}
                     >
                       {'Mis cursos'}
+                    </Link>
+                    <Link
+                      color="inherit"
+                      variant="h6"
+                      underline="none"
+                      href="/users/"
+                      sx={rightLink}
+                    >
+                      {'Usuarios'}
                     </Link>
                   </Box>
                )

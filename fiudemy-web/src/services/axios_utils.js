@@ -228,6 +228,26 @@ export const getCoursesByStudentId = async (userId) => {
     }
 };
 
+export const getStudentsByCourseId = async (courseId) => {
+    try {
+        const response = await fetch(`https://fiudemy.onrender.com/courses/${courseId}/students`);
+        if (!response.ok) {
+            console.error("Error al pedir los estudiantes del curso");
+        }
+        const data = await response.json();
+
+        if (data !== undefined) {
+            return data.results;
+        } else {
+            return [];
+        }
+    }
+    catch (error) {
+        console.error(error);
+        return [];
+    }
+};
+
 export const getAllUsers = async () => {
     try {
         const response = await fetch(`https://fiudemy.onrender.com/users`)
@@ -237,9 +257,9 @@ export const getAllUsers = async () => {
         const data = await response.json();
     
         if (data !== undefined) {
-        return data.results;
+            return data.results;
         } else {
-        return [];
+            return [];
         }
     } catch (error) {
         console.error(error);

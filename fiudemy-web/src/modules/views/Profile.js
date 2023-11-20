@@ -124,7 +124,7 @@ const Profile = () => {
             if (existingChat) {
                 navigate(`/chats`);
             } else {
-                await createChat(currentUserId, friendId);
+                const info = await createChat(currentUserId, friendId);
                 navigate(`/chats`);
             }
         } catch (error) {
