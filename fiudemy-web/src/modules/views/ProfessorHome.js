@@ -11,7 +11,7 @@ import AppAppBar from './AppAppBar';
 
 export default function TeacherHome() {
   const [cursos, setCursos] = useState([]);
-  const [newCourse, setNewCourse] = useState({ name: '', description: '' , category : 'otros', price : 0, hours : 0});
+  const [newCourse, setNewCourse] = useState({ title: '', description: '' , category : 'otros', price : 0, hours : 0});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [teacherData, setTeacherData] = useState();
 
@@ -49,7 +49,7 @@ export default function TeacherHome() {
   const handleAddCourse = () => {
     //const datateacher = JSON.parse(localStorage.getItem('teacherData'))
     const teacherEmail = localStorage.getItem("email");
-    if (newCourse.title && newCourse.description) {
+  
       createCourse({
         title: newCourse.title,
         description: newCourse.description,
@@ -60,7 +60,7 @@ export default function TeacherHome() {
         active: false,
         sections: []
       });
-    }
+    
     window.location.reload();
   };
   

@@ -318,7 +318,7 @@ function EditCourse({course, courseId, setEditMode}) {
                     <TextField
                         label="Nombre del curso"
                         value={editedCourse.title}
-                        onChange={(e) => setEditedCourse({ ...editedCourse, name: e.target.value })}
+                        onChange={(e) => setEditedCourse({ ...editedCourse, title: e.target.value })}
                         fullWidth
                         sx={{ mb: 2 }}
                     />
