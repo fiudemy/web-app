@@ -27,6 +27,12 @@ export const ProfessorViewCourse = ({course, setEditMode}) => {
         <>
         <AppAppBar showsSignInOptions={false} courseId={course.id} isProfessor={true} />
         {/* Main content */}
+        <div style={{ position: 'relative', width: '100%', height: '70px', overflow: 'hidden' }}>
+          <img style={{ width: '100%', objectFit: 'cover' }} src="https://healthyresumes.com/wp-content/uploads/2022/10/LinkedIn-Background-Photo-47-1.webp" alt="Banner" />
+          <div style={{ position: 'absolute', bottom: '10px', left: '30px', color: 'white', fontSize: '30px', fontWeight: 'bold' }}>
+            {course.title}
+          </div>
+        </div>
       <Paper
         sx={{ padding: 3, border: '2px solid #e0e0e0', borderRadius: 12, m: 3, p:5 }}
       >
@@ -50,40 +56,52 @@ export const ProfessorViewCourse = ({course, setEditMode}) => {
         }}
         >
             <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                Descripción:
-            </Typography>
-            <Typography sx={{ paddingBottom: '8px' }}>
-                {course.description}
-            </Typography>
+                    Descripción:
+                </Typography>
+                <Typography sx={{ marginBottom: 5 }}>
+                    {course.description}
+                </Typography>
 
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                Categoría:
-            </Typography>
-            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
-                {course.category}
-            </Typography>
 
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                Precio:
-            </Typography>
-            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
-                {course.price}
-            </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 3 }}>
 
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                Horas:
-            </Typography>
-            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
-                {course.hours}
-            </Typography>
+            <Box sx={{ marginRight: 5 }}>
 
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                Activo:
-            </Typography>
-            <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
-                {course.active ? "Si" : "No"}
+            
+                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    Categoría:
+                </Typography>
+                <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                    {course.category}
+                </Typography>
 
-            </Typography>
+                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    Precio:
+                </Typography>
+                <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                    {course.price}
+                </Typography>
+
+            </Box>
+
+            <Box>
+
+                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    Horas:
+                </Typography>
+                <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                    {course.hours}
+                </Typography>
+
+                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    Activo:
+                </Typography>
+                <Typography variant="body2" sx={{ paddingBottom: '8px' }}>
+                    {course.active ? "Si" : "No"}
+
+                </Typography>
+                </Box>
+            </Box>
         </Box>
         </Paper>
         <Paper
@@ -281,7 +299,7 @@ function EditCourse({course, courseId, setEditMode}) {
     return (
         <>
             <AppAppBar showsSignInOptions={false} courseId={courseId} isProfessor={true} />
-            <Paper sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', padding: '20px' }}>                
+            <Paper sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', padding: '20px' }}>  
             <Box sx={{ p: 2 }}>
                     <Typography variant="h6" marked={'left'} sx={{ mb: 2 }}>
                         Editar curso

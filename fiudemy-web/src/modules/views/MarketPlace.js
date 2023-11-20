@@ -90,15 +90,14 @@ const MarketPopupBody = ({course, userComesFromHotCourses}) => {
   };
   return (
     <>
-      <DialogTitle>{course.name}</DialogTitle>
+      <DialogTitle style={{ fontSize: '30px' }}>{course.title}</DialogTitle>
       <DialogContent>
-        <CardMedia
-          component="img"
-          height="200"
-          image={'https://images.shiksha.com/mediadata/images/articles/1681209899php8OqvF2.jpeg'}
-          alt={course.name}
-          sx={{ mt: 2 }}
-        />
+      <div style={{ position: 'relative', width: '100%', height: '130px', overflow: 'hidden' }}>
+        <img style={{ width: '100%', objectFit: 'cover' }} src="https://tippie.uiowa.edu/sites/tippie.uiowa.edu/files/2022-06/linkedinheaders-blue-background.jpg" alt="Banner" />
+        <div style={{ position: 'absolute', bottom: '10px', left: '10px', color: 'white', fontSize: '45px', fontWeight: 'bold' }}>
+          {course.title}
+        </div>
+      </div>
         <Typography variant="h6" sx={{ mt: 6 }}>
           Descripcion
         </Typography>

@@ -185,6 +185,12 @@ export const StudentViewCourse = ({course, setEditMode}) => {
     return (
         <>
         <AppAppBar showsSignInOptions={false} isStudent={true} />
+         <div style={{ position: 'relative', width: '100%', height: '70px', overflow: 'hidden' }}>
+          <img style={{ width: '100%', objectFit: 'cover' }} src="https://healthyresumes.com/wp-content/uploads/2022/10/LinkedIn-Background-Photo-47-1.webp" alt="Banner" />
+          <div style={{ position: 'absolute', bottom: '10px', left: '30px', color: 'white', fontSize: '30px', fontWeight: 'bold' }}>
+            {course.title}
+          </div>
+        </div>
         <Paper
         sx={{ padding: 3, border: '2px solid #e0e0e0', borderRadius: 12, m: 3, p:5 }}
       >
@@ -336,7 +342,6 @@ export const StudentViewCourse = ({course, setEditMode}) => {
         > 
         {evaluations &&
           evaluations.map((evaluation) => {
-          console.log("AAAAAAAAa", !!evaluation.answers[0]?.answer_file);
 
           return(
             <div key={evaluation.title} style={{ marginBottom: 100 }}>
