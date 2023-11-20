@@ -20,7 +20,7 @@ import { StudentViewCourse } from './StudentViewCourse';
 
 
 export const ProfessorViewCourse = ({course, setEditMode}) => {
-    //load the viewr of the course, wiht title description and rest of fields
+    // load the viewer of the course, wiht title description and rest of fields
     const navigate = useNavigate();
 
     return (
@@ -226,6 +226,7 @@ export const ViewCourse = () => {
 function EditCourse({course, courseId, setEditMode}) {
     const [editedCourse, setEditedCourse] = useState(course);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
     const openAddModuleModal = () => {
         setIsModalOpen(true);
     };
@@ -286,6 +287,10 @@ function EditCourse({course, courseId, setEditMode}) {
 
     const handleAgregarModulo = async (courseId, newModule) => {
         editedCourse.sections.push(newModule);
+    }
+
+    const handleViewStudents = () => {
+        navigate(`/students/${courseId}`);
     }
     
     const removeSection = (index) => {
@@ -420,6 +425,9 @@ function EditCourse({course, courseId, setEditMode}) {
                     <div className='d-flex justify-content-center'>
                         <Button variant="contained" color="primary" onClick={() => { handleGuardarCambios(); }}>
                             Guardar Cambios
+                        </Button>
+                        <Button variant="contained" color="primary" style={{marginLeft: 10}} onClick={() => { handleViewStudents(); }}>
+                            Ver alumnos
                         </Button>
                     </div>
                 </Box>
