@@ -393,7 +393,7 @@ export const getStudentViewedSections= async (user_id, course_id) => {
 
 export const getEvaluations = async (CourseId) => {
   try {
-      const res = await axios.get(`https://fiudemy.onrender.com/evaluations?=${CourseId}`);
+      const res = await axios.get(`https://fiudemy.onrender.com/evaluations?course_id=${CourseId}`);
       if (res.status === 200) {
           return res.data;
       }
