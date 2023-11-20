@@ -286,6 +286,7 @@ function EditCourse({course, courseId, setEditMode}) {
             sections: editedCourse.sections,
         }, courseId);
         setEditMode(false);
+        window.location.reload();
 
     }
 
